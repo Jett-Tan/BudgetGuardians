@@ -1,0 +1,5 @@
+function commonPage() {
+    return (
+        div
+    );
+}
