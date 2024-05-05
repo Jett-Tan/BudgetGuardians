@@ -1,7 +1,5 @@
-const CommonPage = () => {
+function commonPage() {
     return (
         div
     );
 }
-
-export default CommonPage
