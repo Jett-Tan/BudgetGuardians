@@ -1,6 +1,7 @@
 import { StyleSheet, Text, View, Button } from "react-native";
 import { Link, router, Pressable } from 'expo-router';
 
+import LoginButton from './components/Buttons.js'
 
 export default function Page() {
   // get cookies or token to see if login in else set to init page
@@ -9,12 +10,18 @@ export default function Page() {
   return (
     <View style={styles.container}>
       <View style={styles.main}>
+        <LoginButton />;
+
+        {/* <View style = {styles.buttonBlock}>
+          <Link style={styles.button} push href="/login">
+            <Text>Login</Text>
+          </Link>
+        </View> */}
         <View style = {styles.buttonBlock}>
-          <Link style={styles.button} push href="/Login">Login</Link>
+          <Link style={styles.button} push href="/signup">
+            <Text>Signup</Text>
+          </Link>
         </View>
-        <Text style={styles.title}>Hello World</Text>
-        <Text style={styles.subtitle}>This is the first page of your app.</Text>
-        <Link href="/home">home</Link>
       </View>
     </View>
   );
@@ -23,13 +30,21 @@ export default function Page() {
 
 const styles = StyleSheet.create({
   buttonBlock: {
+    width: 140,
+    padding:40,
     height: 30,
-    alignItems:'center'
+    alignItems:'center',
+    alignContent:'center'
   },
   button: {
-    backgroundColor:'#00',
-    height: 30,
-    color: '#000000'
+    alignItems:'center',
+    textAlign:'center',
+    borderRadius:10,
+    fontSize:30,
+    textAlignVertical:'center',
+    backgroundColor:'#d2486f',
+    height: 50,
+    width:100
   },
   container: {
     flex: 1,
