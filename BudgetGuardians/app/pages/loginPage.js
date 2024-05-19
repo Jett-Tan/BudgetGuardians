@@ -1,13 +1,13 @@
-import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
+import { StyleSheet, Text, View } from "react-native";
 import { Link } from 'expo-router';
 
 export default function Page() {
   return (
     <View style={styles.container}>
       <View style={styles.main}>
-        <Text style={styles.title}>Hello init</Text>
+        <Text style={styles.title}>Hello home</Text>
         <Text style={styles.subtitle}>This is the first page of your app.</Text>
-        <Link href="/hoinitme">home</Link>
+        <Link href="/home">home</Link>
       </View>
     </View>
   );
