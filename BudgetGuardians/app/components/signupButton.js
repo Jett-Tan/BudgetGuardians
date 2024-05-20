@@ -7,7 +7,7 @@ export default function SignupButton() {
     return (
       <>
         <View style = {ButtonStyle.signupButtonContainer}>
-            <Link style={ButtonStyle.signupButton} push href="/login">
+            <Link style={ButtonStyle.signupButton} push href="./pages/signupPage">
                 <Text>Signup</Text>
             </Link>
         </View>

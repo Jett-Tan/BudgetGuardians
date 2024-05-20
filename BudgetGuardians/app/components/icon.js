@@ -1,13 +1,14 @@
+import { useState } from "react"
 import { Image } from "react-native"
-export default function Icon() {
+export default function Icon({size}) {
     return(
         <>
             <Image 
                 source={require('../assets/favicon.png')}
                 style={
                     {
-                        width:300,
-                        height:300
+                        width:size,
+                        height:size
                     }
                 }
             />

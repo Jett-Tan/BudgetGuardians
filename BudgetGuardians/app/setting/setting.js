@@ -6,6 +6,8 @@ const styleSetting = {
         mildblue: '#84b6e3',
         darkblue: '#3286cf',
         lightblue: '#a7d8f7',
+        red:"#ff0000",
+        green:"#00ff00"
     },
     size: {
         height: {

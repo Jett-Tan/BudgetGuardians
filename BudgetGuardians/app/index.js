@@ -10,11 +10,10 @@ import styleSetting from "./setting/setting";
 export default function Page() {
   // get cookies or token to see if login in else set to init page
   const hasToken = false;
-
   return (
     <View style={styles.container}>
       <View style={styles.main}>
-        <Icon/>
+        <Icon size ={300}/>
         <LoginButton />
         <SignupButton />
       </View>
