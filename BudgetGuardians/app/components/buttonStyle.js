@@ -12,6 +12,15 @@ export default ButtonStyle = StyleSheet.create({
         borderRadius:styleSetting.borderRadius.small,
         maxWidth:300,
     },
+    loginButtonSmall: {
+        textAlign:"center",
+        textAlignVertical:"center",
+        backgroundColor:styleSetting.color.blue,
+        padding:styleSetting.padding.small,
+        fontSize:styleSetting.size.text.small,
+        borderRadius:styleSetting.borderRadius.small,
+        maxWidth:300,
+    },
     signupButton: {
         textAlign:"center",
         textAlignVertical:"center",
@@ -22,9 +31,9 @@ export default ButtonStyle = StyleSheet.create({
         maxWidth:300,
     },
     loginButtonContainer: {
-        margin:styleSetting.size.margin.smaller
+        margin:styleSetting.size.margin.smaller,
     },
     signupButtonContainer: {
-        margin:styleSetting.size.margin.smaller
+        margin:styleSetting.size.margin.smaller,
     },
 });

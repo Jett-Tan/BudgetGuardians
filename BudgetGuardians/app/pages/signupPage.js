@@ -14,8 +14,7 @@ export default function Page() {
     const [error, setError] = React.useState('');
     const [success, setSuccess] = React.useState('');
 
-    const errorMap = new Map(
-    [
+    const errorMap = new Map([
         ["auth/email-already-exists","Email already exists"],
         ["auth/email-already-in-use","Email already exists"],
         ["auth/invalid-email","Invalid Email"],
@@ -24,71 +23,64 @@ export default function Page() {
     ])
 //   console.log(auth)
 
-  function handleSignup(e) {
-    e.preventDefault;
-    setError("")
-    createUserWithEmailAndPassword(auth, email, password)
-    .then((userCredential) => {
-        const user = userCredential.user;
-        console.log(user)
-        setSuccess("Successful")
-    })
-    .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        console.log(error.code)
-        setError(errorMap.get(error.code))
-    });
-    // console.log('signup');
-  }
-  return (
-    <View style={styles.container}>
-      <View style = {styles.navigationbar}>
-        <Link href="../">
-          <Text style = {styles.navigationbarText}>Back</Text>
-        </Link>
-      </View>
-      <View style={styles.main}>
-        <View style = {styles.card}>
-          <Icon size = {200}/>
-          <TextInput
-            style={styles.input}
-            onChangeText={onChangeEmail}
-            value={email}
-            placeholder="Your Email"
-            autoCapitalize="none"
-            />
-          <TextInput
-            style={styles.input}
-            onChangeText={onChangePassword}
-            value={password}
-            placeholder="Your password"
-            secureTextEntry
-          />
-            {
-                error && <Text style = {
-                    styles.error
-                }>Error: {error}</Text>
-                
-            }
-            {
-                success && <Text style = {
-                    styles.success
-                }>{success}</Text>
-            }
-          <Button
-            style = {buttonStyle.loginButtonContainer}
-            title="Signup"
-            onPress={e => handleSignup(e)}
-          />
-          <Text>{'\n'}</Text>
-          <TouchableOpacity>
-
-          </TouchableOpacity>
-          </View>
+    function handleSignup(e) {
+        e.preventDefault;
+        setError("")
+        createUserWithEmailAndPassword(auth, email, password)
+        .then((userCredential) => {
+            const user = userCredential.user;
+            setSuccess("Successful")
+        })
+        .catch((error) => {
+            const errorCode = error.code;
+            const errorMessage = error.message;
+            console.log(error.code)
+            setError(errorMap.get(error.code))
+        });
+    }
+    return (
+        <View style={styles.container}>
+        <View style = {styles.navigationbar}>
+            <Link href="../">
+            <Text style = {styles.navigationbarText}>Back</Text>
+            </Link>
         </View>
-    </View>
-  );
+        <View style={styles.main}>
+            <View style = {styles.card}>
+            <Icon size = {200}/>
+            <TextInput
+                style={styles.input}
+                onChangeText={onChangeEmail}
+                value={email}
+                placeholder="Your Email"
+                autoCapitalize="none"
+            />
+            <TextInput
+                style={styles.input}
+                onChangeText={onChangePassword}
+                value={password}
+                placeholder="Your password"
+                secureTextEntry
+            />
+            {
+                error && <Text style = {styles.error}>Error: {error}</Text>
+            }
+            {
+                success && <Text style = {styles.success}>{success}</Text>
+            }
+            <Button
+                style = {buttonStyle.loginButtonContainer}
+                title="Signup"
+                onPress={e => handleSignup(e)}
+            />
+            <Text>{'\n'}</Text>
+            <TouchableOpacity>
+
+            </TouchableOpacity>
+            </View>
+            </View>
+        </View>
+    );
 }
 
 const styles = StyleSheet.create({
