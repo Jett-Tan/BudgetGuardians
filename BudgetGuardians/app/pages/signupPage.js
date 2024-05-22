@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, TextInput, Button, TouchableOpacity, Image, Switch } from "react-native";
+import { StyleSheet, Text, View, TextInput, Button, TouchableOpacity, Image, Switch,Pressable } from "react-native";
 import { Link } from 'expo-router';
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import React from 'react';
@@ -6,6 +6,7 @@ import React from 'react';
 import styleSetting from "../setting/setting";
 import Icon from "../components/icon";
 import buttonStyle from "../components/buttonStyle";
+import ErrorMap from "../setting/errors";
 import { auth } from "../auth/firebaseConfig";
 
 export default function Page() {
@@ -13,15 +14,6 @@ export default function Page() {
     const [password, onChangePassword] = React.useState('');
     const [error, setError] = React.useState('');
     const [success, setSuccess] = React.useState('');
-
-    const errorMap = new Map([
-        ["auth/email-already-exists","Email already exists"],
-        ["auth/email-already-in-use","Email already exists"],
-        ["auth/invalid-email","Invalid Email"],
-        ["auth/invalid-password","Invalid Password. It must be at least six characters."],
-        ["auth/user-not-found","User not found"]
-    ])
-//   console.log(auth)
 
     function handleSignup(e) {
         e.preventDefault;
@@ -35,7 +27,7 @@ export default function Page() {
             const errorCode = error.code;
             const errorMessage = error.message;
             console.log(error.code)
-            setError(errorMap.get(error.code))
+            setError(ErrorMap.get(error.code))
         });
     }
     return (
@@ -62,83 +54,67 @@ export default function Page() {
                 placeholder="Your password"
                 secureTextEntry
             />
-            {
-                error && <Text style = {styles.error}>Error: {error}</Text>
-            }
-            {
-                success && <Text style = {styles.success}>{success}</Text>
-            }
-            <Button
-                style = {buttonStyle.loginButtonContainer}
-                title="Signup"
-                onPress={e => handleSignup(e)}
-            />
+            {error && <Text style = {styles.error}>Error: {error}</Text>}
+            {success && <Text style = {styles.success}>{success}</Text>}
+            <Pressable style = {[buttonStyle.loginButtonContainer]} onPress={e => handleSignup(e)}>
+                <View style={[{borderRadius : 100}]}>
+                    <Text style = {[buttonStyle.loginButton,styles.button]}>Signup</Text>
+                </View>
+            </Pressable>
             <Text>{'\n'}</Text>
-            <TouchableOpacity>
-
-            </TouchableOpacity>
             </View>
             </View>
         </View>
     );
 }
-
 const styles = StyleSheet.create({
+    button:{
+        width:styleSetting.size.em600,
+        padding:styleSetting.size.em10,
+        fontSize:styleSetting.size.em20
+    },
     container: {
         flex: 1,
         alignItems: "center",
-        padding: 24,
+        padding: styleSetting.size.em24,
         backgroundColor:styleSetting.color.lightlightblue,
-    },
-    error:{
-        color:styleSetting.color.red,
-    },
-    success:{
-        color:styleSetting.color.green,
     },
     main: {
         flex: 1,
         justifyContent: "center",
         alignItems:"center",
-        maxWidth: 960,
+        maxWidth: styleSetting.size.em960,
         marginHorizontal: "auto",
-    },
-    rememberme: {
-        flex:1,
-        flexDirection:"row"
     },
     card: {
         marginTop:"auto",
         marginBottom:"auto",
-        backgroundColor:"#ffffff",
-        maxHeight:500,
-        borderRadius:styleSetting.borderRadius.large,
+        backgroundColor:styleSetting.color.white,
+        maxHeight:styleSetting.size.em500,
+        borderRadius:styleSetting.size.em24,
         flex:1,
         justifyContent: "center",
         alignItems:"center",
+        minWidth:styleSetting.size.em350,
+        maxWidth:styleSetting.size.em450,
     },
-    options:{
-        flex:1,
-        flexDirection:"row",
-        justifyContent:"space-between",
-        alignContent:"space-between",
-        width:"auto",
-        
+    error:{
+        color:styleSetting.color.red,
     },
     input: {
-        minWidth:250,
-        maxWidth:300,
-        height: 40,
-        margin: 12,
+        minWidth:styleSetting.size.em300,
+        maxWidth:styleSetting.size.em400,
+        height: styleSetting.size.em40,
+        margin: styleSetting.size.em07,
         borderWidth: 1,
-        padding: 10,
-        borderRadius:styleSetting.borderRadius.small,
+        padding: styleSetting.size.em10,
+        borderRadius:styleSetting.size.em10,
     },
     navigationbar: {
         alignSelf:"flex-start",
     },
     navigationbarText: {
-        fontSize:styleSetting.size.text.smaller,
+        fontSize:styleSetting.size.em20,
         fontWeight:"bold"
     }
 });

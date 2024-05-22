@@ -7,41 +7,30 @@ const styleSetting = {
         darkblue: '#3286cf',
         lightblue: '#a7d8f7',
         red:"#ff0000",
-        green:"#00ff00"
+        green:"#00ff00",
+        white:"#ffffff",
     },
     size: {
-        height: {
-
-        },
-        width: {
-
-        },
-        text: {
-            smaller: 24,
-            small: 32,
-            large:60,
-            larger:82
-        },
-        margin: {
-            smaller: 9,
-            small: 15,
-            large:24,
-            larger:30
-        }
-    },
-    padding: {
-        smaller: 9,
-        small: 15,
-        large:24,
-        larger:30
-    },
-    borderRadius:{
-        smaller: 5,
-        small: 7,
-        large:15,
-        larger:30
-    }
-    
-
+        em03: 3,
+        em05: 5,
+        em07: 7,
+        em10: 10,
+        em16: 16,
+        em20: 20,
+        em24: 24,
+        em28: 28,
+        em30: 30,
+        em33: 33,
+        em36: 36,
+        em40: 40,
+        em47: 47,
+        em300: 300,
+        em350: 350,
+        em400: 400,
+        em450: 450,
+        em500: 500,
+        em600: 600,
+        em960: 960,
+    }  
 }
 export default styleSetting;
