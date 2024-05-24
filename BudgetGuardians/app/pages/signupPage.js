@@ -19,7 +19,7 @@ export default function Page() {
     const [showPassword, setShowPassword] = React.useState(true);
     const [showPassword2, setShowPassword2] = React.useState(true);
 
-    // Function for delaying to test password matching (but still did not work)
+    // Function for delaying to check if password matching
     // Usage is just: "await delay(5000);"
     const delay = async (ms) => {
         return new Promise((resolve) => 
@@ -100,7 +100,7 @@ export default function Page() {
                 onChangeText={ async (e) => {
                     onChangePassword2(e)
                     console.log(e)
-                    await delay(1000);
+                    await delay(100);
                     if(!isPasswordConfirmed(password, e)){
                     // password is not matching, you can show error to your user
                         const a = setError("Passwords do not match!")
