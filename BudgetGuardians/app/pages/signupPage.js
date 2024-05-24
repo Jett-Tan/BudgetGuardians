@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, TextInput, Button, TouchableOpacity, Image, Switch,Pressable } from "react-native";
+import { StyleSheet, Text, View, TextInput, Button, TouchableOpacity, Image, Switch, Pressable, Alert } from "react-native";
 import { Link } from 'expo-router';
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import React from 'react';
@@ -25,9 +25,9 @@ export default function Page() {
         e.preventDefault;
         setError("")
 
-        if(!isPasswordConfirmed(password,confirmPassword)){
+        if(!isPasswordConfirmed(password, confirmPassword)){
             // password is not matching, you can show error to your user
-            return "Password does not match";
+            alert("Password does not match!");
         }
 
         createUserWithEmailAndPassword(auth, email, password)
@@ -75,6 +75,7 @@ export default function Page() {
             />
             {error && <Text style = {styles.error}>Error: {error}</Text>}
             {success && <Text style = {styles.success}>{success}</Text>}
+
             <Pressable style = {[buttonStyle.loginButtonContainer]} onPress={e => handleSignup(e)}>
                 <View style={[{borderRadius : 100}]}>
                     <Text style = {[buttonStyle.loginButton,styles.button]}>Signup</Text>
