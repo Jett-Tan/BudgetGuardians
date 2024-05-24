@@ -20,6 +20,21 @@ export default function Page() {
         if(password && confirmPassword && password === confirmPassword) return true;
         return false;
     } 
+    const handleConfirmPasswordChange = async (e) => {
+        setConfirmPassword(e.target.value);
+        await checkPasswords(e.target.value);
+    };
+
+    const checkPasswords = async (newConfirmPassword) => {
+        // Simulate an asynchronous operation, like a delay or API call if necessary
+        await new Promise(resolve => setTimeout(resolve, 500)); // Remove or replace with actual async operation
+    
+        if (!isPasswordConfirmed(password, newConfirmPassword)) {
+          setError("Passwords do not match!");
+        } else {
+          setError('');
+        }
+      };
 
     function handleSignup(e) {
         e.preventDefault;
@@ -27,7 +42,8 @@ export default function Page() {
 
         if(!isPasswordConfirmed(password, confirmPassword)){
             // password is not matching, you can show error to your user
-            alert("Password does not match!");
+            const a = setError("Passwords do not match!")
+            return a;
         }
 
         createUserWithEmailAndPassword(auth, email, password)
@@ -68,7 +84,7 @@ export default function Page() {
             />
             <TextInput
                 style={styles.input}
-                onChangeText={onChangePassword2}
+                onChangeText={handleConfirmPasswordChange}
                 value={confirmPassword}
                 placeholder="Re-enter Password"
                 secureTextEntry
