@@ -180,7 +180,7 @@ const styles = StyleSheet.create({
         alignItems: "center",
         minWidth:styleSetting.size.em300,
         maxWidth:styleSetting.size.em400,
-        height: styleSetting.size.em40,
+        height: styleSetting.size.em60,
         margin: styleSetting.size.em07,
         borderWidth: 1,
         padding: styleSetting.size.em10,

@@ -24,6 +24,7 @@ const styleSetting = {
         em36: 36,
         em40: 40,
         em47: 47,
+        em60: 60,
         em300: 300,
         em350: 350,
         em400: 400,
