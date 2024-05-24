@@ -19,6 +19,8 @@ export default function Page() {
     const [showPassword, setShowPassword] = React.useState(true);
     const [showPassword2, setShowPassword2] = React.useState(true);
 
+    // Function for delaying to test password matching (but still did not work)
+    // Usage is just: "await delay(5000);"
     const delay = async (ms) => {
         return new Promise((resolve) => 
             setTimeout(resolve, ms));
@@ -58,6 +60,7 @@ export default function Page() {
             <Text style = {styles.navigationbarText}>Back</Text>
             </Link>
         </View>
+
         <View style={styles.main}>
             <View style = {styles.card}>
             <Icon size = {200}/>
@@ -68,11 +71,13 @@ export default function Page() {
                 placeholder="Your Email"
                 autoCapitalize="none"
             />
+
+            <View style= {styles.containerForPasswords}>
             <TextInput
                 style={[styles.input]}
                 onChangeText={onChangePassword}
                 value={password}
-                placeholder="Your password"
+                placeholder="Your Password"
                 secureTextEntry={showPassword}
             />
             <Pressable 
@@ -84,7 +89,9 @@ export default function Page() {
                     <Entypo name="eye-with-line" size={24} color="black" />
                 )}
             </Pressable>
+            </View>
             
+            <View style= {styles.containerForPasswords}>
             <TextInput
                 value={confirmPassword}
                 placeholder="Re-enter Password"
@@ -93,7 +100,7 @@ export default function Page() {
                 onChangeText={ async (e) => {
                     onChangePassword2(e)
                     console.log(e)
-                    await delay(5000);
+                    // await delay(5000);
                     if(!isPasswordConfirmed(password, confirmPassword)){
                     // password is not matching, you can show error to your user
                         const a = setError("Passwords do not match!")
@@ -112,7 +119,8 @@ export default function Page() {
                     <Entypo name="eye-with-line" size={24} color="black" />
                 )}
             </Pressable>
-            
+            </View>
+
             {error && <Text style = {styles.error}>Error: {error}</Text>}
             {success && <Text style = {styles.success}>{success}</Text>}
 
@@ -138,6 +146,11 @@ const styles = StyleSheet.create({
         alignItems: "center",
         padding: styleSetting.size.em24,
         backgroundColor:styleSetting.color.lightlightblue,
+    },
+    containerForPasswords: {
+        position: 'relative',
+        flexDirection: 'row',
+        alignItems: 'center',
     },
     main: {
         flex: 1,
@@ -174,8 +187,12 @@ const styles = StyleSheet.create({
         borderRadius:styleSetting.size.em10,
     },
     icon: {
-        padding: 10,
-        right: 10
+        position: 'absolute',
+        right: 10,
+        height: '100%',
+        justifyContent: 'center',
+        zIndex: 2,
+        userSelect: "none",
     },
     navigationbar: {
         alignSelf:"flex-start",
