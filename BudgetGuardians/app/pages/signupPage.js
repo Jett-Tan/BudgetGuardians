@@ -14,10 +14,22 @@ export default function Page() {
     const [password, onChangePassword] = React.useState('');
     const [error, setError] = React.useState('');
     const [success, setSuccess] = React.useState('');
+    const [confirmPassword, onChangePassword2] = React.useState('');
+
+    function isPasswordConfirmed(password, password2) {
+        if(password && confirmPassword && password === confirmPassword) return true;
+        return false;
+    } 
 
     function handleSignup(e) {
         e.preventDefault;
         setError("")
+
+        if(!isPasswordConfirmed(password,confirmPassword)){
+            // password is not matching, you can show error to your user
+            return "Password does not match";
+        }
+
         createUserWithEmailAndPassword(auth, email, password)
         .then((userCredential) => {
             const user = userCredential.user;
@@ -52,6 +64,13 @@ export default function Page() {
                 onChangeText={onChangePassword}
                 value={password}
                 placeholder="Your password"
+                secureTextEntry
+            />
+            <TextInput
+                style={styles.input}
+                onChangeText={onChangePassword2}
+                value={confirmPassword}
+                placeholder="Re-enter Password"
                 secureTextEntry
             />
             {error && <Text style = {styles.error}>Error: {error}</Text>}

@@ -5,5 +5,6 @@ export default ErrorMap = new Map([
     ["auth/invalid-password","Invalid Password. It must be at least six characters."],
     ["auth/user-not-found","User not found"],
     ["auth/invalid-credential","Wrong password or Email"],
-    ["auth/missing-email","Missing Email"]
+    ["auth/missing-email","Missing Email"],
+    ["auth/weak-password","Weak Password. It must be at least six characters"]
 ])
