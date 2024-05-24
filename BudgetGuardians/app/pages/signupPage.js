@@ -24,9 +24,9 @@ export default function Page() {
     const delay = async (ms) => {
         return new Promise((resolve) => 
             setTimeout(resolve, ms));
-    };
+    }
 
-    function isPasswordConfirmed(password, password2) {
+    function isPasswordConfirmed(password, confirmPassword) {
         if(password && confirmPassword && password === confirmPassword) return true;
         return false;
     } 
@@ -100,8 +100,8 @@ export default function Page() {
                 onChangeText={ async (e) => {
                     onChangePassword2(e)
                     console.log(e)
-                    // await delay(5000);
-                    if(!isPasswordConfirmed(password, confirmPassword)){
+                    await delay(1000);
+                    if(!isPasswordConfirmed(password, e)){
                     // password is not matching, you can show error to your user
                         const a = setError("Passwords do not match!")
                         return a;
