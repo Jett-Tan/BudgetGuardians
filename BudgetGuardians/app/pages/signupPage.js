@@ -8,6 +8,7 @@ import Icon from "../components/icon";
 import buttonStyle from "../components/buttonStyle";
 import ErrorMap from "../setting/errors";
 import { auth } from "../auth/firebaseConfig";
+import { Entypo } from "@expo/vector-icons"
 
 export default function Page() {
     const [email, onChangeEmail] = React.useState('');
@@ -15,26 +16,18 @@ export default function Page() {
     const [error, setError] = React.useState('');
     const [success, setSuccess] = React.useState('');
     const [confirmPassword, onChangePassword2] = React.useState('');
+    const [showPassword, setShowPassword] = React.useState(true);
+    const [showPassword2, setShowPassword2] = React.useState(true);
+
+    const delay = async (ms) => {
+        return new Promise((resolve) => 
+            setTimeout(resolve, ms));
+    };
 
     function isPasswordConfirmed(password, password2) {
         if(password && confirmPassword && password === confirmPassword) return true;
         return false;
     } 
-    const handleConfirmPasswordChange = async (e) => {
-        setConfirmPassword(e.target.value);
-        await checkPasswords(e.target.value);
-    };
-
-    const checkPasswords = async (newConfirmPassword) => {
-        // Simulate an asynchronous operation, like a delay or API call if necessary
-        await new Promise(resolve => setTimeout(resolve, 500)); // Remove or replace with actual async operation
-    
-        if (!isPasswordConfirmed(password, newConfirmPassword)) {
-          setError("Passwords do not match!");
-        } else {
-          setError('');
-        }
-      };
 
     function handleSignup(e) {
         e.preventDefault;
@@ -76,19 +69,50 @@ export default function Page() {
                 autoCapitalize="none"
             />
             <TextInput
-                style={styles.input}
+                style={[styles.input]}
                 onChangeText={onChangePassword}
                 value={password}
                 placeholder="Your password"
-                secureTextEntry
+                secureTextEntry={showPassword}
             />
+            <Pressable 
+                onPress={() => setShowPassword(prev => !prev)}
+                style={styles.icon}>
+                {showPassword ? (
+                    <Entypo name="eye" size={24} color="black" />
+                 ) : (
+                    <Entypo name="eye-with-line" size={24} color="black" />
+                )}
+            </Pressable>
+            
             <TextInput
-                style={styles.input}
-                onChangeText={handleConfirmPasswordChange}
                 value={confirmPassword}
                 placeholder="Re-enter Password"
-                secureTextEntry
+                secureTextEntry={showPassword2}
+                style={styles.input}
+                onChangeText={ async (e) => {
+                    onChangePassword2(e)
+                    console.log(e)
+                    await delay(5000);
+                    if(!isPasswordConfirmed(password, confirmPassword)){
+                    // password is not matching, you can show error to your user
+                        const a = setError("Passwords do not match!")
+                        return a;
+                    } else {
+                        setError('');
+                    }
+                }}
             />
+            <Pressable 
+                onPress={() => setShowPassword2(prev => !prev)}
+                style={styles.icon}>
+                {showPassword2 ? (
+                    <Entypo name="eye" size={24} color="black" />
+                 ) : (
+                    <Entypo name="eye-with-line" size={24} color="black" />
+                )}
+            </Pressable>
+            
             {error && <Text style = {styles.error}>Error: {error}</Text>}
             {success && <Text style = {styles.success}>{success}</Text>}
 
@@ -138,6 +162,9 @@ const styles = StyleSheet.create({
         color:styleSetting.color.red,
     },
     input: {
+        flex: 1,
+        justifyContent: "space-between",
+        alignItems: "center",
         minWidth:styleSetting.size.em300,
         maxWidth:styleSetting.size.em400,
         height: styleSetting.size.em40,
@@ -145,6 +172,10 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         padding: styleSetting.size.em10,
         borderRadius:styleSetting.size.em10,
+    },
+    icon: {
+        padding: 10,
+        right: 10
     },
     navigationbar: {
         alignSelf:"flex-start",
