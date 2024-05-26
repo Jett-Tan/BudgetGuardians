@@ -1,12 +1,10 @@
-import { StyleSheet, Text, View, Button } from "react-native";
+import { StyleSheet,  View,  } from "react-native";
 import { Link, router, Redirect } from 'expo-router';
 
-import LoginButton from './components/loginButton'
-import SignupButton from './components/signupButton'
 import Icon from './components/icon'
 import styleSetting from "./setting/setting";
 import { auth } from "./auth/firebaseConfig";
-
+import CustomButton from "./components/customButton";
 
 export default function Page() {
   // get cookies or token to see if login in else set to init page
@@ -18,13 +16,16 @@ export default function Page() {
     console.log(user)
     return <Redirect href="/pages/homePage" />;
   }
+  async function href(location) {
+    return () => <Redirect href={location} />;
+  }
 
   return (
     <View style={styles.container}>
       <View style={styles.main}>
         <Icon size ={300}/>
-        <LoginButton />
-        <SignupButton />
+        <CustomButton type="login" text="Login" href ="./pages/loginPage"/>
+        <CustomButton type="signup" text="Signup" href ="./pages/signupPage"/>
       </View>
     </View>
   );

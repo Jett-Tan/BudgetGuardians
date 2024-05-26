@@ -26,9 +26,8 @@ export default function Page() {
             setTimeout(resolve, ms));
     }
 
-    function isPasswordConfirmed(password, confirmPassword) {
-        if(password && confirmPassword && password === confirmPassword) return true;
-        return false;
+    function isPasswordConfirmed(password,confirmPassword) {
+        return (password && confirmPassword && password === confirmPassword) 
     } 
 
     function handleSignup(e) {
@@ -53,6 +52,31 @@ export default function Page() {
             setError(ErrorMap.get(error.code))
         });
     }
+    
+    async function handlePasswordChange(pwd,confirm = false) {
+        if (!confirm) {
+            onChangePassword(pwd)
+            console.log(pwd)
+            await delay(100);
+            if(!isPasswordConfirmed(pwd, confirmPassword)){
+                // password is not matching, you can show error to your user
+                setError("Passwords do not match!")
+            } else {
+                setError('');
+            }
+        } else {
+            onChangePassword2(pwd)
+            console.log(pwd)
+            await delay(100);
+            if(!isPasswordConfirmed(password, pwd)){
+                // password is not matching, you can show error to your user
+                setError("Passwords do not match!")
+            } else {
+                setError('');
+            }
+        }
+    }
+
     return (
         <View style={styles.container}>
         <View style = {styles.navigationbar}>
@@ -64,61 +88,57 @@ export default function Page() {
         <View style={styles.main}>
             <View style = {styles.card}>
             <Icon size = {200}/>
-            <TextInput
-                style={styles.input}
-                onChangeText={onChangeEmail}
-                value={email}
-                placeholder="Your Email"
-                autoCapitalize="none"
-            />
+            <View style= {styles.containerForPasswords}>
+                <TextInput
+                    style={styles.input}
+                    onChangeText={onChangeEmail}
+                    value={email}
+                    placeholder="Your Email"
+                    autoCapitalize="none"
+                />
+            </View>
 
             <View style= {styles.containerForPasswords}>
-            <TextInput
-                style={[styles.input]}
-                onChangeText={onChangePassword}
-                value={password}
-                placeholder="Your Password"
-                secureTextEntry={showPassword}
-            />
-            <Pressable 
-                onPress={() => setShowPassword(prev => !prev)}
-                style={styles.icon}>
-                {showPassword ? (
-                    <Entypo name="eye" size={24} color="black" />
-                 ) : (
-                    <Entypo name="eye-with-line" size={24} color="black" />
-                )}
-            </Pressable>
+                <TextInput
+                    style={[styles.input]}
+                    // onChangeText={onChangePassword}
+                    onChangeText={ async (e) => {
+                        handlePasswordChange(e)
+                    }}
+                    value={password}
+                    placeholder="Your Password"
+                    secureTextEntry={showPassword}
+                />
+                <Pressable 
+                    onPress={() => setShowPassword(prev => !prev)}
+                    style={styles.icon}>
+                    {showPassword ? (
+                        <Entypo name="eye" size={24} color="black" />
+                    ) : (
+                        <Entypo name="eye-with-line" size={24} color="black" />
+                    )}
+                </Pressable>
             </View>
             
             <View style= {styles.containerForPasswords}>
-            <TextInput
-                value={confirmPassword}
-                placeholder="Re-enter Password"
-                secureTextEntry={showPassword2}
-                style={styles.input}
-                onChangeText={ async (e) => {
-                    onChangePassword2(e)
-                    console.log(e)
-                    await delay(100);
-                    if(!isPasswordConfirmed(password, e)){
-                    // password is not matching, you can show error to your user
-                        const a = setError("Passwords do not match!")
-                        return a;
-                    } else {
-                        setError('');
-                    }
-                }}
-            />
-            <Pressable 
-                onPress={() => setShowPassword2(prev => !prev)}
-                style={styles.icon}>
-                {showPassword2 ? (
-                    <Entypo name="eye" size={24} color="black" />
-                 ) : (
-                    <Entypo name="eye-with-line" size={24} color="black" />
-                )}
-            </Pressable>
+                <TextInput
+                    value={confirmPassword}
+                    placeholder="Re-enter Password"
+                    secureTextEntry={showPassword2}
+                    style={styles.input}
+                    onChangeText={ async (e) => {
+                        handlePasswordChange(e,true)
+                    }}
+                />
+                <Pressable 
+                    onPress={() => setShowPassword2(prev => !prev)}
+                    style={styles.icon}>
+                    {showPassword2 ? (
+                        <Entypo name="eye" size={24} color="black" />
+                    ) : (
+                        <Entypo name="eye-with-line" size={24} color="black" />
+                    )}
+                </Pressable>
             </View>
 
             {error && <Text style = {styles.error}>Error: {error}</Text>}
@@ -151,6 +171,7 @@ const styles = StyleSheet.create({
         position: 'relative',
         flexDirection: 'row',
         alignItems: 'center',
+        
     },
     main: {
         flex: 1,
@@ -183,7 +204,8 @@ const styles = StyleSheet.create({
         height: styleSetting.size.em60,
         margin: styleSetting.size.em07,
         borderWidth: 1,
-        padding: styleSetting.size.em10,
+        paddingLeft: styleSetting.size.em10,
+        paddingRight: styleSetting.size.em10,
         borderRadius:styleSetting.size.em10,
     },
     icon: {

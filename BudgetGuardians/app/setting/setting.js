@@ -9,6 +9,8 @@ const styleSetting = {
         red:"#ff0000",
         green:"#00ff00",
         white:"#ffffff",
+        grey:"#808080",
+        lightgrey:"#d3d3d3",
     },
     size: {
         em03: 3,
