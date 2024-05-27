@@ -2,8 +2,6 @@ import { Link, Redirect } from "expo-router";
 import { View, Text, StyleSheet, Pressable} from "react-native";
 
 import styleSetting from "../setting/setting.js";
-import ButtonStyle from "./buttonStyle.js";
-import { Switch } from "react-native-web";
 
 const props = {
     type: "primary" | "secondary" | "login" | "signup" | "danger" | "link",
@@ -12,19 +10,54 @@ const props = {
     getStyle: (e) => {
         switch (e) {
             case "primary":
-                return styles.primary;
+                return {
+                    pressable: [
+                        styles.button,
+                        styles.primary],
+                    text: styles.text
+                };
             case "secondary":
-                return styles.secondary;
+                return {
+                    pressable: [
+                        styles.button,
+                        styles.secondary],
+                    text: styles.text
+                };
             case "login":
-                return styles.login;
+                return {
+                    pressable: [
+                        styles.button,
+                        styles.login],
+                    text: styles.text
+                };
             case "signup":
-                return styles.signup;
+                return {
+                    pressable: [
+                        styles.button,
+                        styles.signup],
+                    text: styles.text
+                };
             case "danger":
-                return styles.danger;
+                return {
+                    pressable: [
+                        styles.button,
+                        styles.danger],
+                    text: styles.text
+                };
             case "link":
-                return styles.link;
+                return {
+                    pressable: [
+                        styles.button,
+                        styles.link],
+                    text: styles.textLink
+                };
             default:
-                return styles.primary;
+                return {
+                    pressable: [
+                        styles.button,
+                        styles.primary],
+                    text: styles.text
+                };
         }
     },
 }
@@ -32,14 +65,14 @@ const props = {
 export default function CustomButton({type,text,onPress = (e) => {},href = null}) {
     return (
         <>
-            <Pressable style = {[styles.button,props.getStyle(type)]} onPress={e => onPress(e)}>
+            <Pressable style = {[props.getStyle(type).pressable]} onPress={e => onPress(e)}>
                 {href != null ? 
-                    <Link href={href} style = {styles.text}>
+                    <Link href={href} style = {[props.getStyle(type).text]}>
                         <Text>{text}</Text>
                     </Link> 
                     :
                     <View>
-                        <Text style = {styles.text}>{text}</Text>
+                        <Text style = {[props.getStyle(type).text]} >{text}</Text>
                     </View>
                 }
             </Pressable>
@@ -52,6 +85,14 @@ const styles = StyleSheet.create({
         textAlignVertical:"center",
         fontSize:styleSetting.size.em28,
         padding:styleSetting.size.em07,
+    },
+    textLink:{
+        textAlign:"center",
+        textAlignVertical:"center",
+        fontSize:styleSetting.size.em16,
+        color:styleSetting.color.royalblue,
+        padding:styleSetting.size.em07,
+        textDecorationLine: 'underline',
     },
     button:{
         textAlign:"center",
@@ -76,6 +117,6 @@ const styles = StyleSheet.create({
         backgroundColor:styleSetting.color.red,
     }, 
     link: {
-        backgroundColor:styleSetting.color.white,
+        fontSize:styleSetting.size.em10,
     },
 })

@@ -1,12 +1,14 @@
 import { StyleSheet, Text, View, TextInput, Button, TouchableOpacity, Image, Switch, Pressable, Alert } from "react-native";
 import { Link } from 'expo-router';
-import { createUserWithEmailAndPassword } from "firebase/auth";
+import { createUserWithEmailAndPassword,sendEmailVerification  } from "firebase/auth";
 import React from 'react';
 
 import styleSetting from "../setting/setting";
 import Icon from "../components/icon";
 import buttonStyle from "../components/buttonStyle";
-import ErrorMap from "../setting/errors";
+import Errors from "../setting/errors";
+import CustomInput from "../components/customInput";
+import CustomButton from "../components/customButton";
 import { auth } from "../auth/firebaseConfig";
 import { Entypo } from "@expo/vector-icons"
 
@@ -29,28 +31,57 @@ export default function Page() {
     function isPasswordConfirmed(password,confirmPassword) {
         return (password && confirmPassword && password === confirmPassword) 
     } 
-
+    function checkValid(){
+        if (Errors.handleError(email,"email") !== '') {
+            setError(Errors.errorGetter(Errors.handleError(email,"email")))
+            return false;
+        }
+        if (Errors.handleError(password,"password") !== '') {
+            setError(Errors.errorGetter(Errors.handleError(password,"password")))
+            return false;
+        }
+        if(!isPasswordConfirmed(password, confirmPassword)){
+            // password is not matching, you can show error to your user
+            const a = setError("Passwords do not match!")
+            return false;
+        }
+        return true;
+    }
     function handleSignup(e) {
         e.preventDefault;
         setError("")
 
-        if(!isPasswordConfirmed(password, confirmPassword)){
-            // password is not matching, you can show error to your user
-            const a = setError("Passwords do not match!")
-            return a;
+        if(!checkValid()){
+            return;
         }
 
         createUserWithEmailAndPassword(auth, email, password)
         .then((userCredential) => {
             const user = userCredential.user;
             setSuccess("Successful")
+            console.log(auth)    
         })
         .catch((error) => {
             const errorCode = error.code;
             const errorMessage = error.message;
             console.log(error.code)
-            setError(ErrorMap.get(error.code))
+            setError(Errors.errorGetter(error.code))
+            return;
         });
+        
+        sendEmailVerification(auth.currentUser)
+        .then(() => {
+            delay(1000)
+            setSuccess("Email verification sent!")
+        })
+        .catch((error) => {
+            const errorCode = error.code;
+            const errorMessage = error.message;
+            console.log(error.code)
+            setError(Errors.errorGetter(error.code))
+            return;
+        });
+        auth.signOut()
     }
     
     async function handlePasswordChange(pwd,confirm = false) {
@@ -87,8 +118,31 @@ export default function Page() {
 
         <View style={styles.main}>
             <View style = {styles.card}>
-            <Icon size = {200}/>
-            <View style= {styles.containerForPasswords}>
+            <Icon size = {150}/>
+            <CustomInput
+                type="email"
+                placeholder="Your Email"
+                onChange={onChangeEmail}
+                values={email}
+            />
+            <CustomInput
+                password = {true}
+                placeholder="Your Password"
+                onChange={e => handlePasswordChange(e)}
+                values={password}
+                hiddenEye = {true}
+                type="password"
+            />
+            <CustomInput
+                password = {true}
+                placeholder="Your Password"
+                onChange={e => handlePasswordChange(e,true)}
+                values={confirmPassword}
+                errorExist = {false}
+                hiddenEye = {true}
+                type="confirm"
+            />
+            {/* <View style= {styles.containerForPasswords}>
                 <TextInput
                     style={styles.input}
                     onChangeText={onChangeEmail}
@@ -96,9 +150,9 @@ export default function Page() {
                     placeholder="Your Email"
                     autoCapitalize="none"
                 />
-            </View>
+            </View> */}
 
-            <View style= {styles.containerForPasswords}>
+            {/* <View style= {styles.containerForPasswords}>
                 <TextInput
                     style={[styles.input]}
                     // onChangeText={onChangePassword}
@@ -139,16 +193,20 @@ export default function Page() {
                         <Entypo name="eye-with-line" size={24} color="black" />
                     )}
                 </Pressable>
-            </View>
-
+            </View> */}
+            <CustomButton
+                type="signup"
+                onPress={handleSignup}
+                text="Signup"
+            />
             {error && <Text style = {styles.error}>Error: {error}</Text>}
             {success && <Text style = {styles.success}>{success}</Text>}
 
-            <Pressable style = {[buttonStyle.loginButtonContainer]} onPress={e => handleSignup(e)}>
+            {/* <Pressable style = {[buttonStyle.loginButtonContainer]} onPress={e => handleSignup(e)}>
                 <View style={[{borderRadius : 100}]}>
                     <Text style = {[buttonStyle.loginButton,styles.button]}>Signup</Text>
                 </View>
-            </Pressable>
+            </Pressable> */}
             <Text>{'\n'}</Text>
             </View>
             </View>
@@ -171,7 +229,6 @@ const styles = StyleSheet.create({
         position: 'relative',
         flexDirection: 'row',
         alignItems: 'center',
-        
     },
     main: {
         flex: 1,
@@ -185,6 +242,7 @@ const styles = StyleSheet.create({
         marginBottom:"auto",
         backgroundColor:styleSetting.color.white,
         maxHeight:styleSetting.size.em500,
+        minHeight:styleSetting.size.em400,
         borderRadius:styleSetting.size.em24,
         flex:1,
         justifyContent: "center",
@@ -194,6 +252,9 @@ const styles = StyleSheet.create({
     },
     error:{
         color:styleSetting.color.red,
+    },
+    success:{
+        color:styleSetting.color.forestgreen,
     },
     input: {
         flex: 1,

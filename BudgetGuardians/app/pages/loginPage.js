@@ -11,26 +11,26 @@ import {
 import { Link, Redirect, useRouter } from 'expo-router';
 import React from 'react';
 import {signInWithEmailAndPassword, sendPasswordResetEmail} from "firebase/auth";
-import DialogInput from 'react-native-dialog-input';
 
 import styleSetting from "../setting/setting";
-import ErrorMap from "../setting/errors";
+import Error from "../setting/errors";
 import Icon from "../components/icon";
-import buttonStyle from "../components/buttonStyle";
+import CustomInput from "../components/customInput";
+import CustomButton from "../components/customButton";
 import { auth } from "../auth/firebaseConfig";
 
 export default function Page() {
     const [email, onChangeEmail] = React.useState('');
     const [password, onChangePassword] = React.useState('');
     const [modalVisible, setModalVisible] = React.useState(false);
-    
+
     const [error, setError] = React.useState('');
 
     const [resetEmail, onChangeResetEmail] = React.useState('');
     const [errorResetEmail, setErrorResetEmail] = React.useState('');
     
     const router = useRouter();
-    
+
     function handleLogin(e) {
         e.preventDefault;
         setError("")
@@ -44,7 +44,7 @@ export default function Page() {
             const errorCode = error.code;
             const errorMessage = error.message;
             console.log(error.code)
-            setError(ErrorMap.get(error.code))
+            setError(Errors.errorGetter(error.code))
         });
     }
       
@@ -59,7 +59,7 @@ export default function Page() {
             const errorCode = error.code;
             const errorMessage = error.message;
             console.log(error.code)
-            setErrorResetEmail(ErrorMap.get(error.code))
+            setErrorResetEmail(Errors.errorGetter(error.code))
         })
     }
 
@@ -72,65 +72,67 @@ export default function Page() {
           </View>
           <View style={styles.main}>
               <Modal
-                  animationType="slide"
+                  animationType="none"
                   transparent={true}
                   visible={modalVisible}
                   onRequestClose={() => {
                     Alert.alert('Modal has been closed.');
                     setModalVisible(!modalVisible);
                   }}>
-                      <View style={styles.container}>
-                          <View style = {styles.navigationbar}>
-                              <Text style = {styles.navigationbarText} onPress={() => setModalVisible(!modalVisible)}>Back</Text>
-                          </View>
-                          <View style={styles.main}>
-                              <View style = {styles.card}>
-                                  <Icon size = {200}/>
-                                  <TextInput
-                                    style={styles.input}
-                                    onChangeText={onChangeResetEmail}
-                                    value={resetEmail}
-                                    placeholder="Your Email"
-                                    autoCapitalize="none"
-                                  />
-                                  {errorResetEmail && <Text style = {styles.error}>Error: {errorResetEmail}</Text>}
-                                  <Pressable style = {buttonStyle.loginButtonContainer} onPress={e => handlePasswordReset(e)}>
-                                      <View style={{borderRadius : 100}}>
-                                          <Text style = {buttonStyle.loginButton}>Reset Password</Text>
-                                      </View>
-                                  </Pressable>
-                              </View>       
-                          </View>
-                      </View>
-                  </Modal>     
-                    <View style = {styles.card}>
-                        <Icon size = {200}/>
-                        <TextInput
-                          style={styles.input}
-                          onChangeText={onChangeEmail}
-                          value={email}
-                          placeholder="Your Email"
-                          autoCapitalize="none"
-                        />
-                        <TextInput
-                          style={styles.input}
-                          onChangeText={onChangePassword}
-                          value={password}
-                          placeholder="Your password"
-                          secureTextEntry
-                        />
-                        {error && <Text style = {styles.error}>Error: {error}</Text>}
-                        <Pressable style = {buttonStyle.loginButtonContainer} onPress={e => handleLogin(e)}>
-                            <View style={{borderRadius : 100}}>
-                                <Text style = {buttonStyle.loginButton}>Login</Text>
+                        <View style={styles.container}>
+                            <View style = {styles.navigationbar}>
+                                <Text style = {styles.navigationbarText} onPress={() => setModalVisible(!modalVisible)}>Back</Text>
                             </View>
-                        </Pressable>
-                        <Pressable style={{marginTop:15}} onPress={() => setModalVisible(true)}>
-                            <Text>Forget Password?</Text>
-                        </Pressable>
-                        <Text>{'\n'}</Text>
-                    </View>
-                
+                            <View style={styles.main}>
+                                <View style = {styles.card}>
+                                    <Icon size = {150}/>
+                                    <CustomInput
+                                            type="email"
+                                            onChange={async (e) => {onChangeResetEmail(e)}}
+                                            values={resetEmail}
+                                            placeholder="Your Email"
+                                        />  
+                                    <CustomButton
+                                        type="primary"
+                                        onPress={e => handlePasswordReset(e)} 
+                                        text="Reset Password"   
+                                        />
+                                    {errorResetEmail && <Text style = {styles.error}>Error: {errorResetEmail}</Text>}
+                                <View style={{height:160}}></View>
+                                </View>       
+                            </View>
+                        </View>
+                </Modal>     
+                <View style = {styles.card}>
+                    <Icon size = {150}/>
+                    <CustomInput 
+                        type="email" 
+                        onChange={async (e) => {onChangeEmail(e)}} 
+                        value={email}
+                        placeholder="Your Email" 
+                    />
+                    <CustomInput 
+                        type="password"
+                        password={true}
+                        onChange={async (e) => {onChangePassword(e)}} 
+                        value={password}
+                        placeholder="Your Password" 
+                        hiddenEye={true} 
+                    />
+                    <CustomButton 
+                        type="login" 
+                        text="Login" 
+                        onPress={e => handleLogin(e)}
+                    />
+                    {error && <Text style = {styles.error}>Error: {error}</Text>}
+                    
+                    <CustomButton 
+                        type="link" 
+                        text="Forget Password ?" 
+                        onPress={() => setModalVisible(true)}
+                    /> 
+                    <Text>{'\n'}</Text>
+                </View>
             </View>
         </View>
     );

@@ -1,6 +1,7 @@
 const styleSetting = {
     color: {
         blue: '#5b9ed9',
+        royalblue: '#4169E1',
         gentleblue: '#79c4f2',
         lightlightblue:'#e0fdf8',
         mildblue: '#84b6e3',
@@ -10,6 +11,7 @@ const styleSetting = {
         green:"#00ff00",
         white:"#ffffff",
         grey:"#808080",
+        forestgreen: "#228B22",
         lightgrey:"#d3d3d3",
     },
     size: {
@@ -17,6 +19,7 @@ const styleSetting = {
         em05: 5,
         em07: 7,
         em10: 10,
+        em12: 12,
         em16: 16,
         em20: 20,
         em24: 24,
@@ -26,7 +29,12 @@ const styleSetting = {
         em36: 36,
         em40: 40,
         em47: 47,
+        em50: 50,
         em60: 60,
+        em250: 250,
+        em275: 275,
+        em285: 285,
+        em295: 295,
         em300: 300,
         em350: 350,
         em400: 400,

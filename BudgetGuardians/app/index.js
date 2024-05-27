@@ -24,6 +24,7 @@ export default function Page() {
     <View style={styles.container}>
       <View style={styles.main}>
         <Icon size ={300}/>
+        
         <CustomButton type="login" text="Login" href ="./pages/loginPage"/>
         <CustomButton type="signup" text="Signup" href ="./pages/signupPage"/>
       </View>

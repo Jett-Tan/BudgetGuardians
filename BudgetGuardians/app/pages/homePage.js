@@ -3,7 +3,7 @@ import { StyleSheet, Text, View, Button,Pressable,Modal,Image } from "react-nati
 import styleSetting from "../setting/setting"
 import { useState } from "react";
 import { auth } from "../auth/firebaseConfig";
-import { Redirect } from "expo-router";
+import { Redirect, useRouter } from "expo-router";
 
 export default function Page() {
     const user = auth.currentUser;
@@ -16,7 +16,11 @@ export default function Page() {
     return (
         <>
                 <View style={styles.navigationBar}>
-                    <Pressable>
+                    <Pressable onPress={e => {
+                        auth.signOut()
+                        router = useRouter()
+                        router.replace("../pages/loginPage")
+                    }}>
                         <Image 
                             source={require('../assets/line.png')}
                             style={
