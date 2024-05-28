@@ -49,7 +49,8 @@ export default function Page() {
                         </View>
                     </View>
                     <View style={styles.lastestTransaction}>
-                        <TransactionEntry props={{date:"adsd", amount:123} }/>
+                        <TransactionEntry props={{date:"adsd", amount:123.3,title:"Food"}}/>
+                        <TransactionEntry props={{date:"adsd", amount:123.3,title:"Food"}}/>
                         {
                             //forloop 
                         }
@@ -64,7 +65,7 @@ export default function Page() {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        padding: 24,
+        // padding: 24,
         backgroundColor:styleSetting.color.lightlightblue,
     },
     main: {
@@ -90,10 +91,10 @@ const styles = StyleSheet.create({
     },
     itemRow:{
         flexDirection:"row",
-        justifyContent:"space-evenly",
+        justifyContent:"space-evenly",  
     },
     lastestTransaction:{
         height:450,
-        backgroundColor:"#123123",
+        // backgroundColor:"#123123",
     }
 });
