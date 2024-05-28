@@ -64,14 +64,14 @@ export default function Page() {
     }
 
     return (
-      <View style={styles.container}>
-          <View style = {styles.navigationbar}>
-              <Link href="../">
-                  <Text style = {styles.navigationbarText}>Back</Text>
-              </Link>
-          </View>
-          <View style={styles.main}>
-              <Modal
+        <View style={styles.container}>
+            <View style = {styles.navigationbar}>
+                <Link href="../">
+                    <Text style = {styles.navigationbarText}>Back</Text>
+                </Link>
+            </View>
+            <View style={styles.main}>
+                <Modal
                   animationType="none"
                   transparent={true}
                   visible={modalVisible}
@@ -107,15 +107,15 @@ export default function Page() {
                     <Icon size = {150}/>
                     <CustomInput 
                         type="email" 
-                        onChange={async (e) => {onChangeEmail(e)}} 
-                        value={email}
+                        onChange1={async (e) => {onChangeEmail(e)}} 
+                        value1={email}
                         placeholder="Your Email" 
                     />
                     <CustomInput 
                         type="password"
                         password={true}
-                        onChange={async (e) => {onChangePassword(e)}} 
-                        value={password}
+                        onChange1={async (e) => {onChangePassword(e)}} 
+                        value1={password}
                         placeholder="Your Password" 
                         hiddenEye={true} 
                     />

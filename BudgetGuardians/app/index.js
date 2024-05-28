@@ -23,7 +23,7 @@ export default function Page() {
   return (
     <View style={styles.container}>
       <View style={styles.main}>
-        <Icon size ={300}/>
+        <Icon size ={300} iconHref="favicon"/>
         
         <CustomButton type="login" text="Login" href ="./pages/loginPage"/>
         <CustomButton type="signup" text="Signup" href ="./pages/signupPage"/>

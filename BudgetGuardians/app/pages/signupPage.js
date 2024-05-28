@@ -1,6 +1,6 @@
 import { StyleSheet, Text, View, TextInput, Button, TouchableOpacity, Image, Switch, Pressable, Alert } from "react-native";
 import { Link } from 'expo-router';
-import { createUserWithEmailAndPassword,sendEmailVerification  } from "firebase/auth";
+import { getAuth, createUserWithEmailAndPassword, sendEmailVerification  } from "firebase/auth";
 import React from 'react';
 
 import styleSetting from "../setting/setting";
@@ -31,6 +31,7 @@ export default function Page() {
     function isPasswordConfirmed(password,confirmPassword) {
         return (password && confirmPassword && password === confirmPassword) 
     } 
+    
     function checkValid(){
         if (Errors.handleError(email,"email") !== '') {
             setError(Errors.errorGetter(Errors.handleError(email,"email")))
@@ -42,7 +43,7 @@ export default function Page() {
         }
         if(!isPasswordConfirmed(password, confirmPassword)){
             // password is not matching, you can show error to your user
-            const a = setError("Passwords do not match!")
+            // setError("Passwords do not match!")
             return false;
         }
         return true;
@@ -59,7 +60,20 @@ export default function Page() {
         .then((userCredential) => {
             const user = userCredential.user;
             setSuccess("Successful")
-            console.log(auth)    
+            // console.log(auth)   
+            delay(1000)
+            sendEmailVerification(auth.currentUser)
+            .then(() => {
+                setSuccess("Email verification sent!")
+            })
+            .catch((error) => {
+                const errorCode = error.code;
+                const errorMessage = error.message;
+                console.log(error.code)
+                setError(Errors.errorGetter(error.code))
+                return;
+            });
+            auth.signOut() 
         })
         .catch((error) => {
             const errorCode = error.code;
@@ -69,42 +83,18 @@ export default function Page() {
             return;
         });
         
-        sendEmailVerification(auth.currentUser)
-        .then(() => {
-            delay(1000)
-            setSuccess("Email verification sent!")
-        })
-        .catch((error) => {
-            const errorCode = error.code;
-            const errorMessage = error.message;
-            console.log(error.code)
-            setError(Errors.errorGetter(error.code))
-            return;
-        });
-        auth.signOut()
+        
     }
     
     async function handlePasswordChange(pwd,confirm = false) {
         if (!confirm) {
             onChangePassword(pwd)
-            console.log(pwd)
+            // console.log(pwd)
             await delay(100);
-            if(!isPasswordConfirmed(pwd, confirmPassword)){
-                // password is not matching, you can show error to your user
-                setError("Passwords do not match!")
-            } else {
-                setError('');
-            }
         } else {
             onChangePassword2(pwd)
-            console.log(pwd)
+            // console.log(pwd)
             await delay(100);
-            if(!isPasswordConfirmed(password, pwd)){
-                // password is not matching, you can show error to your user
-                setError("Passwords do not match!")
-            } else {
-                setError('');
-            }
         }
     }
 
@@ -122,78 +112,19 @@ export default function Page() {
             <CustomInput
                 type="email"
                 placeholder="Your Email"
-                onChange={onChangeEmail}
-                values={email}
+                onChange1={e => onChangeEmail(e)}
+                values1={email}
             />
             <CustomInput
                 password = {true}
                 placeholder="Your Password"
-                onChange={e => handlePasswordChange(e)}
-                values={password}
-                hiddenEye = {true}
-                type="password"
-            />
-            <CustomInput
-                password = {true}
-                placeholder="Your Password"
-                onChange={e => handlePasswordChange(e,true)}
-                values={confirmPassword}
-                errorExist = {false}
+                onChange1={e => handlePasswordChange(e)}
+                onChange2={e => handlePasswordChange(e,true)}
+                values1={password}
+                values2={confirmPassword}
                 hiddenEye = {true}
                 type="confirm"
             />
-            {/* <View style= {styles.containerForPasswords}>
-                <TextInput
-                    style={styles.input}
-                    onChangeText={onChangeEmail}
-                    value={email}
-                    placeholder="Your Email"
-                    autoCapitalize="none"
-                />
-            </View> */}
-
-            {/* <View style= {styles.containerForPasswords}>
-                <TextInput
-                    style={[styles.input]}
-                    // onChangeText={onChangePassword}
-                    onChangeText={ async (e) => {
-                        handlePasswordChange(e)
-                    }}
-                    value={password}
-                    placeholder="Your Password"
-                    secureTextEntry={showPassword}
-                />
-                <Pressable 
-                    onPress={() => setShowPassword(prev => !prev)}
-                    style={styles.icon}>
-                    {showPassword ? (
-                        <Entypo name="eye" size={24} color="black" />
-                    ) : (
-                        <Entypo name="eye-with-line" size={24} color="black" />
-                    )}
-                </Pressable>
-            </View>
-            
-            <View style= {styles.containerForPasswords}>
-                <TextInput
-                    value={confirmPassword}
-                    placeholder="Re-enter Password"
-                    secureTextEntry={showPassword2}
-                    style={styles.input}
-                    onChangeText={ async (e) => {
-                        handlePasswordChange(e,true)
-                    }}
-                />
-                <Pressable 
-                    onPress={() => setShowPassword2(prev => !prev)}
-                    style={styles.icon}>
-                    {showPassword2 ? (
-                        <Entypo name="eye" size={24} color="black" />
-                    ) : (
-                        <Entypo name="eye-with-line" size={24} color="black" />
-                    )}
-                </Pressable>
-            </View> */}
             <CustomButton
                 type="signup"
                 onPress={handleSignup}
@@ -201,12 +132,6 @@ export default function Page() {
             />
             {error && <Text style = {styles.error}>Error: {error}</Text>}
             {success && <Text style = {styles.success}>{success}</Text>}
-
-            {/* <Pressable style = {[buttonStyle.loginButtonContainer]} onPress={e => handleSignup(e)}>
-                <View style={[{borderRadius : 100}]}>
-                    <Text style = {[buttonStyle.loginButton,styles.button]}>Signup</Text>
-                </View>
-            </Pressable> */}
             <Text>{'\n'}</Text>
             </View>
             </View>

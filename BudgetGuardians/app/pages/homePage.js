@@ -4,6 +4,8 @@ import styleSetting from "../setting/setting"
 import { useState } from "react";
 import { auth } from "../auth/firebaseConfig";
 import { Redirect, useRouter } from "expo-router";
+import CustomIconButton from "../components/customIconButton";
+import TransactionEntry from "../components/transactionEntry";
 
 export default function Page() {
     const user = auth.currentUser;
@@ -15,92 +17,45 @@ export default function Page() {
     const toggleModalVisible = () => {setModalVisible(!modalVisible)}
     return (
         <>
-                <View style={styles.navigationBar}>
-                    <Pressable onPress={e => {
-                        auth.signOut()
-                        router = useRouter()
-                        router.replace("../pages/loginPage")
-                    }}>
-                        <Image 
-                            source={require('../assets/line.png')}
-                            style={
-                                {   
-                                    resizeMode:"stretch",
-                                    width:50,
-                                    height:50
-                                }
+            <View style={styles.navigationBar}>
+                <Pressable onPress={e => {
+                    auth.signOut()
+                    router = useRouter()
+                    router.replace("../pages/loginPage")
+                }}>
+                    <Image 
+                        source={require('../assets/line.png')}
+                        style={
+                            {   
+                                resizeMode:"stretch",
+                                width:50,
+                                height:50
                             }
-                        />
-                    </Pressable>
-                    <Modal 
-                        visible = {modalVisible}
-                    ></Modal>
-                </View>
-        <View style={styles.container}>
-            <View style={styles.main}>
-                <View style={styles.itemContainer}>
-                    <View style= { styles.itemRow}>
-                        <View style={styles.item}>
-                            <Pressable>
-                                <View>
-                                    <Image>
-
-                                    </Image>
-                                    <Text></Text>
-                                </View>
-                            </Pressable>
-                        </View>
-                        <View style={styles.item}>
-                            <Pressable>
-                                <View>
-                                    <Image>
-
-                                    </Image>
-                                    <Text></Text>
-                                </View>
-                            </Pressable>
-                        </View>
-                        <View style={styles.item}>
-                            <Pressable>
-                                <View>
-                                    <Image>
-
-                                    </Image>
-                                    <Text></Text>
-                                </View>
-                            </Pressable>
+                        }
+                    />
+                </Pressable>
+                <Modal 
+                    visible = {modalVisible}
+                ></Modal>
+            </View>
+            <View style={styles.container}>
+                <View style={styles.main}>
+                    <View style={styles.itemContainer}>
+                        <View style= { styles.itemRow}>
+                            <CustomIconButton text="Add Transaction" iconHref="updateExpense_colored"/>
+                            <CustomIconButton text="Set Budget" iconHref="updateExpense_colored"/> 
+                            {/*set Budget include set Goal*/}
+                            <CustomIconButton text="View Report" iconHref="updateExpense_colored"/>
                         </View>
                     </View>
-                    <View style= { styles.itemRow}>
-                        <View style={styles.item}>
-                            <Pressable>
-                                <View>
-                                    <Image>
-
-                                    </Image>
-                                    <Text></Text>
-                                </View>
-                            </Pressable>
-                        </View>
-                        <View style={styles.item}>
-                            <Pressable>
-                                <View>
-                                    <Image>
-
-                                    </Image>
-                                    <Text></Text>
-                                </View>
-                            </Pressable>
-                        </View>
+                    <View style={styles.lastestTransaction}>
+                        <TransactionEntry props={{date:"adsd", amount:123} }/>
+                        {
+                            //forloop 
+                        }
                     </View>
-                </View>
-                <View style={styles.lastestTransaction}>
-                    {
-                        //forloop 
-                    }
                 </View>
             </View>
-        </View>
         </>
     );
   
@@ -116,7 +71,7 @@ const styles = StyleSheet.create({
         flex: 1,
         maxWidth: styleSetting.size.em960,
         marginHorizontal: "auto",
-        backgroundColor:styleSetting.color.lightlightblue,
+        // backgroundColor:styleSetting.color.lightlightblue,
     },
     navigationBar: {
         width:"auto",
@@ -128,9 +83,8 @@ const styles = StyleSheet.create({
         flexDirection:"row-reverse",
     },
     itemContainer:{
-        backgroundColor:"#123456",
         width:300,
-        height:200,
+        height:150,
         marginTop:50,
         flexDirection:"column",
     },
@@ -138,15 +92,8 @@ const styles = StyleSheet.create({
         flexDirection:"row",
         justifyContent:"space-evenly",
     },
-    item:{
-        width:40,
-        height:40,
-        padding:30,
-        margin:20,
-        backgroundColor:"#ffff00",
-    },
     lastestTransaction:{
-        height:400,
+        height:450,
         backgroundColor:"#123123",
     }
 });
