@@ -1,28 +1,29 @@
 import { StyleSheet, Text, View, Button,Pressable,Modal,Image } from "react-native";
+import { Redirect, useRouter } from "expo-router";
+import { getAuth } from "firebase/auth";
 
 import styleSetting from "../setting/setting"
 import { useState } from "react";
 import { auth } from "../auth/firebaseConfig";
-import { Redirect, useRouter } from "expo-router";
 import CustomIconButton from "../components/customIconButton";
 import TransactionEntry from "../components/transactionEntry";
 
 export default function Page() {
+    const router = useRouter();
+    
     const user = auth.currentUser;
-    if (!user) {
-        console.log("no user")
-        return <Redirect href={"../"}></Redirect>  
+   
+    const logout = () => { 
+        auth.signOut(); 
+        router.replace('./initPage');
     }
+
     const[modalVisible,setModalVisible] = useState(false)
     const toggleModalVisible = () => {setModalVisible(!modalVisible)}
     return (
         <>
             <View style={styles.navigationBar}>
-                <Pressable onPress={e => {
-                    auth.signOut()
-                    router = useRouter()
-                    router.replace("../pages/loginPage")
-                }}>
+                <Pressable onPress={e => {logout()}}>
                     <Image 
                         source={require('../assets/line.png')}
                         style={

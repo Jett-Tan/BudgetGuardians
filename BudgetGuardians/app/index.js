@@ -1,38 +1,64 @@
-import { StyleSheet,  View,  } from "react-native";
-import { Link, router, Redirect } from 'expo-router';
-
-import Icon from './components/icon'
-import styleSetting from "./setting/setting";
+import {  Redirect,  useRouter } from 'expo-router';
+import { useEffect, useState } from 'react';
 import { auth } from "./auth/firebaseConfig";
-import CustomButton from "./components/customButton";
+import { View, StyleSheet} from 'react-native';
+
+import Loader from './components/loader';
+import styleSetting from './setting/setting';
+
+const Blink = () => {
+  const [isShowingText, setIsShowingText] = useState(true);
+  const [reloaded, setreloaded] = useState(false);
+  const [hasToken, setHasToken] = useState(false);
+
+  auth.onAuthStateChanged((user) => {
+    if (user) {
+      console.log("user is signed in")
+      setHasToken(true);
+    } else {
+      console.log("user is not signed in")
+      setHasToken(false);
+    }
+  });
+
+  useEffect(() => {
+    const toggle = setInterval(() => {
+      setIsShowingText(!isShowingText);
+      setreloaded(true);
+    }, 500);
+    
+    return () => clearInterval(toggle);
+  });
+  if (!reloaded) {
+    return <Loader isLoading={true} withText={true} />;
+    // return <Text>asd</Text>
+  }
+  if (hasToken ) {
+    return <Redirect href="/pages/homePage" />;
+  }else {
+    return <Redirect href="/pages/initPage" />;
+  }
+};
+
 
 export default function Page() {
   // get cookies or token to see if login in else set to init page
-  const hasToken = false;
+  const [temp, setTemp] = useState(true);
 
-  const user = auth.currentUser;
-
-  if (user) {
-    console.log(user)
-    return <Redirect href="/pages/homePage" />;
+  const delay = async (ms) => {
+    return new Promise((resolve) => 
+      setTimeout(resolve, ms));
   }
-  async function href(location) {
-    return () => <Redirect href={location} />;
-  }
+  
 
   return (
-    <View style={styles.container}>
-      <View style={styles.main}>
-        <Icon size ={300} iconHref="favicon"/>
-        
-        <CustomButton type="login" text="Login" href ="./pages/loginPage"/>
-        <CustomButton type="signup" text="Signup" href ="./pages/signupPage"/>
+      <View style ={styles.container}>
+        <View style={styles.main}>
+          <Blink/>
+        </View>
       </View>
-    </View>
-  );
-  
+  )  
 }
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
