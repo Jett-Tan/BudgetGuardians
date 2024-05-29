@@ -51,6 +51,7 @@ export default function Page() {
     function handlePasswordReset(e) {
         e.preventDefault;  
         setErrorResetEmail("")
+        console.log(resetEmail);
         sendPasswordResetEmail(auth,resetEmail)
         .then(() => {
             Alert.alert("Email sent! Check email for password reset instructions.")
@@ -88,8 +89,9 @@ export default function Page() {
                                     <Icon size = {150}/>
                                     <CustomInput
                                             type="email"
-                                            onChange={async (e) => {onChangeResetEmail(e)}}
-                                            values={resetEmail}
+                                            onChange1={async (e) => {
+                                                onChangeResetEmail(e)}}
+                                            values1={resetEmail}
                                             placeholder="Your Email"
                                         />  
                                     <CustomButton
