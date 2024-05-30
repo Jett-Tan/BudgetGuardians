@@ -6,7 +6,7 @@ export default Loader = ({ isLoading = false, withText = false }) => {
     <View style={styles.loader}>
       <ActivityIndicator size='large' color='#aaaaaa' />
       {withText ? (
-          <Text style={{ color: 'green' }}>Loading users...</Text>
+          <Text style={{ color: 'grey' }}>Loading...</Text>
         ) : null}
     </View>
     </>

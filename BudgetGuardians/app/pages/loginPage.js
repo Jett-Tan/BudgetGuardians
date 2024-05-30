@@ -10,10 +10,10 @@ import {
 } from "react-native";
 import { Link, Redirect, useRouter } from 'expo-router';
 import React from 'react';
-import {signInWithEmailAndPassword, sendPasswordResetEmail} from "firebase/auth";
+import { signInWithEmailAndPassword, sendPasswordResetEmail, sendEmailVerification} from "firebase/auth";
 
 import styleSetting from "../setting/setting";
-import Error from "../setting/errors";
+import Errors from "../setting/errors";
 import Icon from "../components/icon";
 import CustomInput from "../components/customInput";
 import CustomButton from "../components/customButton";
@@ -28,16 +28,18 @@ export default function Page() {
 
     const [resetEmail, onChangeResetEmail] = React.useState('');
     const [errorResetEmail, setErrorResetEmail] = React.useState('');
-    
-    const router = useRouter();
 
-    function handleLogin(e) {
-        e.preventDefault;
-        setError("")
+
+    const router = useRouter();
+    async function login() {
+        
+    }
+
+    async function handleLogin(e) {
+        e.preventDefault;setError("")
         signInWithEmailAndPassword(auth, email, password)
         .then((userCredential) => {
             const user = userCredential.user;
-            console.log("login")
             router.replace('../pages/homePage');
         })
         .catch((error) => {
@@ -127,7 +129,6 @@ export default function Page() {
                         onPress={e => handleLogin(e)}
                     />
                     {error && <Text style = {styles.error}>Error: {error}</Text>}
-                    
                     <CustomButton 
                         type="link" 
                         text="Forget Password ?" 

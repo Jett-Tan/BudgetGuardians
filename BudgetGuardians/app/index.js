@@ -14,7 +14,7 @@ const Blink = () => {
   auth.onAuthStateChanged((user) => {
     if (user) {
       console.log("user is signed in")
-      setHasToken(true);
+        setHasToken(true);
     } else {
       console.log("user is not signed in")
       setHasToken(false);
@@ -33,9 +33,9 @@ const Blink = () => {
     return <Loader isLoading={true} withText={true} />;
     // return <Text>asd</Text>
   }
-  if (hasToken ) {
+  if (hasToken) {
     return <Redirect href="/pages/homePage" />;
-  }else {
+  } else {
     return <Redirect href="/pages/initPage" />;
   }
 };

@@ -4,20 +4,16 @@ import {Modal, View, Text, StyleSheet } from 'react-native';
 import styleSetting from '../setting/setting';
 
 export default function SideBar() {
-    const [modalVisible, setModalVisible] = React.useState(false);
     return (
         <>
-            <Modal 
-            visible = {modalVisible}>
-                <View style={styles.sideBar}>
-                    <View style={styles.sideBarContent}>
-                        <Text style={styles.sideBarText}>Budget Guardians</Text>
-                        <Text style={styles.sideBarText}>Setting</Text>
-                        <Text style={styles.sideBarText}>About</Text>
-                        <Text style={styles.sideBarText}>Home</Text>
-                    </View>
+            <View style={styles.sideBar}>
+                <View style={styles.sideBarContent}>
+                    <Text style={styles.sideBarText}>Budget Guardians</Text>
+                    <Text style={styles.sideBarText}>Setting</Text>
+                    <Text style={styles.sideBarText}>About</Text>
+                    <Text style={styles.sideBarText}>Home</Text>
                 </View>
-            </Modal>
+            </View>
         </>
     );
 }
@@ -27,6 +23,7 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: "center",
         alignItems: "center",
+        width:200,
         backgroundColor: styleSetting.color.lightblue,
     },
     sideBarContent: {

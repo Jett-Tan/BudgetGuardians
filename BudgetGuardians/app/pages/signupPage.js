@@ -18,8 +18,6 @@ export default function Page() {
     const [error, setError] = React.useState('');
     const [success, setSuccess] = React.useState('');
     const [confirmPassword, onChangePassword2] = React.useState('');
-    const [showPassword, setShowPassword] = React.useState(true);
-    const [showPassword2, setShowPassword2] = React.useState(true);
 
     // Function for delaying to check if password matching
     // Usage is just: "await delay(5000);"
@@ -34,16 +32,15 @@ export default function Page() {
     
     function checkValid(){
         if (Errors.handleError(email,"email") !== '') {
-            setError(Errors.errorGetter(Errors.handleError(email,"email")))
             return false;
         }
         if (Errors.handleError(password,"password") !== '') {
-            setError(Errors.errorGetter(Errors.handleError(password,"password")))
+            return false;
+        }
+        if (Errors.handleError(confirmPassword,"confirm",{password:password,confirmPassword:confirmPassword}) !== '') {
             return false;
         }
         if(!isPasswordConfirmed(password, confirmPassword)){
-            // password is not matching, you can show error to your user
-            // setError("Passwords do not match!")
             return false;
         }
         return true;
@@ -177,6 +174,7 @@ const styles = StyleSheet.create({
     },
     error:{
         color:styleSetting.color.red,
+        textAlign: "center",
     },
     success:{
         color:styleSetting.color.forestgreen,

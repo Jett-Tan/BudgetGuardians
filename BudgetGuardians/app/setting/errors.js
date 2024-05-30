@@ -7,6 +7,7 @@ const ErrorMap = new Map([
     ["auth/invalid-credential","Wrong password or Email"],
     ["auth/missing-email","Missing Email"],
     ["auth/weak-password","Weak Password. It must be at least six characters"],
+    ["auth/email-unverified","Email not verified"],
     //
     ["email/improper-email","Improper Email"],
     //
