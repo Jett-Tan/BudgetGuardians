@@ -19,7 +19,8 @@
       "adaptiveIcon": {
         "foregroundImage": "./app/assets/icon.png",
         "backgroundColor": "#e0fdf8"
-      }
+      },
+      "package": "com.jettpy.BudgetGuardians"
     },
     "web": {
       "favicon": "./app/assets/favicon.png"
@@ -27,6 +28,14 @@
     "plugins": [
       "expo-router",
       "expo-font"
-    ]
+    ],
+    "extra": {
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "1319b990-11bd-409f-b838-d1d4e8fe40a7"
+      }
+    }
   }
 }
