@@ -5,25 +5,25 @@
   },
   "build": {
     "preview": {
+      "node": "22.1.0",
+      "android": {
+        "buildType": "apk",
+        "image": "latest",
+        "env": {
+          "PLATFORM": "android"
+        }
+      }
+    },
+    "production": {}
+  },
+  "submit": {
+    "preview": {
+      "node": "12.13.0",
       "android": {
         "buildType": "apk",
         "image": "latest"
       }
     },
-    "preview2": {
-      "android": {
-        "gradleCommand": ":app:assembleRelease"
-      }
-    },
-    "preview3": {
-      "developmentClient": true
-    },
-    "preview4": {
-      "distribution": "internal"
-    },
-    "production": {}
-  },
-  "submit": {
     "production": {}
   }
 }
