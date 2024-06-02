@@ -14,35 +14,71 @@ export default function Page() {
     const router = useRouter();
     
     const user = auth.currentUser;
-    console.log('====================================');
-    console.log(user);
-    console.log('====================================');
+    if(user === null){
+        return <Redirect href="./initPage"/>
+    }
     const logout = () => { 
         auth.signOut(); 
         router.replace('./initPage');
     }
 
     const[modalVisible,setModalVisible] = useState(false)
-    // const toggleModalVisible = () => {setModalVisible(!modalVisible)}
+    const toggleModalVisible = () => {
+        console.log(modalVisible)
+        setModalVisible(!modalVisible)
+    }
+
+    const block = false;
     return (
         <>
-            <View style={{
-                width:"100%",
-                height:"100%",
-                justifyContent:"center",
-                alignContent:"center",
-                alignItems:"center",
-                backgroundColor:styleSetting.color.blue}}>
-                <Text style={{}}>Coming soon!!</Text>
-            </View>
-            {/* <Overlay visible={!auth.currentUser.emailVerified}/> */}
-            {/* <View style={styles.container}>  */}
+            {block && 
+                <View style={{
+                    width:"100%",
+                    height:"100%",
+                    justifyContent:"center",
+                    alignContent:"center",
+                    alignItems:"center",
+                    backgroundColor:styleSetting.color.blue}}>
+                    <Text style={{}}>Coming soon!!</Text>
+                </View>
+            }
+            <Overlay visible={!auth.currentUser.emailVerified}/>
+            <View style={styles.container}> 
             {/* TODO 
                 need to style this page 
             */}
-                {/* <View style={{backgroundColor:"#123123", height:90}}></View>
+                <View style={[styles.header,{backgroundColor:"white", maxHeight:90, flex:1, flexDirection:"row-reverse"}]}>
+                    <View style={[styles.navigationBar]}>
+                        <CustomIconButton
+                            text=""
+                            iconHref="line"
+                            borderless = {true}
+                            onPress={() => {toggleModalVisible()}}
+                        />
+                        <Modal
+                            animationType="none"
+                            transparent={true}
+                            visible={modalVisible}
+                            onRequestClose={() => {
+                                setModalVisible(!modalVisible);
+                            }}
+                        >
+                            <View style={[styles.header,{backgroundColor:"white", maxHeight:90, flex:1, flexDirection:"row-reverse"}]}>
+                                <View style={[styles.navigationBar]}>
+                                    <CustomIconButton
+                                        text=""
+                                        iconHref="line"
+                                        borderless = {true}
+                                        onPress={() => {toggleModalVisible()}}
+                                    />
+                                </View>
+                            <SideBar/>
+                            </View>
+                        </Modal>
+                    </View>
+                </View>
                 <View style={[styles.main,{backgroundColor:"#012012", height:100}]}></View>
-            </View>        */}
+            </View>       
                 {/* <View style={styles.container}>
                     <View style={styles.main}>
                         <View style={styles.navigationBar}>
@@ -88,19 +124,12 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         // padding: 24,
-        backgroundColor:styleSetting.color.lightlightblue,
+        backgroundColor:styleSetting.color.white,
     },
     main: {
         backgroundColor:styleSetting.color.lightlightblue,
     },
     navigationBar: {
-        width:"auto",
-        flex:1,
-        backgroundColor:styleSetting.color.lightlightblue,
-        height:50,
-        maxHeight:90,
-        padding:20,
-        flexDirection:"row-reverse",
     },
     itemContainer:{
         width:300,

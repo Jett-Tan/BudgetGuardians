@@ -7,12 +7,15 @@ export default function CustomIconButton({
     onPress =( ) => {},
     text = "",
     iconHref = "",
+    borderless = false,
 }) {
+
+    const borderlessStyle = borderless ? styles.borderless : {}
     return (
         <>
             <TouchableOpacity onPress={onPress}>
                 <View style={styles.item}>
-                    <View style={styles.icon}>
+                    <View style={[styles.icon,borderlessStyle]}>
                         <Icon size={60} iconHref={iconHref}/>
                     </View>
                     <Text style={styles.text}>{text}</Text>
@@ -35,6 +38,9 @@ const styles = StyleSheet.create({
         borderRadius:styleSetting.size.em20,
         borderColor:styleSetting.color.blue,
         borderWidth:styleSetting.size.em01,
+    },
+    borderless: {
+        borderWidth:0,
     },
     text: {
         height:styleSetting.size.em15,

@@ -11,6 +11,9 @@ export default function Page() {
     
     const user = auth.currentUser;
     console.log(user);
+    if(user !== null){
+        return <Redirect href="./homePage"/>
+    }
 
     return (      
         <View style={styles.container}>

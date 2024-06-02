@@ -1,5 +1,5 @@
 import React from 'react';
-import {Modal, View, Text, StyleSheet } from 'react-native';
+import {View, Text, StyleSheet } from 'react-native';
 
 import styleSetting from '../setting/setting';
 
@@ -20,19 +20,14 @@ export default function SideBar() {
 
 const styles = StyleSheet.create({
     sideBar: {
-        flex: 1,
-        justifyContent: "center",
-        alignItems: "center",
+        height:"100%",
         width:200,
         backgroundColor: styleSetting.color.lightblue,
     },
     sideBarContent: {
-        flex: 1,
-        justifyContent: "center",
-        alignItems: "center",
     },
     sideBarText: {
         fontSize: styleSetting.size.em24,
-        color: styleSetting.color.white,
+        color: styleSetting.color.blue,
     }
 });
