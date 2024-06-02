@@ -14,3 +14,12 @@
 # Routing pages tutorials
 
 https://docs.expo.dev/router/installation/
+
+# To Build
+
+- npx expo export --platform web
+
+# To Host on netlify
+
+- netlify deploy --dir dist
+- pick dist as dir

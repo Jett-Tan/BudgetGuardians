@@ -1,0 +1,10 @@
+
+# Local Netlify folder
+.netlify
+keys
+dist
+node_modules
+
+clean_credentials.json
+credentials.json
+eas.json
