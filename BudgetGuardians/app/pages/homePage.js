@@ -26,14 +26,23 @@ export default function Page() {
     // const toggleModalVisible = () => {setModalVisible(!modalVisible)}
     return (
         <>
-            <Overlay visible={!auth.currentUser.emailVerified}/>
-            <View style={styles.container}> 
+            <View style={{
+                width:"100%",
+                height:"100%",
+                justifyContent:"center",
+                alignContent:"center",
+                alignItems:"center",
+                backgroundColor:styleSetting.color.blue}}>
+                <Text style={{}}>Coming soon!!</Text>
+            </View>
+            {/* <Overlay visible={!auth.currentUser.emailVerified}/> */}
+            {/* <View style={styles.container}>  */}
             {/* TODO 
                 need to style this page 
             */}
-                <View style={{backgroundColor:"#123123", height:90}}></View>
+                {/* <View style={{backgroundColor:"#123123", height:90}}></View>
                 <View style={[styles.main,{backgroundColor:"#012012", height:100}]}></View>
-            </View>       
+            </View>        */}
                 {/* <View style={styles.container}>
                     <View style={styles.main}>
                         <View style={styles.navigationBar}>
