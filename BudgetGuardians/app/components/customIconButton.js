@@ -34,7 +34,7 @@ const styles = StyleSheet.create({
         margin:styleSetting.size.em10,
     },
     icon: {
-        backgroundColor:styleSetting.color.white,
+        // backgroundColor:styleSetting.color.white,
         borderRadius:styleSetting.size.em20,
         borderColor:styleSetting.color.blue,
         borderWidth:styleSetting.size.em01,

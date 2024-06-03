@@ -1,18 +1,42 @@
-import React from 'react';
 import {View, Text, StyleSheet } from 'react-native';
-
+import {useState} from 'react';
 import styleSetting from '../setting/setting';
 
 export default function SideBar() {
+    const [modalVisible, setModalVisible] = useState(false)
+
     return (
         <>
-            <View style={styles.sideBar}>
-                <View style={styles.sideBarContent}>
-                    <Text style={styles.sideBarText}>Budget Guardians</Text>
-                    <Text style={styles.sideBarText}>Setting</Text>
-                    <Text style={styles.sideBarText}>About</Text>
-                    <Text style={styles.sideBarText}>Home</Text>
-                </View>
+            <View style={[styles.navigationBar]}>
+                <CustomIconButton
+                    text=""
+                    iconHref="line"
+                    borderless = {true}
+                    onPress={() => {toggleModalVisible()}}
+                />
+                <Modal
+                    animationType="none"
+                    transparent={true}
+                    visible={modalVisible}
+                    onRequestClose={() => {
+                        setModalVisible(!modalVisible);
+                    }}
+                >
+                    <View style={[styles.header,{backgroundColor:"white", maxHeight:90, flex:1, flexDirection:"row-reverse"}]}>
+                        <View style={[styles.navigationBar]}>
+                            <View style={{backgroundColor:"red", width:300}}>
+                                <View style={{flex:1,flexDirection:"row-reverse"}}>
+                                    <CustomIconButton
+                                        text=""
+                                        iconHref="line"
+                                        borderless = {true}
+                                        onPress={() => {toggleModalVisible()}}
+                                    />
+                                </View>
+                            </View>
+                        </View>
+                    </View>
+                </Modal>
             </View>
         </>
     );

@@ -46,7 +46,7 @@ export default function Page() {
             <View style={styles.container}> 
             {/* TODO 
                 need to style this page 
-            */}
+            */}     
                 <View style={[styles.header,{backgroundColor:"white", maxHeight:90, flex:1, flexDirection:"row-reverse"}]}>
                     <View style={[styles.navigationBar]}>
                         <CustomIconButton
@@ -65,14 +65,17 @@ export default function Page() {
                         >
                             <View style={[styles.header,{backgroundColor:"white", maxHeight:90, flex:1, flexDirection:"row-reverse"}]}>
                                 <View style={[styles.navigationBar]}>
-                                    <CustomIconButton
-                                        text=""
-                                        iconHref="line"
-                                        borderless = {true}
-                                        onPress={() => {toggleModalVisible()}}
-                                    />
+                                    <View style={{backgroundColor:"red", width:300}}>
+                                        <View style={{flex:1,flexDirection:"row-reverse"}}>
+                                            <CustomIconButton
+                                                text=""
+                                                iconHref="line"
+                                                borderless = {true}
+                                                onPress={() => {toggleModalVisible()}}
+                                            />
+                                        </View>
+                                    </View>
                                 </View>
-                            <SideBar/>
                             </View>
                         </Modal>
                     </View>
