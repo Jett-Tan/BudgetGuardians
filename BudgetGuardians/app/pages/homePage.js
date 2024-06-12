@@ -9,6 +9,8 @@ import CustomIconButton from "../components/customIconButton";
 import TransactionEntry from "../components/transactionEntry";
 import SideBar from "../components/sideBar";
 import Overlay from "../components/overlay";
+import Tasks from "../components/expense"
+import { db, collection, addDoc, getDocs} from "firebase/firestore";
 
 export default function Page() {
     const router = useRouter();
@@ -45,6 +47,7 @@ export default function Page() {
             <Overlay visible={!auth.currentUser.emailVerified}/>
             <View style={styles.container}> 
             {/* TODO 
+                
                 need to style this page 
             */}     
                 <View style={[styles.header,{backgroundColor:"white", maxHeight:90, flex:1, flexDirection:"row-reverse"}]}>
@@ -81,6 +84,9 @@ export default function Page() {
                     </View>
                 </View>
                 <View style={[styles.main,{backgroundColor:"#012012", height:100}]}></View>
+                <View style={styles.forexpense}>
+                    <Tasks/>
+                </View>
             </View>       
                 {/* <View style={styles.container}>
                     <View style={styles.main}>
@@ -128,6 +134,12 @@ const styles = StyleSheet.create({
         flex: 1,
         // padding: 24,
         backgroundColor:styleSetting.color.white,
+    },
+    forexpense:{
+        flex: 1,
+        backgroundColor: "white",
+        alignItems: 'center',
+        justifyContent: 'space-between',
     },
     main: {
         backgroundColor:styleSetting.color.lightlightblue,
