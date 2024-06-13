@@ -59,6 +59,9 @@ export default function CustomInput({
             setValue1(e)
             await delay(1);
             setError1(errorHandle(e,type))
+        } else {
+            onChange1(e)
+            setValue1(e)
         }
     }
     

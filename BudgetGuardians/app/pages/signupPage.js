@@ -1,5 +1,5 @@
 import { StyleSheet, Text, View, TextInput, Button, TouchableOpacity, Image, Switch, Pressable, Alert } from "react-native";
-import { Link } from 'expo-router';
+import { Link, router } from 'expo-router';
 import { getAuth, createUserWithEmailAndPassword, sendEmailVerification  } from "firebase/auth";
 import React from 'react';
 
@@ -70,7 +70,8 @@ export default function Page() {
                 setError(Errors.errorGetter(error.code))
                 return;
             });
-            auth.signOut() 
+            router.push('./createProfilePage')
+            // auth.signOut() 
         })
         .catch((error) => {
             const errorCode = error.code;
