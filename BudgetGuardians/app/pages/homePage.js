@@ -11,6 +11,7 @@ import SideBar from "../components/sideBar";
 import Overlay from "../components/overlay";
 import Tasks from "../components/expense"
 import { db, collection, addDoc, getDocs} from "firebase/firestore";
+import DropdownComponent from "../components/expense";
 
 export default function Page() {
     const router = useRouter();
@@ -50,7 +51,7 @@ export default function Page() {
                 
                 need to style this page 
             */}     
-                <View style={[styles.header,{backgroundColor:"white", maxHeight:90, flex:1, flexDirection:"row-reverse"}]}>
+                <View style={[styles.header,{backgroundColor:"#84B6E3", maxHeight:90, flex:1, flexDirection:"row-reverse"}]}>
                     <View style={[styles.navigationBar]}>
                         <CustomIconButton
                             text=""
@@ -83,9 +84,9 @@ export default function Page() {
                         </Modal>
                     </View>
                 </View>
-                <View style={[styles.main,{backgroundColor:"#84B6E3", height:100}]}></View>
+                
                 <View style={styles.forexpense}>
-                    <Tasks/>
+                    <DropdownComponent/>
                 </View>
             </View>       
                 {/* <View style={styles.container}>

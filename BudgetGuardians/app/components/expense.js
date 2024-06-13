@@ -82,61 +82,56 @@ export default DropdownComponent;
   
 
 const styles = StyleSheet.create({
-    container2: {
-      flex: 1,
-      justifyContent: 'center',
-      alignItems: 'center',
-    },
-    row: {
-      flexDirection: 'row',
-      alignItems: 'center',
-      marginBottom: 20,
-    },
-    button: {
-      padding: 10,
-      backgroundColor: '#89CFF0',
-      marginLeft: 10,
-      flex: 2,
-      alignItems: 'center',
-      width: 30,
-    },
-    container: {
-      backgroundColor: 'white',
-      padding: 10,
-      width: '50%',
-    },
-    dropdown: {
-      height: 50,
-      borderColor: 'gray',
-      borderWidth: 0.5,
-      borderRadius: 8,
-      paddingHorizontal: 8,
-      flex: 4,
-    },
-    icon: {
-      marginRight: 5,
-    },
-    label: {
-      fontSize: 14,
-      marginRight:50,
-    },
-    placeholderStyle: {
-      fontSize: 16,
-      whitespace: 'nowrap',
-    },
-    selectedTextStyle: {
-      fontSize: 16,
-      whitespace: 'nowrap',
-    },
-    iconStyle: {
-      width: 20,
-      height: 20,
-    },
-    inputSearchStyle: {
-      height: 40,
-      fontSize: 16,
-    },
-  });
+  container: {
+    backgroundColor: 'white',
+    padding: 10,
+    width: '50%',
+  },
+  row: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 20,
+  },
+  button: {
+    padding: 10,
+    backgroundColor: '#89CFF0',
+    marginLeft: 10,
+    flex: 2,
+    alignItems: 'center',
+    width: 30,
+  },
+  dropdown: {
+    height: 50,
+    borderColor: 'gray',
+    borderWidth: 0.5,
+    borderRadius: 8,
+    paddingHorizontal: 8,
+    flex: 4,
+  },
+  icon: {
+    marginRight: 5,
+  },
+  label: {
+    fontSize: 14,
+    marginRight:50,
+  },
+  placeholderStyle: {
+    fontSize: 16,
+    whitespace: 'nowrap',
+  },
+  selectedTextStyle: {
+    fontSize: 16,
+    whitespace: 'nowrap',
+  },
+  iconStyle: {
+    width: 20,
+    height: 20,
+  },
+  inputSearchStyle: {
+    height: 40,
+    fontSize: 16,
+  },
+});
 
 
 
