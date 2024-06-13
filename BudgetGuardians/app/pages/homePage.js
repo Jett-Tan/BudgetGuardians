@@ -3,7 +3,7 @@ import { Redirect, useRouter } from "expo-router";
 import { getAuth } from "firebase/auth";
 
 import styleSetting from "../setting/setting"
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { auth } from "../auth/firebaseConfig";
 import CustomIconButton from "../components/customIconButton";
 import TransactionEntry from "../components/transactionEntry";
@@ -15,8 +15,13 @@ import DropdownComponent from "../components/expense";
 
 export default function Page() {
     const router = useRouter();
-    
+    const [currentUser, setCurrentUser] = useState();
     const user = auth.currentUser;
+    useEffect(() => {
+        if (user) {
+          setCurrentUser(user);
+        }
+      }, [user]);
     if(user === null){
         return <Redirect href="./initPage"/>
     }
@@ -52,7 +57,11 @@ export default function Page() {
                 need to style this page 
             */}     
                 <View style={[styles.header,{backgroundColor:"#84B6E3", maxHeight:90, flex:1, flexDirection:"row-reverse"}]}>
-                    <View style={[styles.navigationBar]}>
+                <View style={styles.container}>
+                    <View style={styles.header}>
+                        <View style={styles.welcomeContainer}>
+                            <Text style={styles.welcomeText}>Welcome {currentUser ? currentUser.email : 'Guest'}</Text>
+                        </View>
                         <CustomIconButton
                             text=""
                             iconHref="line"
@@ -67,28 +76,28 @@ export default function Page() {
                                 setModalVisible(!modalVisible);
                             }}
                         >
-                            <View style={[styles.header,{backgroundColor:"white", maxHeight:90, flex:1, flexDirection:"row-reverse"}]}>
-                                <View style={[styles.navigationBar]}>
-                                    <View style={{backgroundColor:"red", width:300}}>
-                                        <View style={{flex:1,flexDirection:"row-reverse"}}>
-                                            <CustomIconButton
-                                                text=""
-                                                iconHref="line"
-                                                borderless = {true}
-                                                onPress={() => {toggleModalVisible()}}
-                                            />
-                                        </View>
+                            <View style={styles.modalHeader}>
+                                <View style={styles.modalNavigationBar}>
+                                    <View style={styles.modalContent}>
+                                        <CustomIconButton
+                                            text=""
+                                            iconHref="line"
+                                            borderless={true}
+                                            onPress={() => { toggleModalVisible() }}
+                                        />
                                     </View>
                                 </View>
                             </View>
                         </Modal>
-                    </View>
+                    </View>    
+                </View>    
                 </View>
+            </View>
                 
-                <View style={styles.forexpense}>
+                <View style={styles.content}>
                     <DropdownComponent/>
                 </View>
-            </View>       
+                  
                 {/* <View style={styles.container}>
                     <View style={styles.main}>
                         <View style={styles.navigationBar}>
@@ -142,6 +151,12 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'space-between',
     },
+    content: {
+        flex: 7,
+        alignItems: 'center',
+        
+        // Adjust this value to control the spacing between the navigation bar and the content
+    },
     main: {
         backgroundColor:styleSetting.color.lightlightblue,
     },
@@ -160,5 +175,35 @@ const styles = StyleSheet.create({
     lastestTransaction:{
         height:450,
         // backgroundColor:"#123123",
-    }
+    },
+    welcomeContainer: {
+        flex: 2,
+        alignItems: "center",
+    },
+    welcomeText: {
+        fontSize: 18,
+    },
+    header: {
+        backgroundColor: "#84B6E3",
+        maxHeight: 90,
+        flexDirection: "row-reverse",
+        alignItems: "center",
+        padding: 10,
+    },
+    modalHeader: {
+        backgroundColor: "white",
+        maxHeight: 90,
+        flex: 1,
+        flexDirection: "row-reverse",
+        alignItems: "center",
+        padding: 10,
+    },
+    modalNavigationBar: {
+        flex: 1,
+    },
+    modalContent: {
+        backgroundColor: "red",
+        width: 300,
+        flexDirection: "row-reverse",
+    },
 });
