@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, Pressable, StyleSheet } from 'react-native';
 import {Dropdown} from 'react-native-element-dropdown'
-import AntDesign from '@expo/vector-icons/AntDesign';
+import FontAwesome from '@expo/vector-icons/FontAwesome';
 
 
 
@@ -12,6 +12,7 @@ const data = [
   { label: 'Utilities', value: '4' },
   { label: 'Rent', value: '5' },
   { label: 'Allowance', value: '6' },
+  { label: 'Others', value: '7' },
 ];
 
 const DropdownComponent = () => {
@@ -54,10 +55,10 @@ const DropdownComponent = () => {
           setIsFocus(false);
         }}
         renderLeftIcon={() => (
-          <AntDesign
+          <FontAwesome
             style={styles.icon}
             color={isFocus ? 'blue' : 'black'}
-            name="Safety"
+            name="money"
             size={20}
           />
         )}
@@ -93,7 +94,7 @@ const styles = StyleSheet.create({
     },
     button: {
       padding: 10,
-      backgroundColor: '#DDDDDD',
+      backgroundColor: '#89CFF0',
       marginLeft: 10,
       flex: 2,
       alignItems: 'center',
@@ -116,13 +117,8 @@ const styles = StyleSheet.create({
       marginRight: 5,
     },
     label: {
-      position: 'absolute',
-      backgroundColor: 'white',
-      left: 22,
-      top: 8,
-      zIndex: 999,
-      paddingHorizontal: 8,
       fontSize: 14,
+      marginRight:50,
     },
     placeholderStyle: {
       fontSize: 16,
