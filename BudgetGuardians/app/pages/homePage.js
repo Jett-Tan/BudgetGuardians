@@ -25,6 +25,7 @@ export default function Page() {
     if(user === null){
         return <Redirect href="./initPage"/>
     }
+
     const logout = () => { 
         auth.signOut(); 
         router.replace('./initPage');
@@ -35,7 +36,7 @@ export default function Page() {
         console.log(modalVisible)
         setModalVisible(!modalVisible)
     }
-
+    
     const block = false;
     return (
         <>
