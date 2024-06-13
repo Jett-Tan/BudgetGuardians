@@ -83,7 +83,7 @@ export default function Page() {
                         </Modal>
                     </View>
                 </View>
-                <View style={[styles.main,{backgroundColor:"#012012", height:100}]}></View>
+                <View style={[styles.main,{backgroundColor:"#84B6E3", height:100}]}></View>
                 <View style={styles.forexpense}>
                     <Tasks/>
                 </View>
