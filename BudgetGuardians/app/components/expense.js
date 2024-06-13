@@ -1,23 +1,35 @@
-import React, { useState } from 'react';
-import { View, Text, Pressable, StyleSheet } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { auth } from "../auth/firebaseConfig";
+import { View, Text, Pressable, StyleSheet, TextInput } from 'react-native';
 import {Dropdown} from 'react-native-element-dropdown'
 import FontAwesome from '@expo/vector-icons/FontAwesome';
+import { app, db, getFirestore, collection, addDoc } from "../auth/firebaseConfig"
 
 
 
 const data = [
-  { label: 'Transport', value: '1' },
-  { label: 'Food', value: '2' },
-  { label: 'Groceries', value: '3' },
-  { label: 'Utilities', value: '4' },
-  { label: 'Rent', value: '5' },
-  { label: 'Allowance', value: '6' },
-  { label: 'Others', value: '7' },
+  { label: 'Transport', value: 'Transport' },
+  { label: 'Food', value: 'Food' },
+  { label: 'Groceries', value: 'Groceries' },
+  { label: 'Utilities', value: 'Utilities' },
+  { label: 'Rent', value: 'Rent' },
+  { label: 'Allowance', value: 'Allowance' },
+  { label: 'Others', value: 'Others' },
 ];
+
 
 const DropdownComponent = () => {
   const [value, setValue] = useState(null);
   const [isFocus, setIsFocus] = useState(false);
+  const [amount, setAmount] = useState("");
+  const [currentUser, setCurrentUser] = useState();
+  const [errorMessage, setErrorMessage] = useState("");
+  const user = auth.currentUser;
+  useEffect(() => {
+    if (user) {
+      setCurrentUser(user);
+    }
+  }, [user]);
 
   const renderLabel = () => {
     if (value || isFocus) {
@@ -28,6 +40,58 @@ const DropdownComponent = () => {
       );
     }
     return null;
+  };
+  
+  const addExpense = async(numericAmount) => {
+    try {
+      const docRef = await addDoc(collection(db, currentUser.email), {
+        transactionType: value,
+        amount: numericAmount,
+      });
+      console.log("Document written with ID: ", docRef.id);
+    } catch (e) {
+      console.error("Error adding document: ", e);
+    }
+  }
+  const addIncome = async(numericAmount) => {
+    try {
+      const docRef = await addDoc(collection(db, currentUser.email), {
+        transactionType: value,
+        amount: numericAmount,
+      });
+      console.log("Document written with ID: ", docRef.id);
+    } catch (e) {
+      console.error("Error adding document: ", e);
+    }
+  }
+
+  const handleSubmit = () => {
+    const numericAmount = parseFloat(amount);
+    if (numericAmount < 0) {
+      addExpense(numericAmount);
+    } else {
+      addIncome(numericAmount);
+    }
+  };
+
+  const handleAddExpense = () => {
+    const numericAmount = parseFloat(amount);
+    if (numericAmount >= 0) {
+      setErrorMessage("Can't submit form because amount is positive but selected Add Expense!");
+    } else {
+      setErrorMessage("");
+      addExpense(numericAmount);
+    }
+  };
+
+  const handleAddIncome = () => {
+    const numericAmount = parseFloat(amount);
+    if (numericAmount < 0) {
+      setErrorMessage("Can't submit form because amount is negative but selected Add Income!");
+    } else {
+      setErrorMessage("");
+      addIncome(numericAmount);
+    }
   };
 
   return (
@@ -63,13 +127,24 @@ const DropdownComponent = () => {
           />
         )}
       />
-      <Pressable style={styles.button}>
+      <TextInput 
+        placeholder = "Enter Amount" 
+        style={styles.button}
+        value={amount}
+        onChangeText={setAmount}
+        keyboardType='numeric'
+        onSubmitEditing={handleSubmit}
+      />
+      <Pressable style={styles.button} onPress={handleAddIncome}>
           <Text>Add Income</Text>
-        </Pressable>
-        <Pressable style={styles.button}>
+      </Pressable>
+        <Pressable style={styles.button} onPress={handleAddExpense}>
           <Text>Add Expense</Text>
         </Pressable>
       </View>
+      {errorMessage ? (
+        <Text style={styles.error}>{errorMessage}</Text>
+      ) : null}
     </View>
     
   );
@@ -90,7 +165,7 @@ const styles = StyleSheet.create({
   row: {
     flexDirection: 'row',
     alignItems: 'center',
-    
+    marginBottom: 20,
   },
   button: {
     padding: 10,
@@ -130,6 +205,10 @@ const styles = StyleSheet.create({
   inputSearchStyle: {
     height: 40,
     fontSize: 16,
+  },
+  error: {
+    color: 'red',
+    marginTop: 10,
   },
 });
 
