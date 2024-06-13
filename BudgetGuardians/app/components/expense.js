@@ -77,7 +77,7 @@ const DropdownComponent = () => {
   const handleAddExpense = () => {
     const numericAmount = parseFloat(amount);
     if (numericAmount >= 0) {
-      setErrorMessage("Can't submit form because amount is positive but selected Add Expense!");
+      setErrorMessage("Can't record transaction because amount is positive but selected Add Expense!");
     } else {
       setErrorMessage("");
       addExpense(numericAmount);
@@ -87,7 +87,7 @@ const DropdownComponent = () => {
   const handleAddIncome = () => {
     const numericAmount = parseFloat(amount);
     if (numericAmount < 0) {
-      setErrorMessage("Can't submit form because amount is negative but selected Add Income!");
+      setErrorMessage("Can't record transaction because amount is negative but selected Add Income!");
     } else {
       setErrorMessage("");
       addIncome(numericAmount);
