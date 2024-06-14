@@ -17,11 +17,13 @@ export default function Page() {
     const router = useRouter();
     const [currentUser, setCurrentUser] = useState();
     const user = auth.currentUser;
+    
     useEffect(() => {
         if (user) {
           setCurrentUser(user);
         }
       }, [user]);
+
     if(user === null){
         return <Redirect href="./initPage"/>
     }

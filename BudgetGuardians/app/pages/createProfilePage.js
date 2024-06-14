@@ -1,6 +1,9 @@
 import { useState } from "react"
-import { View, Text, StyleSheet } from "react-native"
+import { View, Text, StyleSheet, ScrollView } from "react-native"
 import { Redirect } from "expo-router"
+
+
+import { app, db, getFirestore, collection, addDoc, updateDoc  } from "../auth/firebaseConfig"
 
 import { auth } from "../auth/firebaseConfig"
 import CustomInput from "../components/customInput"
@@ -9,36 +12,30 @@ import Icon from "../components/icon"
 import styleSetting from "../setting/setting"
 
 export default function createProfilePage(){
-    if (auth.currentUser === null){
-        return <Redirect href="./initPage"/>
-    }
+    // if (auth.currentUser === null){
+    //     return <Redirect href="./initPage"/>
+    // }
+    const [firstName,setFirstName] = useState("")
+    const [lastName,setLastName] = useState("")
     const [gender,setGender] = useState("")
     const [age,setAge] = useState(0)
-    const [income,setIncome] = useState(0)
-    const [expense,setExpense] = useState(0)
-    const [savings,setSavings] = useState(0)
-    const [goal,setGoal] = useState("")
-    const [goalAmount,setGoalAmount] = useState(0)
-    const [goalDate,setGoalDate] = useState("")
-    const [goalDescription,setGoalDescription] = useState("")
-    const [goalPriority,setGoalPriority] = useState(0)
-    const [goalCategory,setGoalCategory] = useState("")
-    const [goalStatus,setGoalStatus] = useState("")
-    const [goalReminder,setGoalReminder] = useState("")
-    const [goalReminderDate,setGoalReminderDate] = useState("")
-    const [goalReminderTime,setGoalReminderTime] = useState("")
-    const [goalReminderRepeat,setGoalReminderRepeat] = useState("")
-    const [goalReminderRepeatUntil,setGoalReminderRepeatUntil] = useState("")
-    const [goalReminderRepeatTimes,setGoalReminderRepeatTimes] = useState(0)
-    const [goalReminderRepeatFrequency,setGoalReminderRepeatFrequency] = useState("")
-    const [goalReminderRepeatOn,setGoalReminderRepeatOn] = useState("")
-    const [goalReminderRepeatBy,setGoalReminderRepeatBy] = useState("")
-    const [goalReminderRepeatEnd,setGoalReminderRepeatEnd] = useState("")
-    const [goalReminderRepeatEndTimes,setGoalReminderRepeatEndTimes] = useState(0)
-    const [goalReminderRepeatEndDate,setGoalReminderRepeatEndDate] = useState("")
-    const [goalReminderRepeatEndOn,setGoalReminderRepeatEndOn] = useState("")
-    const [goalReminderRepeatEndBy,setGoalReminderRepeatEndBy] = useState("")
-    const [goalReminderRepeatEndFrequency,setGoalReminderRepeatEndFrequency] = useState("")
+
+    async function addUserDataToFirestore(){
+        if(firstName !== "" && lastName !=="" && age > 0 && age !== "" && gender !== ""){
+            await updateDoc (collection(db,"users",auth.currentUser.uid,"userData"), {
+                name:{
+                    firstName: firstName,
+                    lastName: lastName
+                },
+                age: age,
+                gender:gender
+            }).then(()=>{
+                console.log("Document written with ID: ", auth.currentUser.uid);
+            }).catch((error)=>{
+                console.error("Error adding document: ", error);
+            });
+        }
+    }
 
     return(
         <>
@@ -46,23 +43,69 @@ export default function createProfilePage(){
             <View style={styles.main}>
             <View style = {styles.card}>
             <Icon size = {150}/>
-            <CustomInput
-                type="default"
-                placeholder="Set your gender"
-                onChange1={e => setGender(e)}
-                values1={gender}
-            />
-            <CustomInput
-                type="default"
-                placeholder="Set your age"
-                onChange1={e => setAge(e)}
-                values1={age}
-            />
-            <CustomButton
-                type="signup"
-                onPress={{}}
-                text="Signup"
-            />
+            <ScrollView>
+                <CustomInput
+                    type="default"
+                    placeholder="Set your first name"
+                    onChange1={e => setFirstName(e)}
+                    values1={firstName}
+                    errorExist={true}
+                    errorHandle={ (e) => {
+                        if(e === ''){
+                            return "Missing Value"
+                        }else{
+                            return ''
+                        }
+                    }}
+                />
+                <CustomInput
+                    type="default"
+                    placeholder="Set your last name"
+                    onChange1={e => setLastName(e)}
+                    values1={lastName}
+                    errorExist={true}
+                    errorHandle={ (e) => {
+                        if(e === '' ){
+                            return "Missing Value"
+                        }else{
+                            return ''
+                        }
+                    }}
+                />
+                <CustomInput
+                    type="default"
+                    placeholder="Set your gender"
+                    onChange1={e => setGender(e)}
+                    values1={gender}
+                    errorExist={true}
+                    errorHandle={ (e) => {
+                        if(e === ''){
+                            return "Missing Value"
+                        }else{
+                            return ''
+                        }
+                    }}
+                />
+                <CustomInput
+                    type="default"
+                    placeholder="Set your age"
+                    onChange1={e => setAge(e)}
+                    values1={age}
+                    errorExist={true}
+                    errorHandle={ (e) => {
+                        if(e === '' || e < 0){
+                            return "Missing Value"
+                        }else{
+                            return ''
+                        }
+                    }}
+                />
+                <CustomButton
+                    type="default"
+                    onPress={() => {addUserDataToFirestore()}}
+                    text="Continue"
+                />
+            </ScrollView>
             <Text>{'\n'}</Text>
             </View>
             </View>

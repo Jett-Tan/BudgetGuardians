@@ -62,6 +62,7 @@ export default function CustomInput({
         } else {
             onChange1(e)
             setValue1(e)
+            setError1(errorHandle(e,type))
         }
     }
     
