@@ -10,18 +10,30 @@ import TransactionEntry from "../components/transactionEntry";
 import SideBar from "../components/sideBar";
 import Overlay from "../components/overlay";
 import Tasks from "../components/expense"
-import { db, collection, addDoc, getDocs} from "firebase/firestore";
 import DropdownComponent from "../components/expense";
+import CustomButton from "../components/customButton";
+
+import { addExpenseToFirestore, addUserDataToFirestore, getUserDataFromFirestore } from "../setting/fireStoreFunctions";
+import { set } from "firebase/database";
 
 export default function Page() {
     const router = useRouter();
     const [currentUser, setCurrentUser] = useState();
     const user = auth.currentUser;
-    
+
     useEffect(() => {
         if (user) {
           setCurrentUser(user);
         }
+        (async () => {
+            await getUserDataFromFirestore()
+            .then((data) => {
+                setCurrentUser(data);
+            })
+            .catch((err) => {
+                router.replace('./createProfilePage');
+            });
+        })()
       }, [user]);
 
     if(user === null){
@@ -38,7 +50,14 @@ export default function Page() {
         console.log(modalVisible)
         setModalVisible(!modalVisible)
     }
-    
+    const addExpense = async () => {
+        await addExpenseToFirestore({title:"Food",amount:123.3,date:"adsd",description:"Food",category:"Food",status:"Food"})
+        .then((data) => {
+            console.log(data)
+        }).catch((err) => {
+            console.log(err)
+        })
+    }
     const block = false;
     return (
         <>
@@ -55,15 +74,11 @@ export default function Page() {
             }
             <Overlay visible={!auth.currentUser.emailVerified}/>
             <View style={styles.container}> 
-            {/* TODO 
-                
-                need to style this page 
-            */}     
                 <View style={[styles.header,{backgroundColor:"#84B6E3", maxHeight:90, flex:1, flexDirection:"row-reverse"}]}>
                 <View style={styles.container}>
                     <View style={styles.header}>
                         <View style={styles.welcomeContainer}>
-                            <Text style={styles.welcomeText}>Welcome {currentUser ? currentUser.email : 'Guest'}</Text>
+                            <Text style={styles.welcomeText}>Welcome {currentUser ? currentUser?.userData?.name?.firstName : 'Guest'}</Text>
                         </View>
                         <CustomIconButton
                             text=""
@@ -91,6 +106,7 @@ export default function Page() {
                                     </View>
                                 </View>
                             </View>
+                            <CustomButton onPress={() => addUserData} text="asd"/>
                         </Modal>
                     </View>    
                 </View>    

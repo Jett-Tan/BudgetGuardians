@@ -1,9 +1,10 @@
 import { useState } from "react"
 import { View, Text, StyleSheet, ScrollView } from "react-native"
-import { Redirect } from "expo-router"
+import { Redirect, useRouter } from "expo-router"
 
 
-import { app, db, getFirestore, collection, addDoc, updateDoc  } from "../auth/firebaseConfig"
+
+import { addUserDataToFirestore, addFinancialDataToFirestore,createUserInFirestore } from "../setting/fireStoreFunctions";
 
 import { auth } from "../auth/firebaseConfig"
 import CustomInput from "../components/customInput"
@@ -19,24 +20,40 @@ export default function createProfilePage(){
     const [lastName,setLastName] = useState("")
     const [gender,setGender] = useState("")
     const [age,setAge] = useState(0)
+    const [income,setIncome] = useState(0)
+    const [savings,setSavings] = useState(0)
 
-    async function addUserDataToFirestore(){
-        if(firstName !== "" && lastName !=="" && age > 0 && age !== "" && gender !== ""){
-            await updateDoc (collection(db,"users",auth.currentUser.uid,"userData"), {
-                name:{
-                    firstName: firstName,
-                    lastName: lastName
-                },
-                age: age,
-                gender:gender
-            }).then(()=>{
-                console.log("Document written with ID: ", auth.currentUser.uid);
-            }).catch((error)=>{
-                console.error("Error adding document: ", error);
-            });
+    const [firstNameError,setFirstNameError] = useState("")
+    const [lastNameError,setLastNameError] = useState("")
+    const [genderError,setGenderError] = useState("")
+    const [ageError,setAgeError] = useState("")
+
+    const router = useRouter();
+    async function handleUserData(){
+        console.log("clicked");
+        var valid = true;
+        await createUserInFirestore()
+        await addUserDataToFirestore({name:{firstName:firstName,lastName:lastName},age:age,gender:gender})
+        .then(()=>{
+            valid = true;
+        }).catch((error)=>{ 
+            valid = false;
+            console.error("Error adding document: ", error);
+        });
+        await addFinancialDataToFirestore({income:income,savings:savings,expense:[],goals:[]})
+        .then(()=>{
+            valid = true;
+        }).catch((error)=>{
+            valid = false; 
+            console.error("Error adding document: ", error);
+        });
+
+        if(!valid){
+            console.error("Error adding document");
+        }else{
+            router.replace('./homePage');
         }
     }
-
     return(
         <>
         <View style={styles.container}>
@@ -100,9 +117,37 @@ export default function createProfilePage(){
                         }
                     }}
                 />
+                <CustomInput
+                    type="default"
+                    placeholder="Set your income"
+                    onChange1={e => setIncome(e)}
+                    values1={income}
+                    errorExist={true}
+                    errorHandle={ (e) => {
+                        if(e === '' || e < 0){
+                            return "Missing Value"
+                        }else{
+                            return ''
+                        }
+                    }}
+                />
+                <CustomInput
+                    type="default"
+                    placeholder="Set your savings"
+                    onChange1={e => setSavings(e)}
+                    values1={savings}
+                    errorExist={true}
+                    errorHandle={ (e) => {
+                        if(e === '' || e < 0){
+                            return "Missing Value"
+                        }else{
+                            return ''
+                        }
+                    }}
+                />
                 <CustomButton
                     type="default"
-                    onPress={() => {addUserDataToFirestore()}}
+                    onPress={async () => await handleUserData()}
                     text="Continue"
                 />
             </ScrollView>

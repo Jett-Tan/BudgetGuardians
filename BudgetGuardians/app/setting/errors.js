@@ -48,10 +48,11 @@ export default Errors = {
                 }
                 
                 break;
+            
             case "emailExist":
                 return "auth/email-already-in-use"
                 break;
-        
+                
             default:
                 return ''
                 break;
