@@ -16,10 +16,12 @@ import CustomButton from "../components/customButton";
 import { addExpenseToFirestore, addUserDataToFirestore, getUserDataFromFirestore } from "../setting/fireStoreFunctions";
 import { set } from "firebase/database";
 
+
 export default function Page() {
     const router = useRouter();
     const [currentUser, setCurrentUser] = useState();
     const user = auth.currentUser;
+    const [tab, setTab] = useState("home");
 
     useEffect(() => {
         if (user) {
@@ -74,85 +76,22 @@ export default function Page() {
             }
             <Overlay visible={!auth.currentUser.emailVerified}/>
             <View style={styles.container}> 
-                <View style={[styles.header,{backgroundColor:"#84B6E3", maxHeight:90, flex:1, flexDirection:"row-reverse"}]}>
-                <View style={styles.container}>
-                    <View style={styles.header}>
-                        <View style={styles.welcomeContainer}>
-                            <Text style={styles.welcomeText}>Welcome {currentUser ? currentUser?.userData?.name?.firstName : 'Guest'}</Text>
-                        </View>
-                        <CustomIconButton
-                            text=""
-                            iconHref="line"
-                            borderless = {true}
-                            onPress={() => {toggleModalVisible()}}
-                        />
-                        <Modal
-                            animationType="none"
-                            transparent={true}
-                            visible={modalVisible}
-                            onRequestClose={() => {
-                                setModalVisible(!modalVisible);
-                            }}
-                        >
-                            <View style={styles.modalHeader}>
-                                <View style={styles.modalNavigationBar}>
-                                    <View style={styles.modalContent}>
-                                        <CustomIconButton
-                                            text=""
-                                            iconHref="line"
-                                            borderless={true}
-                                            onPress={() => { toggleModalVisible() }}
-                                        />
-                                    </View>
-                                </View>
-                            </View>
-                            <CustomButton onPress={() => addUserData} text="asd"/>
-                        </Modal>
-                    </View>    
-                </View>    
+                <View style={[styles.header,{backgroundColor:styleSetting.color.mildblue,justifyContent:"center",height:70}]}>
+                        <Text style={styles.welcomeText}>Welcome {currentUser ? currentUser?.userData?.name?.firstName : 'Guest'}</Text>
+                </View>
+                <View style ={{flexDirection:"row",height:"100%"}}>
+                    <View style ={{height:"100%", width:200}}>
+                        <SideBar value={tab} setValue ={setTab}/>
+                    </View>
+                    <View style={styles.content}>
+                        {tab === "home" && <Text>Home</Text>}
+                        {tab === "calendar" && <Text>Calendar</Text>}
+                        <DropdownComponent/>
+                    </View>
                 </View>
             </View>
                 
-                <View style={styles.content}>
-                    <DropdownComponent/>
-                </View>
                   
-                {/* <View style={styles.container}>
-                    <View style={styles.main}>
-                        <View style={styles.navigationBar}>
-                            <Pressable onPress={e => {
-                                console.log(modalVisible);
-                                // toggleModalVisible;
-                            }}>
-                                <Image 
-                                    source={require('../assets/line.png')}
-                                    style={
-                                        {   
-                                            resizeMode:"stretch",
-                                            width:50,
-                                            height:50
-                                        }
-                                    }
-                                    />
-                            </Pressable>
-                        </View>
-                        <View style={styles.itemContainer}>
-                            <View style= { styles.itemRow}>
-                                <CustomIconButton text="Add Transaction" iconHref="updateExpense_colored"/>
-                                <CustomIconButton text="Set Budget" iconHref="updateExpense_colored"/> 
-                                {/*set Budget include set Goal*/}
-                                {/* <CustomIconButton text="View Report" iconHref="updateExpense_colored"/>
-                            </View>
-                        </View>
-                        <View style={styles.lastestTransaction}>
-                            <TransactionEntry props={{date:"adsd", amount:123.3,title:"Food"}}/>
-                            <TransactionEntry props={{date:"adsd", amount:123.3,title:"Food"}}/>
-                            {
-                                //forloop 
-                            }
-                        </View>
-                    </View>
-                </View> */} 
         </>
     );
   
@@ -173,6 +112,7 @@ const styles = StyleSheet.create({
     content: {
         flex: 7,
         alignItems: 'center',
+        justifyContent:'center'
         
         // Adjust this value to control the spacing between the navigation bar and the content
     },
@@ -208,6 +148,9 @@ const styles = StyleSheet.create({
         flexDirection: "row-reverse",
         alignItems: "center",
         padding: 10,
+        shadowColor: styleSetting.color.black,
+        shadowOpacity:0.25,
+        shadowOffset:{width:0,height:3},
     },
     modalHeader: {
         backgroundColor: "white",
