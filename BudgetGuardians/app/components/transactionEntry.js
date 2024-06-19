@@ -1,12 +1,11 @@
 import { Text, View, Pressable,StyleSheet } from "react-native";
-
+import { doc, deleteDoc } from "firebase/firestore";
 import styleSetting from "../setting/setting"
 
 export default function TransactionEntry({
     onPress = (e) => {console.log(e);}, //modal
     props = {},
 }) {
-
     console.log(props)
     return (
         <>
@@ -21,10 +20,10 @@ export default function TransactionEntry({
                     <Text style={styles.right}>${props.amount?.toFixed(2)}</Text>
                     <View style={styles.row}>
                     <Pressable style={styles.button}>
-                        <Text>Delete Expense</Text>
+                        <Text>Delete Transaction</Text>
                     </Pressable>
                     <Pressable style={styles.button}>
-                        <Text>Edit Expense</Text>
+                        <Text>Edit Transaction</Text>
                     </Pressable>
                     </View>
                 </View>

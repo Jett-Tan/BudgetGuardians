@@ -1,4 +1,4 @@
-import { getFirestore, doc, setDoc, updateDoc, addDoc, getDoc, collection ,onSnapshot } from "firebase/firestore";
+import { getFirestore, doc, setDoc, updateDoc, addDoc, getDoc, collection ,onSnapshot, deleteField } from "firebase/firestore";
 import { auth } from "../auth/firebaseConfig";
 /*
 export type userData = {
@@ -205,6 +205,21 @@ export async function addTransactionToFirestore(transactionData){
         reject("Error adding document: ", "Invalid userData");
     });
 }
+
+
+/*export async function deleteTransactionFromFirestore(transactionData){
+    if(!transactionDataCheck(transactionData)){
+        console.error("Invalid userData", transactionData)
+        throw new Error("Invalid userData")
+    }
+    const db = getFirestore();
+    const docRef = doc(db, "users", auth.currentUser.uid);
+    const user = await getUserDataFromFirestore();
+    const data = {
+         = deleteField()
+    }
+    //await deleteDoc(doc(db, "cities", "DC"));
+} */
 
 export const liveUpdate = (callback) => {
     const db = getFirestore();

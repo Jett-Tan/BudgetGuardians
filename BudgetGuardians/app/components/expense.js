@@ -150,7 +150,7 @@ const DropdownComponent = () => {
         onChangeText={setAmount}
         keyboardType='numeric'
       />
-      
+      {/* Styling of transaction box is under datepicker.js*/}
       <DateChooser setInputDate={setDate} inputDate={date}    />
       <Pressable style={styles.button} onPress={addIncome}>
           <Text>Add Income</Text>
@@ -166,7 +166,6 @@ const DropdownComponent = () => {
           <TransactionEntry key={index} props={{ amount: x?.amount, date: x?.date, category: x?.category }} />
         ))}
     </View>
-  
     
   </>
     
