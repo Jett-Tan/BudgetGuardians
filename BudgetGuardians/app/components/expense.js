@@ -5,7 +5,7 @@ import {Dropdown} from 'react-native-element-dropdown'
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import { app, db, getFirestore, collection, addDoc } from "../auth/firebaseConfig";
 import TransactionEntry from './transactionEntry';
-import { addTransactionToFirestore, getUserDataFromFirestore } from '../setting/fireStoreFunctions';
+import { addTransactionToFirestore, getUserDataFromFirestore, liveUpdate } from '../setting/fireStoreFunctions';
 
 const data = [
   { label: 'Transport', value: 'Transport' },
@@ -30,6 +30,10 @@ const DropdownComponent = () => {
     if (user) {
       setCurrentUser(user);
     }
+    const unsubscribe = liveUpdate((data) => {
+      setCurrentUser(data?.financialData?.transactions || []);
+    });
+
     (async () => {
         await getUserDataFromFirestore().then((data) => {
             setCurrentUser(data?.financialData?.transactions);
@@ -39,6 +43,7 @@ const DropdownComponent = () => {
             router.replace('./createProfilePage');
         });
     })()
+    return ()=> unsubscribe();
   }, [user]);
 
   const renderLabel = () => {
@@ -156,7 +161,7 @@ const DropdownComponent = () => {
     </View>
     <View style={styles.container}>
     {Array.isArray(currentUser) && currentUser.map((x, index) => (
-          <TransactionEntry key={index} props={{ amount: x?.amount, date: x?.date, description: x?.description }} />
+          <TransactionEntry key={index} props={{ amount: x?.amount, date: x?.date, category: x?.category }} />
         ))}
       
     </View>

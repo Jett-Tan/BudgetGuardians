@@ -14,7 +14,7 @@ export default function TransactionEntry({
                     <View style={styles.miniBox}>
                         <Text style={[]}>{props.date}</Text>
                         <View style={styles.title}>
-                            <Text style={styles.right}>{props.description}</Text>
+                            <Text style={styles.right}>{props.category}</Text>
                         </View>
                     </View>
                     <Text style={styles.right}>${props.amount?.toFixed(2)}</Text>
