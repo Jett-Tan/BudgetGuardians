@@ -3,8 +3,8 @@ import { auth } from "../auth/firebaseConfig";
 import { View, Text, Pressable, StyleSheet, TextInput } from 'react-native';
 import {Dropdown} from 'react-native-element-dropdown'
 import FontAwesome from '@expo/vector-icons/FontAwesome';
-import { app, db, getFirestore, collection, addDoc } from "../auth/firebaseConfig"
-
+import { app, db, getFirestore, collection, addDoc } from "../auth/firebaseConfig";
+import TransactionEntry from './transactionEntry';
 
 
 const data = [
@@ -149,6 +149,7 @@ const DropdownComponent = () => {
         <Pressable style={styles.button} onPress={addExpense}>
           <Text>Add Expense</Text>
         </Pressable>
+      <TransactionEntry/>
       </View>
     </View>
     
