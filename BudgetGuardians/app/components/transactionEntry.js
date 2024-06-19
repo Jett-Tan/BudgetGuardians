@@ -11,26 +11,26 @@ export default function TransactionEntry({
     console.log(props)
     return (
         <>
-            <Pressable style={styles.transaction} onPress={onPress}>
-                <View style={styles.box}>
-                    <View style={styles.miniBox}>
-                        <Text style={[]}>{props.date}</Text>
-                        <View style={styles.title}>
-                            <Text style={styles.right}>{props.category}</Text>
+            <View style={styles.row}>
+                <Pressable style={styles.transaction} onPress={onPress}>
+                    <View style={styles.box}>
+                        <View style={styles.miniBox}>
+                            <Text style={[]}>{props.date}</Text>
+                            <View style={styles.title}>
+                                <Text style={styles.right}>{props.category}</Text>
+                            </View>
                         </View>
+                        <Text style={styles.right}>${props.amount?.toFixed(2)}</Text>
                     </View>
-                    <Text style={styles.right}>${props.amount?.toFixed(2)}</Text>
-                    <View style={styles.row}>
-                    <Pressable style={styles.deletebutton} onPress={(e)=>{deleteTransaction(e)}}>
-                        <Text>Delete Transaction</Text>
-                    </Pressable>
-                    <Pressable style={styles.button} onPress={(e)=>{editTransaction(e)}}>
-                        <Text>Edit Transaction</Text>
-                    </Pressable>
-                    </View>
-                </View>
-                
-            </Pressable>
+                    
+                </Pressable>
+                <Pressable style={styles.deletebutton} onPress={(e)=>{deleteTransaction(e)}}>
+                    <Text>Delete Transaction</Text>
+                </Pressable>
+                <Pressable style={styles.button} onPress={(e)=>{editTransaction(e)}}>
+                    <Text>Edit Transaction</Text>
+                </Pressable>
+            </View>
             
         </>
     )
