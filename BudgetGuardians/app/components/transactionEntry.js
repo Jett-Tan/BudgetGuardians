@@ -8,7 +8,6 @@ export default function TransactionEntry({
     deleteTransaction = (e) => {console.log(e);},
     editTransaction = (e) => {console.log(e);},
 }) {
-    console.log(props)
     return (
         <>
             <View style={styles.row}>

@@ -5,6 +5,7 @@ import { getFirestore, collection, addDoc, setDoc,updateDoc } from 'firebase/fir
 import ReactNativeAsyncStorage from '@react-native-async-storage/async-storage';
 import { getReactNativePersistence } from '@firebase/auth/dist/rn/index.js';
 import { get } from "firebase/database";
+import { useRouter } from "expo-router";
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -26,7 +27,7 @@ export const auth = initializeAuth(app, {
   persistence: getReactNativePersistence(ReactNativeAsyncStorage)
 
 });
- 
+
 // To Initialize Cloud Firestore and get a reference to the service
 const firestore = getFirestore();
 const db = getFirestore(app);

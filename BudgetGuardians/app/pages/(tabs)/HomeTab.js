@@ -16,7 +16,6 @@ export default function HomeTab() {
             findGoals(x);
             findTransactions(x);
         });
-        console.log("HomeTab")
     },[])
     
     const findTransactions = (x) => {
@@ -26,7 +25,6 @@ export default function HomeTab() {
         }
         let transactions = x?.financialData?.transactions;
         Array(transactions).sort((a,b) => {a.date - b.date});
-        console.log(transactions);
         setLastestTransaction5(transactions.slice(0,5));
         
     }
@@ -37,7 +35,6 @@ export default function HomeTab() {
         }
         let goals = x?.financialData?.goals;
         Array(goals).sort((a,b) => {a.date - b.date});
-        console.log(goals);
         let lastestGoal = goals[0];
         setLastestGoal(lastestGoal);
     }
@@ -48,9 +45,9 @@ export default function HomeTab() {
                 <View style={{borderRadius:5,width:"40%",height:"80%", alignItems:"center", justifyContent:"center"}}> 
                     {/* {!lastestTransaction5  && <Text>No Transaction</Text>} */}
                     {Array.isArray(lastestTransaction5) && lastestTransaction5.length <= 0 && <Text>No Transaction</Text>}
-                    {lastestTransaction5 && lastestTransaction5.map((transaction) => {
+                    {lastestTransaction5 && lastestTransaction5.map((transaction,index) => {
                         return(
-                            <View style={{borderColor:"black",borderWidth:1,marginVertical:10, borderRadius:10,shadowColor:"black",shadowRadius:3,shadowOffset:{height:1,width:0}}}>
+                            <View key={index} style={{borderColor:"black",borderWidth:1,marginVertical:10, borderRadius:10,shadowColor:"black",shadowRadius:3,shadowOffset:{height:1,width:0}}}>
                                 <TransactionEntry props={{date:transaction.date, category:transaction.category, amount:transaction.amount}} />
                             </View>
                         )

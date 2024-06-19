@@ -1,6 +1,6 @@
 import { StyleSheet, Text, View, Button,Pressable,Modal,Image } from "react-native";
 import { Redirect, useRouter } from "expo-router";
-import { getAuth } from "firebase/auth";
+import { getAuth ,onAuthStateChanged} from "firebase/auth";
 
 import styleSetting from "../setting/setting"
 import { useState, useEffect } from "react";
@@ -13,44 +13,42 @@ import Tasks from "../components/expense"
 import DropdownComponent from "../components/expense";
 import CustomButton from "../components/customButton";
 
-import { addExpenseToFirestore, addUserDataToFirestore, getUserDataFromFirestore, liveUpdate} from "../setting/fireStoreFunctions";
-import { set } from "firebase/database";
+import { addExpenseToFirestore, 
+    addUserDataToFirestore, 
+    getUserDataFromFirestore, 
+    liveUpdate} from "../setting/fireStoreFunctions";
 import HomeTab from "./(tabs)/HomeTab";
 import TransactionTab from "./(tabs)/TransactionTab";
 import CalendarTab from "./(tabs)/CalendarTab";
 import ProfileTab from "./(tabs)/ProfileTab";
+import GoalTab from "./(tabs)/GoalTab";
 
 export default function Page() {
     const router = useRouter();
-    const [currentUser, setCurrentUser] = useState();
-    const user = auth.currentUser;
+    const [currentUser, setCurrentUser] = useState({});
     const [tab, setTab] = useState("home");
-
+    onAuthStateChanged(auth, (user) => {
+    if (user) {
+        console.log('User is signed in.', user.email);
+    } else {
+        router.replace('./initPage');
+    }
+    });
     useEffect(() => {
-
         liveUpdate((x) => {
             setCurrentUser(x)
         });
-        (async () => {
-            await getUserDataFromFirestore()
-            .then((data) => {
-                setCurrentUser(data);
-            })
-            .catch((err) => {
-                alert(err);
-                // router.replace('./createProfilePage');
-            });
-        })()
-      }, [user]);
-
-    if(user === null){
-        return <Redirect href="./initPage"/>
-    }
-
-    const logout = () => { 
-        auth.signOut(); 
-        router.replace('./initPage');
-    }
+    }, []);
+    const loadData = setInterval(async () => {
+        await getUserDataFromFirestore()
+        .then((data) => {
+            setCurrentUser(data);
+        })
+        .catch((err) => {
+            alert(err);
+        });
+    }, 100);
+    setTimeout(()=>{clearInterval(loadData)} ,500);
 
     const[modalVisible,setModalVisible] = useState(false)
 
@@ -91,7 +89,7 @@ export default function Page() {
                     <Text style={{}}>Coming soon!!</Text>
                 </View>
             }
-            <Overlay visible={!auth.currentUser.emailVerified}/>
+            <Overlay visible={!auth?.currentUser?.emailVerified && auth?.currentUser?.emailVerified === false}/>
             <View style={styles.container}> 
                 <View style={[styles.header,{backgroundColor:styleSetting.color.mildblue,justifyContent:"center",height:70}]}>
                         <Text style={styles.welcomeText}>Welcome {currentUser ? currentUser?.userData?.name?.firstName : 'Guest'}</Text>
