@@ -6,10 +6,11 @@ export default function TransactionEntry({
     onPress = (e) => {console.log(e);}, //modal
     props = {},
 }) {
+
     console.log(props)
     return (
         <>
-            <Pressable style={styles.transcation} onPress={onPress}>
+            <Pressable style={styles.transaction} onPress={onPress}>
                 <View style={styles.box}>
                     <View style={styles.miniBox}>
                         <Text style={[]}>{props.date}</Text>
@@ -25,7 +26,7 @@ export default function TransactionEntry({
 }
 
 const styles = StyleSheet.create({
-    transcation:{
+    transaction:{
         justifyContent:"center",
         alignItems:"center",
         margin:styleSetting.size.em10,
@@ -42,7 +43,7 @@ const styles = StyleSheet.create({
         borderRadius:styleSetting.size.em07,
         paddingLeft:styleSetting.size.em05,
         paddingRight:styleSetting.size.em05,
-        backgroundColor:styleSetting.color.red,    
+        backgroundColor:styleSetting.color.blue,    
     },
     right:{
         textAlign:"right",

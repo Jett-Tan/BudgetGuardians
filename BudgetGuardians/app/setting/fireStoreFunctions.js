@@ -195,7 +195,7 @@ export async function addTransactionToFirestore(transactionData){
 
 export const liveUpdate = (callback) => {
     const db = getFirestore();
-    const docRef = doc(db, "users", auth.currentUser.uid);
+    const docRef = doc(db, "users", auth?.currentUser?.uid);
     const observer = onSnapshot(docRef,(doc) => {
         callback(doc.data());
     });
