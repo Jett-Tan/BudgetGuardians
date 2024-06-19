@@ -6,6 +6,9 @@ import FontAwesome from '@expo/vector-icons/FontAwesome';
 import { app, db, getFirestore, collection, addDoc } from "../auth/firebaseConfig";
 import TransactionEntry from './transactionEntry';
 import { addTransactionToFirestore, getUserDataFromFirestore, liveUpdate } from '../setting/fireStoreFunctions';
+import DateChooser from "./datepicker" 
+import { DatePickerInput } from 'react-native-paper-dates';
+
 
 const data = [
   { label: 'Transport', value: 'Transport' },
@@ -25,6 +28,7 @@ const DropdownComponent = () => {
   const [currentUser, setCurrentUser] = useState();
   const [errorMessage, setErrorMessage] = useState("");
   const user = auth.currentUser;
+  const [date, setDate] = useState();
   
   useEffect(() => {
     if (user) {
@@ -52,7 +56,9 @@ const DropdownComponent = () => {
   // Function to add expense
   const addExpense = async() => {
     const numericAmount = parseFloat(amount);
-    await addTransactionToFirestore({category: value, amount:-numericAmount, date:"adsd", description:"Food"})
+    const formatteddate = new Date(date).toLocaleDateString('en-SG')
+    console.log(formatteddate) 
+    await addTransactionToFirestore({category: value, amount:-numericAmount, date:formatteddate, description:"Food"})
     .then((data) => {
       console.log(data)
     }).catch((err) => {
@@ -63,7 +69,8 @@ const DropdownComponent = () => {
   // Function to add income
   const addIncome = async() => {
     const numericAmount = parseFloat(amount);
-    await addTransactionToFirestore({category: value, amount:numericAmount, date:"adsd", description:"Food"})
+    const formatteddate = new Date(date).toLocaleDateString('en-SG')
+    await addTransactionToFirestore({category: value, amount:numericAmount, date:formatteddate, description:"Food"})
     .then((data) => {
       console.log(data)
     }).catch((err) => {
@@ -143,20 +150,24 @@ const DropdownComponent = () => {
         onChangeText={setAmount}
         keyboardType='numeric'
       />
+      
+      <DateChooser setInputDate={setDate} inputDate={date}    />
       <Pressable style={styles.button} onPress={addIncome}>
           <Text>Add Income</Text>
       </Pressable>
         <Pressable style={styles.button} onPress={addExpense}>
           <Text>Add Expense</Text>
         </Pressable>
+
       </View>
     </View>
     <View style={styles.container}>
     {Array.isArray(currentUser) && currentUser.map((x, index) => (
           <TransactionEntry key={index} props={{ amount: x?.amount, date: x?.date, category: x?.category }} />
         ))}
-      
     </View>
+  
+    
   </>
     
     
@@ -172,7 +183,7 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: 'white',
     padding: 10,
-    width: '50%',
+    width: '60%',
   },
   row: {
     flexDirection: 'row',
