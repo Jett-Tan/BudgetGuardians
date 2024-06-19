@@ -45,7 +45,9 @@ export default function HomeTab() {
     return (
         <>
             <View style={{width:'100%',height:'90%',justifyContent:"space-around",alignItems:"center",flexDirection:"row"}}>
-                <View style={{borderRadius:5,width:"40%",height:"80%"}}> 
+                <View style={{borderRadius:5,width:"40%",height:"80%", alignItems:"center", justifyContent:"center"}}> 
+                    {/* {!lastestTransaction5  && <Text>No Transaction</Text>} */}
+                    {Array.isArray(lastestTransaction5) && lastestTransaction5.length <= 0 && <Text>No Transaction</Text>}
                     {lastestTransaction5 && lastestTransaction5.map((transaction) => {
                         return(
                             <View style={{borderColor:"black",borderWidth:1,marginVertical:10, borderRadius:10,shadowColor:"black",shadowRadius:3,shadowOffset:{height:1,width:0}}}>
@@ -56,6 +58,7 @@ export default function HomeTab() {
                 </View>
 
                 <View style={{borderRadius:5,width:"40%",height:"80%",borderWidth:1,borderColor:"black"}}> 
+                    {!lastestGoal  && <Text>No Goal</Text>}
                     {/* {lastestGoal && } */}
                 </View>
             </View>
