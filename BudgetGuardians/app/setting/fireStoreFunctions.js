@@ -130,6 +130,9 @@ export async function addFinancialDataToFirestore(financialData){
 
 
 export async function getUserDataFromFirestore(){
+    if (auth.currentUser === null) {
+        return null;
+    }
     const db = getFirestore();
     const docRef = doc(db, "users", auth.currentUser.uid);
     const docSnap = await getDoc(docRef);

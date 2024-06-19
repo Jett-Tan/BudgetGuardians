@@ -32,11 +32,13 @@ export default function Page() {
             setCurrentUser(x)
         });
         (async () => {
-            await getUserDataFromFirestore().then((data) => {
+            await getUserDataFromFirestore()
+            .then((data) => {
                 setCurrentUser(data);
             })
             .catch((err) => {
-                router.replace('./createProfilePage');
+                alert(err);
+                // router.replace('./createProfilePage');
             });
         })()
       }, [user]);

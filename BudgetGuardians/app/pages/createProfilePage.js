@@ -1,10 +1,10 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { View, Text, StyleSheet, ScrollView } from "react-native"
 import { Redirect, useRouter } from "expo-router"
 
 
 
-import { addUserDataToFirestore, addFinancialDataToFirestore,createUserInFirestore } from "../setting/fireStoreFunctions";
+import { addUserDataToFirestore, addFinancialDataToFirestore,createUserInFirestore, getUserDataFromFirestore } from "../setting/fireStoreFunctions";
 
 import { auth } from "../auth/firebaseConfig"
 import CustomInput from "../components/customInput"
