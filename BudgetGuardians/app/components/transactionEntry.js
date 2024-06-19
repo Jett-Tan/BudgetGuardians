@@ -7,6 +7,7 @@ export default function TransactionEntry({
     props = {},
     deleteTransaction = (e) => {console.log(e);},
     editTransaction = (e) => {console.log(e);},
+    showbutton = true,
 }) {
     return (
         <>
@@ -23,12 +24,16 @@ export default function TransactionEntry({
                     </View>
                     
                 </Pressable>
-                <Pressable style={styles.deletebutton} onPress={(e)=>{deleteTransaction(e)}}>
-                    <Text>Delete Transaction</Text>
-                </Pressable>
-                <Pressable style={styles.button} onPress={(e)=>{editTransaction(e)}}>
-                    <Text>Edit Transaction</Text>
-                </Pressable>
+                {showbutton && (
+                    <View style={{flexDirection:"row",justifyContent:"center"}}>
+                        <Pressable style={styles.deletebutton} onPress={(e)=>{deleteTransaction(e)}}>
+                            <Text style={{textAlign:"center"}}>Delete Transaction</Text>
+                        </Pressable>
+                        <Pressable style={styles.button} onPress={(e)=>{editTransaction(e)}}>
+                            <Text style={{textAlign:"center"}}>Edit Transaction</Text>
+                        </Pressable>
+                    </View>
+                )}
             </View>
             
         </>
@@ -37,11 +42,10 @@ export default function TransactionEntry({
 
 const styles = StyleSheet.create({
     transaction:{
-        justifyContent:"center",
-        alignItems:"center",
         margin:styleSetting.size.em10,
         padding: 10,
         width: '60%',
+        minWidth: 200,
 
     },
     miniBox:{
@@ -49,7 +53,7 @@ const styles = StyleSheet.create({
         justifyContent:"space-between",
     },
     box: {
-        width:styleSetting.size.em300,
+        width:"100%",
         padding:styleSetting.size.em10,
     },
     title:{
@@ -63,25 +67,40 @@ const styles = StyleSheet.create({
         fontSize:styleSetting.size.em16,
     },
     button:{
-        padding: 10,
         backgroundColor: '#89CFF0',
-        marginLeft: 10,
-        flex: 2,
         alignItems: 'center',
-        width: 30,
+        justifyContent: 'center',
+        minWidth: 80,
+        minHeight: 50,
+        width:"20%",
+        borderRadius:5,
+        shadowColor:"black",
+        shadowOpacity:0.5,
+        shadowOffset:{width:2,height:2},
+        margin:15,
+        height:"60%",
     },
     deletebutton:{
-        padding: 10,
         backgroundColor: "#ff7588",
-        marginLeft: 10,
-        flex: 2,
+        minWidth: 80,
+        minHeight: 50,
+        width:"20%",
+        borderRadius:5,
+        shadowColor:"black",
+        shadowOpacity:0.5,
+        shadowOffset:{width:2,height:2},
+        margin:15,
+        height:"60%",
         alignItems: 'center',
-        width: 30,
+        justifyContent: 'center',
     },
     row: {
         flexDirection: 'row',
         alignItems: 'center',
-        marginBottom: 20,
+        justifyContent: 'center',
+        width: '100%',
+        flexWrap: 'wrap',
+        flex:3
     },  
     amount:{
         fontSize:styleSetting.size.em20,
