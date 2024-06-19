@@ -19,8 +19,18 @@ export default function TransactionEntry({
                         </View>
                     </View>
                     <Text style={styles.right}>${props.amount?.toFixed(2)}</Text>
+                    <View style={styles.row}>
+                    <Pressable style={styles.button}>
+                        <Text>Delete Expense</Text>
+                    </Pressable>
+                    <Pressable style={styles.button}>
+                        <Text>Edit Expense</Text>
+                    </Pressable>
+                    </View>
                 </View>
+                
             </Pressable>
+            
         </>
     )
 }
@@ -30,6 +40,9 @@ const styles = StyleSheet.create({
         justifyContent:"center",
         alignItems:"center",
         margin:styleSetting.size.em10,
+        padding: 10,
+        width: '60%',
+
     },
     miniBox:{
         flexDirection:"row",
@@ -43,11 +56,24 @@ const styles = StyleSheet.create({
         borderRadius:styleSetting.size.em07,
         paddingLeft:styleSetting.size.em05,
         paddingRight:styleSetting.size.em05,
-        backgroundColor:styleSetting.color.blue,    
+        backgroundColor:'#89CFF0',    
     },
     right:{
         textAlign:"right",
         fontSize:styleSetting.size.em16,
+    },
+    button:{
+        padding: 10,
+        backgroundColor: '#89CFF0',
+        marginLeft: 10,
+        flex: 2,
+        alignItems: 'center',
+        width: 30,
+    },
+    row: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        marginBottom: 20,
     },  
     amount:{
         fontSize:styleSetting.size.em20,
