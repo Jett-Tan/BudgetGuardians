@@ -17,7 +17,7 @@ export default function TransactionEntry({
                             <Text style={styles.right}>{props?.description}</Text>
                         </View>
                     </View>
-                    <Text style={styles.right}>${props?.amount.toFixed(2)}</Text>
+                    <Text style={styles.right}>${props?.amount?.toFixed(2)}</Text>
                 </View>
             </Pressable>
         </>
