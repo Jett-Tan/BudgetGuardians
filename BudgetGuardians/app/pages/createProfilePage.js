@@ -18,12 +18,10 @@ export default function createProfilePage(){
     // }
     const [firstName,setFirstName] = useState("")
     const [lastName,setLastName] = useState("")
-    const [gender,setGender] = useState("")
     const [age,setAge] = useState(0)
 
     const [firstNameError,setFirstNameError] = useState("")
     const [lastNameError,setLastNameError] = useState("")
-    const [genderError,setGenderError] = useState("")
     const [ageError,setAgeError] = useState("")
 
     const router = useRouter();
@@ -31,7 +29,7 @@ export default function createProfilePage(){
         console.log("clicked");
         var valid = true;
         await createUserInFirestore()
-        await addUserDataToFirestore({name:{firstName:firstName,lastName:lastName},age:Number.parseInt(age),gender:gender})
+        await addUserDataToFirestore({name:{firstName:firstName,lastName:lastName},age:Number.parseInt(age)})
         .then(()=>{
             valid = true;
         }).catch((error)=>{ 
@@ -81,20 +79,6 @@ export default function createProfilePage(){
                     errorExist={true}
                     errorHandle={ (e) => {
                         if(e === '' ){
-                            return "Missing Value"
-                        }else{
-                            return ''
-                        }
-                    }}
-                />
-                <CustomInput
-                    type="default"
-                    placeholder="Set your gender"
-                    onChange1={e => setGender(e)}
-                    values1={gender}
-                    errorExist={true}
-                    errorHandle={ (e) => {
-                        if(e === ''){
                             return "Missing Value"
                         }else{
                             return ''

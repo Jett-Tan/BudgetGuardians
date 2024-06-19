@@ -6,7 +6,7 @@ import Icon from './icon';
 import FaIcon from './FaIcon';
 import { auth } from '../auth/firebaseConfig';
 
-export default function SideBar({setValue}){
+export default function SideBar({   setValue}){
 
     const router = useRouter();
     return (
