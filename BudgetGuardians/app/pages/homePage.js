@@ -31,8 +31,7 @@ export default function Page() {
         }
         liveUpdate((x) => {console.log(x)});
         (async () => {
-            await getUserDataFromFirestore()
-            .then((data) => {
+            await getUserDataFromFirestore().then((data) => {
                 setCurrentUser(data);
             })
             .catch((err) => {
