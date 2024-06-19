@@ -95,7 +95,7 @@ export default function Page() {
                         <Text style={styles.welcomeText}>Welcome {currentUser ? currentUser?.userData?.name?.firstName : 'Guest'}</Text>
                 </View>
                 <View style ={{flexDirection:"row",height:"100%"}}>
-                    <View style ={{height:"100%", width:200}}>
+                    <View style ={{height:"100%"}}>
                         <SideBar value={tab} setValue ={setTab}/>
                     </View>
                     <View style={styles.content}>
