@@ -24,7 +24,6 @@ export default DateChooser;
 const styles = StyleSheet.create({
     container: {
       backgroundColor: 'white',
-      padding: 10,
       width: '50%',
     },
     row: {

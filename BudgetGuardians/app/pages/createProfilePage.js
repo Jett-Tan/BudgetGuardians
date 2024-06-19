@@ -100,7 +100,7 @@ export default function createProfilePage(){
                     }}
                 />
                 <CustomButton
-                    type="default"
+                    type="signup"
                     onPress={async () => await handleUserData()}
                     text="Continue"
                 />

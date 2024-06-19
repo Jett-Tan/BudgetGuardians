@@ -55,6 +55,11 @@ const DropdownComponent = () => {
   
   // Function to add expense
   const addExpense = async() => {
+    
+    if (!isValidDate(date)) {
+      setErrorMessage("Invalid date. Please select a valid date.");
+      return;
+    }
     const numericAmount = parseFloat(amount);
     const formatteddate = new Date(date).toLocaleDateString('en-SG')
     console.log(formatteddate) 
@@ -68,6 +73,11 @@ const DropdownComponent = () => {
 
   // Function to add income
   const addIncome = async() => {
+    
+    if (!isValidDate(date)) {
+      setErrorMessage("Invalid date. Please select a valid date.");
+      return;
+    }
     const numericAmount = parseFloat(amount);
     const formatteddate = new Date(date).toLocaleDateString('en-SG')
     await addTransactionToFirestore({category: value, amount:numericAmount, date:formatteddate, description:"Food"})
@@ -77,6 +87,11 @@ const DropdownComponent = () => {
       console.log(err)
     })
   }
+
+  // To check if the date given by user is a valid date
+  const isValidDate = (date) => {
+    return date instanceof Date && !isNaN(date);
+  };
 
   // Not needed anymore
   const handleSubmit = () => {
@@ -166,8 +181,10 @@ const DropdownComponent = () => {
         <Pressable style={styles.button} onPress={addExpense}>
           <Text>Add Expense</Text>
         </Pressable>
-
       </View>
+      {errorMessage ? (
+          <Text style={styles.error}>{errorMessage}</Text>
+        ) : null}
     </View>
     <View style={styles.container}>
     {Array.isArray(currentUser) && currentUser.map((x, index) => (
