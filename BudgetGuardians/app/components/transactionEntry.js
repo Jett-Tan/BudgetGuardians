@@ -21,7 +21,7 @@ export default function TransactionEntry({
                     </View>
                     <Text style={styles.right}>${props.amount?.toFixed(2)}</Text>
                     <View style={styles.row}>
-                    <Pressable style={styles.button} onPress={(e)=>{deleteTransaction(e)}}>
+                    <Pressable style={styles.deletebutton} onPress={(e)=>{deleteTransaction(e)}}>
                         <Text>Delete Transaction</Text>
                     </Pressable>
                     <Pressable style={styles.button} onPress={(e)=>{editTransaction(e)}}>
@@ -66,6 +66,14 @@ const styles = StyleSheet.create({
     button:{
         padding: 10,
         backgroundColor: '#89CFF0',
+        marginLeft: 10,
+        flex: 2,
+        alignItems: 'center',
+        width: 30,
+    },
+    deletebutton:{
+        padding: 10,
+        backgroundColor: "#ff7588",
         marginLeft: 10,
         flex: 2,
         alignItems: 'center',

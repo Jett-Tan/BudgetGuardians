@@ -87,6 +87,13 @@ const transactionDataCheck = (transactionData) => {
     valid = valid && transactionData?.description && transactionData?.description 
     return valid
 }
+
+const transactionsDataCheck = (transactionsData) => {
+    return transactionsData
+    .map((transactionsData) => transactionDataCheck(transactionsData))
+    .reduce((a,b) => a && b, true)
+}
+
 export async function updateUserDataToFirestore(userData) {
     if(!userDataCheck(userData)){
         console.error("Invalid userData", userData)
@@ -103,6 +110,7 @@ export async function updateUserDataToFirestore(userData) {
         reject("Error adding document: ", error);
     });
 }
+
 export async function addFinancialDataToFirestore(financialData){
     if(!financialDataCheck(financialData)){
         console.error("Invalid financialData", financialData)
@@ -119,6 +127,7 @@ export async function addFinancialDataToFirestore(financialData){
     });
     
 }
+
 
 export async function getUserDataFromFirestore(){
     const db = getFirestore();
@@ -206,20 +215,23 @@ export async function addTransactionToFirestore(transactionData){
     });
 }
 
-
-/*export async function deleteTransactionFromFirestore(transactionData){
-    if(!transactionDataCheck(transactionData)){
-        console.error("Invalid userData", transactionData)
-        throw new Error("Invalid userData")
+export async function updateTransactionToFirestore(transactionData){
+    if(!transactionsDataCheck(transactionData)){
+        console.error("Invalid transactionData", transactionData)
+        throw new Error("Invalid transactionData")
     }
+    // console.log("userData", userData)
     const db = getFirestore();
     const docRef = doc(db, "users", auth.currentUser.uid);
     const user = await getUserDataFromFirestore();
-    const data = {
-         = deleteField()
-    }
-    //await deleteDoc(doc(db, "cities", "DC"));
-} */
+    user.financialData.transactions = (transactionData);
+    await updateDoc(docRef, {financialData:user.financialData});
+    return new Promise((resolve, reject) => {
+        resolve("Document written with ID: ", auth.currentUser.uid);
+        reject("Error adding document: ", error);
+    });
+    
+}
 
 export const liveUpdate = (callback) => {
     const db = getFirestore();

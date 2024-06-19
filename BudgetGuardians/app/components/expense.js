@@ -5,7 +5,7 @@ import {Dropdown} from 'react-native-element-dropdown'
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import { app, db, getFirestore, collection, addDoc } from "../auth/firebaseConfig";
 import TransactionEntry from './transactionEntry';
-import { addTransactionToFirestore, getUserDataFromFirestore, liveUpdate } from '../setting/fireStoreFunctions';
+import { addTransactionToFirestore, getUserDataFromFirestore, liveUpdate, updateTransactionToFirestore } from '../setting/fireStoreFunctions';
 import DateChooser from "./datepicker" 
 import { DatePickerInput } from 'react-native-paper-dates';
 
@@ -111,18 +111,11 @@ const DropdownComponent = () => {
   };
 
   const deleteTransaction = (id) => {
-    console.log(currentUser);
-    console.log(typeof currentUser);
-    console.log(id);
+    
     let newTransactions1 = currentUser.splice(0, id);
     let newTransactions2 = currentUser.splice(id, currentUser.length - 1);
-    console.log(newTransactions1);
-    console.log(newTransactions2);
-    console.log(newTransactions1.join(newTransactions2));
-    setCurrentUser(newTransactions1.join(newTransactions2));
-  }
-  const editTransaction = (id) => {
-    // setCurrentUser(Array(currentUser).delete(id));
+    
+    updateTransactionToFirestore(newTransactions1.concat(newTransactions2));
   }
 
   return (<>
