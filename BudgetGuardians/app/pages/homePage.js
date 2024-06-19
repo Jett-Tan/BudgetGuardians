@@ -16,6 +16,7 @@ import CustomButton from "../components/customButton";
 import { addExpenseToFirestore, addUserDataToFirestore, getUserDataFromFirestore } from "../setting/fireStoreFunctions";
 import { set } from "firebase/database";
 import HomeTab from "./(tabs)/HomeTab";
+import TransactionTab from "./(tabs)/TransactionTab";
 
 export default function Page() {
     const router = useRouter();
@@ -96,11 +97,12 @@ export default function Page() {
                         <SideBar value={tab} setValue ={setTab}/>
                     </View>
                     <View style={styles.content}>
-                        <TransactionEntry props={{date:"01.12.2022",amount:123.3,description:"money"}}/>
+                        {/* <TransactionEntry props={{date:"01.12.2022",amount:123.3,description:"money"}}/> */}
                         {tab === "home" && <HomeTab/>}
                         {tab === "calendar" && <Text>Calendar</Text>}
                         {tab === "profile" && <Text>Profile</Text>}
                         {tab === "settings" && <Text>Settings</Text>}
+                        {tab === "transaction" && <TransactionTab/>}
                         {/* <Button title="Add Expense" onPress={addExpense}/> */}
                         {/* <DropdownComponent/> */}
                     </View>
