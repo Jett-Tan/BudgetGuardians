@@ -10,9 +10,7 @@ import { auth } from '../auth/firebaseConfig';
 export default function SideBar({   setValue}){
 
     const router = useRouter();
-    const onselect = (e) => {
-        setValue(e);
-    }
+    const [minimized, setMinimized] = useState(false);
     const [selected, setSelected] = useState("home");
 
     const styleSelected = {
@@ -26,55 +24,60 @@ export default function SideBar({   setValue}){
     let goals = selected === "goals" ? styleSelected.selected : {};        
     let profile = selected === "profile" ? styleSelected.selected : {};        
     let settings = selected === "settings" ? styleSelected.selected : {};        
-
+    let sideBar = minimized ? {width:60} : {};
+    let sideBarContent = minimized ? {justifyContent:"center"} : {};
     return (
         <>
-            <View style={styles.sideBar}>
-                <TouchableOpacity style={[styles.sideBarContent,home]} onPress={() => {
+            <View style={[styles.sideBar,sideBar]}>
+                <TouchableOpacity style={[styles.sideBarContent,home,sideBarContent]} onPress={() => {
                     setValue("home")
                     setSelected("home")
                 }}>
                     <FaIcon name="house" size={styleSetting.size.em24} color={styleSetting.color.white}/>
-                    <Text style={styles.sideBarText}>Home</Text>
+                    {!minimized && <Text style={styles.sideBarText}>Home</Text>}
                 </TouchableOpacity>
-                <TouchableOpacity style={[styles.sideBarContent,calendar]} onPress={() => {
+                <TouchableOpacity style={[styles.sideBarContent,calendar,sideBarContent]} onPress={() => {
                     setValue("calendar")
                     setSelected("calendar")
                 }}>
                     <FaIcon name="calendar-days" size={styleSetting.size.em24} color={styleSetting.color.white}/>
-                    <Text style={styles.sideBarText}>Calendar</Text>
+                    {!minimized && <Text style={styles.sideBarText}>Calendar</Text>}
                 </TouchableOpacity>
-                <TouchableOpacity style={[styles.sideBarContent,transactions]} onPress={() => {
+                <TouchableOpacity style={[styles.sideBarContent,transactions,sideBarContent]} onPress={() => {
                     setValue("transactions")
                     setSelected("transactions")
                 }}>
                     <FaIcon name="calendar-days" size={styleSetting.size.em24} color={styleSetting.color.white}/>
-                    <Text style={styles.sideBarText}>Add Transactions</Text>
+                    {!minimized && <Text style={styles.sideBarText}>Add Transactions</Text>}
                 </TouchableOpacity>
-                <TouchableOpacity style={[styles.sideBarContent,goals]} onPress={() => {
+                <TouchableOpacity style={[styles.sideBarContent,goals,sideBarContent]} onPress={() => {
                     setValue("goals")
                     setSelected("goals")
                 }}>
                     <FaIcon name="calendar-days" size={styleSetting.size.em24} color={styleSetting.color.white}/>
-                    <Text style={styles.sideBarText}>Add Goals</Text>
+                    {!minimized && <Text style={styles.sideBarText}>Add Goals</Text>}
                 </TouchableOpacity>
-                <TouchableOpacity style={[styles.sideBarContent,profile]} onPress={() => {
+                <TouchableOpacity style={[styles.sideBarContent,profile,sideBarContent]} onPress={() => {
                     setValue("profile")
                     setSelected("profile")
                 }}>
                     <FaIcon name="circle-user" size={styleSetting.size.em24} color={styleSetting.color.white}/>
-                    <Text style={styles.sideBarText}>Profile</Text>
+                    {!minimized && <Text style={styles.sideBarText}>Profile</Text>}
                 </TouchableOpacity>
-                <TouchableOpacity style={[styles.sideBarContent,settings]} onPress={() => {
+                <TouchableOpacity style={[styles.sideBarContent,settings,sideBarContent]} onPress={() => {
                     setValue("settings")
                     setSelected("settings")
                 }}>
                     <FaIcon name="gears" size={styleSetting.size.em24} color={styleSetting.color.white}/>
-                    <Text style={styles.sideBarText}>Settings</Text>
+                    {!minimized && <Text style={styles.sideBarText}>Settings</Text>}
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.sideBarContent} onPress={() => {auth.signOut();router.push('/')}}>
+                <TouchableOpacity style={[styles.sideBarContent,sideBarContent]} onPress={() => {auth.signOut();router.push('/')}}>
                     <FaIcon name="right-from-bracket" size={styleSetting.size.em24} color={styleSetting.color.white}/>
-                    <Text style={styles.sideBarText}>Logout</Text>
+                    {!minimized && <Text style={styles.sideBarText}>Logout</Text>}
+                </TouchableOpacity>
+                <TouchableOpacity style={[{alignItems:"flex-end",width:'90%',marginRight:15,marginBottom:15,height:50,right:0,bottom:0,position:"absolute"}]} onPress={() => setMinimized(!minimized)}>
+                    {!minimized && <FaIcon name="arrow-left-long" size={styleSetting.size.em24} color={styleSetting.color.white}/> }
+                    {minimized && <FaIcon name="arrow-right-long" size={styleSetting.size.em24} color={styleSetting.color.white}/>}
                 </TouchableOpacity>
             </View>
     </>
@@ -83,12 +86,13 @@ export default function SideBar({   setValue}){
 
 const styles = StyleSheet.create({
     sideBar: {
-        height:"100%",
+        height:"95%",
         width:200,
         backgroundColor: styleSetting.color.mildblue,
         shadowColor: styleSetting.color.black,
         shadowOpacity:0.25,
         shadowOffset:{width:3,height:0},
+        
     },
     sideBarContent: {
         marginVertical:5,
