@@ -47,14 +47,14 @@ export default function HomeTab() {
                     {Array.isArray(lastestTransaction5) && lastestTransaction5.length <= 0 && <Text>No Transaction</Text>}
                     {lastestTransaction5 && lastestTransaction5.map((transaction,index) => {
                         return(
-                            <View key={index} style={{borderColor:"black",borderWidth:1,marginVertical:10, borderRadius:10,shadowColor:"black",shadowRadius:3,shadowOffset:{height:1,width:0}}}>
-                                <TransactionEntry props={{date:transaction.date, category:transaction.category, amount:transaction.amount}} />
+                            <View key={index} style={{borderColor:"black",width:'100%',borderWidth:1,marginVertical:10, borderRadius:10,shadowColor:"black",shadowRadius:3,shadowOffset:{height:1,width:0}}}>
+                                <TransactionEntry showbutton={false}props={{date:transaction.date, category:transaction.category, amount:transaction.amount}} />
                             </View>
                         )
                     })}
                 </View>
 
-                <View style={{borderRadius:5,width:"40%",height:"80%",borderWidth:1,borderColor:"black"}}> 
+                <View style={{borderRadius:5,width:"40%",height:"80%",borderWidth:1,borderColor:"black",justifyContent:"center",alignItems:"center"}}> 
                     {!lastestGoal  && <Text>No Goal</Text>}
                     {/* {lastestGoal && } */}
                 </View>
