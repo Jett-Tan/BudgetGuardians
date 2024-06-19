@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { auth } from "../auth/firebaseConfig";
-import { View, Text, Pressable, StyleSheet, TextInput } from 'react-native';
+import { View, Text, Pressable, StyleSheet, TextInput, ScrollView } from 'react-native';
 import {Dropdown} from 'react-native-element-dropdown'
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import { app, db, getFirestore, collection, addDoc } from "../auth/firebaseConfig";
@@ -29,6 +29,7 @@ const DropdownComponent = () => {
   const [errorMessage, setErrorMessage] = useState("");
   const user = auth.currentUser;
   const [date, setDate] = useState();
+  const [amountError, setAmountError] = useState("");
   
   useEffect(() => {
     if (user) {
@@ -134,67 +135,78 @@ const DropdownComponent = () => {
   }
 
   return (<>
-    <View style={styles.container}>
+    <View style={[{minWidth:"auto",flexDirection:'row',width:"80%",minHeight:"auto",flexWrap:"wrap",height:"20%",justifyContent:"space-evenly",alignItems:"center"}]}>
       {renderLabel()}
-      <View style={styles.row}>
-      <Dropdown
-        style={[styles.dropdown, isFocus && { borderColor: 'blue' }]}
-        placeholderStyle={styles.placeholderStyle}
-        selectedTextStyle={styles.selectedTextStyle}
-        inputSearchStyle={styles.inputSearchStyle}
-        iconStyle={styles.iconStyle}
-        data={data}
-        search
-        maxHeight={300}
-        labelField="label"
-        valueField="value"
-        placeholder={!isFocus ? 'Select Transaction Type' : '-'}
-        searchPlaceholder="Search..."
-        value={value}
-        onFocus={() => setIsFocus(true)}
-        onBlur={() => setIsFocus(false)}
-        onChange={item => {
-          setValue(item.value);
-          setIsFocus(false);
-        }}
-        renderLeftIcon={() => (
-          <FontAwesome
-            style={styles.icon}
-            color={isFocus ? 'blue' : 'black'}
-            name="money"
-            size={20}
-          />
-        )}
-      />
-      <TextInput 
-        placeholder = "Enter Amount" 
-        style={styles.button}
-        value={amount}
-        onChangeText={setAmount}
-        keyboardType='numeric'
-      />
-      {/* Styling of transaction box is under datepicker.js*/}
-      <DateChooser setInputDate={setDate} inputDate={date}    />
-      <Pressable style={styles.button} onPress={addIncome}>
-          <Text>Add Income</Text>
-      </Pressable>
-        <Pressable style={styles.button} onPress={addExpense}>
-          <Text>Add Expense</Text>
-        </Pressable>
+      {/* <View style={styles.row}> */}
+      <View style={{width:"25%"}}>
+        <Dropdown
+          style={[styles.dropdown, isFocus && { borderColor: 'blue' }]}
+          placeholderStyle={styles.placeholderStyle}
+          selectedTextStyle={styles.selectedTextStyle}
+          inputSearchStyle={styles.inputSearchStyle}
+          iconStyle={styles.iconStyle}
+          data={data}
+          search
+          maxHeight={300}
+          labelField="label"
+          valueField="value"
+          placeholder={!isFocus ? 'Select Transaction Type' : '-'}
+          searchPlaceholder="Search..."
+          value={value}
+          onFocus={() => setIsFocus(true)}
+          onBlur={() => setIsFocus(false)}
+          onChange={item => {
+            setValue(item.value);
+            setIsFocus(false);
+          }}
+          renderLeftIcon={() => (
+            <FontAwesome
+              style={styles.icon}
+              color={isFocus ? 'blue' : 'black'}
+              name="money"
+              size={20}
+            />
+          )}
+        />
       </View>
-      {errorMessage ? (
-          <Text style={styles.error}>{errorMessage}</Text>
-        ) : null}
+      <View style={{width:"10%"}}>
+        <TextInput 
+          placeholder = "Enter Amount" 
+          style={styles.button}
+          value={amount}
+          onChangeText={setAmount}
+          keyboardType='numeric'
+        />
+        {amountError ? <Text style={styles.error}>{amountError}</Text> : <></>}
+      </View>
+      <View style={{width:"20%"}}>
+        <DateChooser setInputDate={setDate} inputDate={date}/>
+      </View>
+      <View style={{width:"25%",flexDirection:"row",justifyContent:"space-around"}}>
+        <Pressable style={styles.button} onPress={addIncome}>
+            <Text>Add Income</Text>
+        </Pressable>
+          <Pressable style={styles.button} onPress={addExpense}>
+            <Text>Add Expense</Text>
+          </Pressable>
+        {/* </View> */}
+        {errorMessage ? (
+            <Text style={styles.error}>{errorMessage}</Text>
+          ) : null}
+      </View>
+      {/* Styling of transaction box is under datepicker.js*/}
     </View>
-    <View style={styles.container}>
-    {Array.isArray(currentUser) && currentUser.map((x, index) => (
-          <TransactionEntry 
-            deleteTransaction={() => deleteTransaction(index)} 
-            // editTransaction={editTransaction(index)} 
-            key={index} 
-            props={{ amount: x?.amount, date: x?.date, category: x?.category }} 
-          />
-        ))}
+    <View style={[styles.container,{height:"60%",width:"80%"}]}>
+      <ScrollView>
+        {Array.isArray(currentUser) && currentUser.map((x, index) => (
+              <TransactionEntry 
+                deleteTransaction={() => deleteTransaction(index)} 
+                // editTransaction={editTransaction(index)} 
+                key={index} 
+                props={{ amount: x?.amount, date: x?.date, category: x?.category }} 
+              />
+            ))}
+      </ScrollView>
     </View>
     
   </>
@@ -217,15 +229,22 @@ const styles = StyleSheet.create({
   row: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 20,
+    justifyContent: 'center',
+    width: '100%',
+    flexWrap: 'wrap',
   },
   button: {
-    padding: 10,
+    // padding: 10,
     backgroundColor: '#89CFF0',
-    marginLeft: 10,
-    flex: 2,
+    // marginLeft: 10,
+    // flex: 2,
+    justifyContent: 'center',
     alignItems: 'center',
-    width: 30,
+    borderRadius: 8,
+    shadowColor: 'black',
+    shadowOffset: { width: 2, height: 2 },
+    shadowOpacity: 0.5,
+    height: 50,
   },
   dropdown: {
     height: 50,
@@ -233,7 +252,7 @@ const styles = StyleSheet.create({
     borderWidth: 0.5,
     borderRadius: 8,
     paddingHorizontal: 8,
-    flex: 4,
+    // flex: 4,
   },
   icon: {
     marginRight: 5,
