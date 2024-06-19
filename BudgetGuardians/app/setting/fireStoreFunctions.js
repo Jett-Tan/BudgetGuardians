@@ -1,4 +1,4 @@
-import { getFirestore, doc, setDoc, updateDoc, addDoc, getDoc, collection  } from "firebase/firestore";
+import { getFirestore, doc, setDoc, updateDoc, addDoc, getDoc, collection ,onSnapshot } from "firebase/firestore";
 import { auth } from "../auth/firebaseConfig";
 import { set } from "firebase/database";
 /*
@@ -196,7 +196,7 @@ export async function addTransactionToFirestore(transactionData){
 export const liveUpdate = (callback) => {
     const db = getFirestore();
     const docRef = doc(db, "users", auth.currentUser.uid);
-    const observer = docRef.onSnapshot((doc) => {
+    const observer = onSnapshot(docRef,(doc) => {
         callback(doc.data());
     });
     return observer;

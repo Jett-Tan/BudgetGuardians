@@ -13,10 +13,11 @@ import Tasks from "../components/expense"
 import DropdownComponent from "../components/expense";
 import CustomButton from "../components/customButton";
 
-import { addExpenseToFirestore, addUserDataToFirestore, getUserDataFromFirestore } from "../setting/fireStoreFunctions";
+import { addExpenseToFirestore, addUserDataToFirestore, getUserDataFromFirestore, liveUpdate} from "../setting/fireStoreFunctions";
 import { set } from "firebase/database";
 import HomeTab from "./(tabs)/HomeTab";
 import TransactionTab from "./(tabs)/TransactionTab";
+import CalendarTab from "./(tabs)/CalendarTab";
 
 export default function Page() {
     const router = useRouter();
@@ -28,6 +29,7 @@ export default function Page() {
         if (user) {
           setCurrentUser(user);
         }
+        liveUpdate((x) => {console.log(x)});
         (async () => {
             await getUserDataFromFirestore()
             .then((data) => {
@@ -56,7 +58,7 @@ export default function Page() {
     }
 
     const addExpense = async () => {
-        await addTransactionToFirestore({title:"Food",amount:-123.30,date:"adsd",description:"Food",category:"Food",status:"Food"})
+        await addTransactionToFirestore({amount:-123.30,date:"adsd",description:"Food",category:"Food"})
         .then((data) => {
             console.log(data)
         }).catch((err) => {
@@ -65,7 +67,7 @@ export default function Page() {
     }
 
     const addIncome = async () => {
-        await addTransactionToFirestore({title:"Food",amount:-123.30,date:"adsd",description:"Food",category:"Food",status:"Food"})
+        await addTransactionToFirestore({amount:-123.30,date:"adsd",description:"Food",category:"Food"})
         .then((data) => {
             console.log(data)
         }).catch((err) => {
@@ -99,7 +101,7 @@ export default function Page() {
                     <View style={styles.content}>
                         {/* <TransactionEntry props={{date:"01.12.2022",amount:123.3,description:"money"}}/> */}
                         {tab === "home" && <HomeTab/>}
-                        {tab === "calendar" && <Text>Calendar</Text>}
+                        {tab === "calendar" && <CalendarTab/>}
                         {tab === "profile" && <Text>Profile</Text>}
                         {tab === "settings" && <Text>Settings</Text>}
                         {tab === "transaction" && <TransactionTab/>}
