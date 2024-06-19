@@ -29,8 +29,7 @@ export default function Page() {
           setCurrentUser(user);
         }
         (async () => {
-            await getUserDataFromFirestore()
-            .then((data) => {
+            await getUserDataFromFirestore().then((data) => {
                 setCurrentUser(data);
             })
             .catch((err) => {

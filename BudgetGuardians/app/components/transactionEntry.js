@@ -6,18 +6,18 @@ export default function TransactionEntry({
     onPress = (e) => {console.log(e);}, //modal
     props = {},
 }) {
-    
+    console.log(props)
     return (
         <>
             <Pressable style={styles.transcation} onPress={onPress}>
                 <View style={styles.box}>
                     <View style={styles.miniBox}>
-                        <Text style={[]}>{props?.date}</Text>
+                        <Text style={[]}>{props.date}</Text>
                         <View style={styles.title}>
-                            <Text style={styles.right}>{props?.description}</Text>
+                            <Text style={styles.right}>{props.description}</Text>
                         </View>
                     </View>
-                    <Text style={styles.right}>${props?.amount?.toFixed(2)}</Text>
+                    <Text style={styles.right}>${props.amount?.toFixed(2)}</Text>
                 </View>
             </Pressable>
         </>

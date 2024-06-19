@@ -5,7 +5,7 @@ import {Dropdown} from 'react-native-element-dropdown'
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import { app, db, getFirestore, collection, addDoc } from "../auth/firebaseConfig";
 import TransactionEntry from './transactionEntry';
-
+import { addTransactionToFirestore, getUserDataFromFirestore } from '../setting/fireStoreFunctions';
 
 const data = [
   { label: 'Transport', value: 'Transport' },
@@ -30,6 +30,15 @@ const DropdownComponent = () => {
     if (user) {
       setCurrentUser(user);
     }
+    (async () => {
+        await getUserDataFromFirestore().then((data) => {
+            setCurrentUser(data?.financialData?.transactions);
+            console.log(data?.financialData?.transactions)
+        })
+        .catch((err) => {
+            router.replace('./createProfilePage');
+        });
+    })()
   }, [user]);
 
   const renderLabel = () => {
@@ -46,29 +55,23 @@ const DropdownComponent = () => {
   // Function to add expense
   const addExpense = async() => {
     const numericAmount = parseFloat(amount);
-    try {
-      const docRef = await addDoc(collection(db, currentUser.email), {
-        transactionType: value,
-        amount: -numericAmount,
-      });
-      console.log("Document written with ID: ", docRef.id);
-    } catch (e) {
-      console.error("Error adding document: ", e);
-    }
+    await addTransactionToFirestore({category: value, amount:-numericAmount, date:"adsd", description:"Food"})
+    .then((data) => {
+      console.log(data)
+    }).catch((err) => {
+      console.log(err)
+    })
   }
 
   // Function to add income
   const addIncome = async() => {
     const numericAmount = parseFloat(amount);
-    try {
-      const docRef = await addDoc(collection(db, currentUser.email), {
-        transactionType: value,
-        amount: numericAmount,
-      });
-      console.log("Document written with ID: ", docRef.id);
-    } catch (e) {
-      console.error("Error adding document: ", e);
-    }
+    await addTransactionToFirestore({category: value, amount:numericAmount, date:"adsd", description:"Food"})
+    .then((data) => {
+      console.log(data)
+    }).catch((err) => {
+      console.log(err)
+    })
   }
 
   // Not needed anymore
@@ -103,7 +106,7 @@ const DropdownComponent = () => {
     }
   };
 
-  return (
+  return (<>
     <View style={styles.container}>
       {renderLabel()}
       <View style={styles.row}>
@@ -149,9 +152,17 @@ const DropdownComponent = () => {
         <Pressable style={styles.button} onPress={addExpense}>
           <Text>Add Expense</Text>
         </Pressable>
-      <TransactionEntry/>
       </View>
     </View>
+    <View style={styles.container}>
+    {Array.isArray(currentUser) && currentUser.map((x, index) => (
+          <TransactionEntry key={index} props={{ amount: x?.amount, date: x?.date, description: x?.description }} />
+        ))}
+      
+    </View>
+  </>
+    
+    
     
   );
 };
@@ -159,8 +170,6 @@ const DropdownComponent = () => {
 export default DropdownComponent;
 
 
-
-  
 
 const styles = StyleSheet.create({
   container: {
