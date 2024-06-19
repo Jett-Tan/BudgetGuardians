@@ -6,10 +6,9 @@ import Icon from './icon';
 import FaIcon from './FaIcon';
 import { auth } from '../auth/firebaseConfig';
 
-export default function SideBar({value,setValue}){
+export default function SideBar({setValue}){
 
     const router = useRouter();
-    console.log(value);
     return (
         <>
             <View style={styles.sideBar}>
