@@ -58,10 +58,8 @@ export type userInformation = {
 
 const financialDataCheck = (financialData) => {
     var valid = true;
-    valid = valid && financialData?.income
-    valid = valid && financialData?.savings
-    valid = valid && financialData?.expense
-    valid = valid && financialData?.goals
+    valid = valid && financialData?.transaction && typeof financialData?.transaction === "array"
+    valid = valid && financialData?.goals && typeof financialData?.goals === "array"
     return valid
 }
 
@@ -69,30 +67,24 @@ const goalDataCheck = (goalData) => {
     var valid = true;
     valid = valid && goalData?.goalAmount
     valid = valid && goalData?.goalDate
-    valid = valid && goalData?.goalDescription
-    valid = valid && goalData?.goalPriority
     valid = valid && goalData?.goalCategory
-    valid = valid && goalData?.goalStatus
     valid = valid && goalData?.goalReminder
     return valid
 }
 
 const userDataCheck = (userData) => {
     var valid = true;
-    valid = valid && userData?.age
-    valid = valid && userData?.name?.firstName 
-    valid = valid && userData?.name?.lastName
+    valid = valid && userData?.age && typeof userData?.age === "number"
+    valid = valid && userData?.name?.firstName && typeof userData?.name?.firstName === "string"
+    valid = valid && userData?.name?.lastName && typeof userData?.name?.lastName === "string"
     return valid
 }
 
-const expenseDataCheck = (expenseData) => {
+const transactionDataCheck = (transactionData) => {
     var valid = true;
-    valid = valid && expenseData?.title
-    valid = valid && expenseData?.amount
-    valid = valid && expenseData?.date
-    valid = valid && expenseData?.description
-    valid = valid && expenseData?.category
-    valid = valid && expenseData?.status
+    valid = valid && transactionData?.amount && transactionData?.amount 
+    valid = valid && transactionData?.date && transactionData?.date 
+    valid = valid && transactionData?.category && transactionData?.category 
     return valid
 }
 
@@ -139,9 +131,7 @@ export async function createUserInFirestore(){
             },
         },
         financialData: {
-            income: 0 ,
-            savings: 0,
-            expense: [],
+            transaction: [],
             goals:[]
         }
     }
@@ -182,20 +172,15 @@ export async function addGoalToFirestore(goalData){
     });
 }
 
-export async function addExpenseToFirestore(expenseData){
-    if(!expenseDataCheck(expenseData)){
-        console.error("Invalid userData", expenseData)
+export async function addTransactionToFirestore(transactionData){
+    if(!transactionDataCheck(transactionData)){
+        console.error("Invalid userData", transactionData)
         throw new Error("Invalid userData")
     }
     const db = getFirestore();
     const docRef = doc(db, "users",auth.currentUser.uid);
     const user = await getUserDataFromFirestore();
-    await addDoc(collection(db,"expenses"), expenseData).then((data) => {
-        console.log("data",data.path.replace("expenses/",""))
-        user?.financialData?.expense.push(data.path.replace("expenses/",""));
-    }).catch((err) => {
-        console.log(err)
-    })
+    user?.financialData?.expense.push(transactionData);
     await updateDoc(docRef, {financialData:user.financialData}).then((data) => {
         console.log(data)
     }).catch((err) => {

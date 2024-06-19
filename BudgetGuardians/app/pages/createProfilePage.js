@@ -33,14 +33,14 @@ export default function createProfilePage(){
         console.log("clicked");
         var valid = true;
         await createUserInFirestore()
-        await addUserDataToFirestore({name:{firstName:firstName,lastName:lastName},age:age,gender:gender})
+        await addUserDataToFirestore({name:{firstName:firstName,lastName:lastName},age:Number.parseInt(age),gender:gender})
         .then(()=>{
             valid = true;
         }).catch((error)=>{ 
             valid = false;
             console.error("Error adding document: ", error);
         });
-        await addFinancialDataToFirestore({income:income,savings:savings,expense:[],goals:[]})
+        await addFinancialDataToFirestore({income:Number.parseFloat(income),savings:Number.parseFloat(savings),expense:[],goals:[]})
         .then(()=>{
             valid = true;
         }).catch((error)=>{

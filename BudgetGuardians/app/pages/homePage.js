@@ -48,18 +48,30 @@ export default function Page() {
     }
 
     const[modalVisible,setModalVisible] = useState(false)
+
     const toggleModalVisible = () => {
         console.log(modalVisible)
         setModalVisible(!modalVisible)
     }
+
     const addExpense = async () => {
-        await addExpenseToFirestore({title:"Food",amount:123.3,date:"adsd",description:"Food",category:"Food",status:"Food"})
+        await addTransactionToFirestore({title:"Food",amount:-123.30,date:"adsd",description:"Food",category:"Food",status:"Food"})
         .then((data) => {
             console.log(data)
         }).catch((err) => {
             console.log(err)
         })
     }
+
+    const addIncome = async () => {
+        await addTransactionToFirestore({title:"Food",amount:-123.30,date:"adsd",description:"Food",category:"Food",status:"Food"})
+        .then((data) => {
+            console.log(data)
+        }).catch((err) => {
+            console.log(err)
+        })
+    }
+
     const block = false;
     return (
         <>
@@ -86,6 +98,7 @@ export default function Page() {
                     <View style={styles.content}>
                         {tab === "home" && <Text>Home</Text>}
                         {tab === "calendar" && <Text>Calendar</Text>}
+                        <Button title="Add Expense" onPress={addExpense}/>
                         <DropdownComponent/>
                     </View>
                 </View>
