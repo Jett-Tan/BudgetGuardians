@@ -1,5 +1,6 @@
 import {View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { useRouter } from 'expo-router';
+import { useState } from 'react';
 
 import styleSetting from '../setting/setting';
 import Icon from './icon';
@@ -9,30 +10,65 @@ import { auth } from '../auth/firebaseConfig';
 export default function SideBar({   setValue}){
 
     const router = useRouter();
+    const onselect = (e) => {
+        setValue(e);
+    }
+    const [selected, setSelected] = useState("home");
+
+    const styleSelected = {
+        selected:{
+            backgroundColor:styleSetting.color.gentleblue,
+        },
+    }
+    let home = selected === "home" ? styleSelected.selected : {};        
+    let calendar = selected === "calendar" ? styleSelected.selected : {};        
+    let transactions = selected === "transactions" ? styleSelected.selected : {};        
+    let goals = selected === "goals" ? styleSelected.selected : {};        
+    let profile = selected === "profile" ? styleSelected.selected : {};        
+    let settings = selected === "settings" ? styleSelected.selected : {};        
+
     return (
         <>
             <View style={styles.sideBar}>
-                <TouchableOpacity style={styles.sideBarContent} onPress={() => setValue("home")}>
+                <TouchableOpacity style={[styles.sideBarContent,home]} onPress={() => {
+                    setValue("home")
+                    setSelected("home")
+                }}>
                     <FaIcon name="house" size={styleSetting.size.em24} color={styleSetting.color.white}/>
                     <Text style={styles.sideBarText}>Home</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.sideBarContent} onPress={() => setValue("calendar")}>
+                <TouchableOpacity style={[styles.sideBarContent,calendar]} onPress={() => {
+                    setValue("calendar")
+                    setSelected("calendar")
+                }}>
                     <FaIcon name="calendar-days" size={styleSetting.size.em24} color={styleSetting.color.white}/>
                     <Text style={styles.sideBarText}>Calendar</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.sideBarContent} onPress={() => setValue("transactions")}>
+                <TouchableOpacity style={[styles.sideBarContent,transactions]} onPress={() => {
+                    setValue("transactions")
+                    setSelected("transactions")
+                }}>
                     <FaIcon name="calendar-days" size={styleSetting.size.em24} color={styleSetting.color.white}/>
                     <Text style={styles.sideBarText}>Add Transactions</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.sideBarContent} onPress={() => setValue("goals")}>
+                <TouchableOpacity style={[styles.sideBarContent,goals]} onPress={() => {
+                    setValue("goals")
+                    setSelected("goals")
+                }}>
                     <FaIcon name="calendar-days" size={styleSetting.size.em24} color={styleSetting.color.white}/>
                     <Text style={styles.sideBarText}>Add Goals</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.sideBarContent} onPress={() => setValue("profile")}>
+                <TouchableOpacity style={[styles.sideBarContent,profile]} onPress={() => {
+                    setValue("profile")
+                    setSelected("profile")
+                }}>
                     <FaIcon name="circle-user" size={styleSetting.size.em24} color={styleSetting.color.white}/>
                     <Text style={styles.sideBarText}>Profile</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.sideBarContent} onPress={() => setValue("settings")}>
+                <TouchableOpacity style={[styles.sideBarContent,settings]} onPress={() => {
+                    setValue("settings")
+                    setSelected("settings")
+                }}>
                     <FaIcon name="gears" size={styleSetting.size.em24} color={styleSetting.color.white}/>
                     <Text style={styles.sideBarText}>Settings</Text>
                 </TouchableOpacity>
