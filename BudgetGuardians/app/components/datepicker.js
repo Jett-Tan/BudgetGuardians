@@ -3,19 +3,20 @@ import { View, Text, StyleSheet } from "react-native";
 import { DatePickerInput } from 'react-native-paper-dates';
 import { SafeAreaProvider } from "react-native-safe-area-context";
 
-const DateChooser = ({inputDate, setInputDate}) => {
+const DateChooser = ({inputDate, setInputDate,style}) => {
 //   const [inputDate, setInputDate] = React.useState(undefined)
 
   return (
-      <View style={styles.container}>
         <DatePickerInput style={styles.button}
           locale="en-SG"
           label="Transaction Date"
           value={inputDate}
           onChange={(d) => setInputDate(d)}
           inputMode="start"
+          display="calendar"
         />
-      </View>
+      // <View style={styles.container}>
+      // </View>
   )
 }
 
@@ -24,7 +25,7 @@ export default DateChooser;
 const styles = StyleSheet.create({
     container: {
       backgroundColor: 'white',
-      width: '50%',
+      width: '100%',
     },
     row: {
       flexDirection: 'row',
@@ -32,13 +33,15 @@ const styles = StyleSheet.create({
       marginBottom: 20,
     },
     button: {
-      padding: 10,
       backgroundColor: '#89CFF0',
-      marginLeft: 10,
-      flex: 1,
       alignItems: 'center',
-      width: 30,
-      height: 40,
+      width: "100%",
+      height: 50,
+      fontSize: "85%",
+      flexWrap: 'wrap',
+      shadowColor:"black",
+      shadowOffset : {width: 2, height: 2},
+      shadowOpacity: 0.5,
     },
 
   });
