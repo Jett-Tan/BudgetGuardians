@@ -20,8 +20,6 @@ export default function createProfilePage(){
     const [lastName,setLastName] = useState("")
     const [gender,setGender] = useState("")
     const [age,setAge] = useState(0)
-    const [income,setIncome] = useState(0)
-    const [savings,setSavings] = useState(0)
 
     const [firstNameError,setFirstNameError] = useState("")
     const [lastNameError,setLastNameError] = useState("")
@@ -40,7 +38,7 @@ export default function createProfilePage(){
             valid = false;
             console.error("Error adding document: ", error);
         });
-        await addFinancialDataToFirestore({income:Number.parseFloat(income),savings:Number.parseFloat(savings),expense:[],goals:[]})
+        await addFinancialDataToFirestore({transactions:[],goals:[]})
         .then(()=>{
             valid = true;
         }).catch((error)=>{
@@ -108,34 +106,6 @@ export default function createProfilePage(){
                     placeholder="Set your age"
                     onChange1={e => setAge(e)}
                     values1={age}
-                    errorExist={true}
-                    errorHandle={ (e) => {
-                        if(e === '' || e < 0){
-                            return "Missing Value"
-                        }else{
-                            return ''
-                        }
-                    }}
-                />
-                <CustomInput
-                    type="default"
-                    placeholder="Set your income"
-                    onChange1={e => setIncome(e)}
-                    values1={income}
-                    errorExist={true}
-                    errorHandle={ (e) => {
-                        if(e === '' || e < 0){
-                            return "Missing Value"
-                        }else{
-                            return ''
-                        }
-                    }}
-                />
-                <CustomInput
-                    type="default"
-                    placeholder="Set your savings"
-                    onChange1={e => setSavings(e)}
-                    values1={savings}
                     errorExist={true}
                     errorHandle={ (e) => {
                         if(e === '' || e < 0){

@@ -12,12 +12,12 @@ export default function TransactionEntry({
             <Pressable style={styles.transcation} onPress={onPress}>
                 <View style={styles.box}>
                     <View style={styles.miniBox}>
-                        <Text style={[]}>{props.date}</Text>
+                        <Text style={[]}>{props?.date}</Text>
                         <View style={styles.title}>
-                            <Text style={styles.right}>{props.title}</Text>
+                            <Text style={styles.right}>{props?.description}</Text>
                         </View>
                     </View>
-                    <Text style={styles.right}>${props.amount.toFixed(2)}</Text>
+                    <Text style={styles.right}>${props?.amount.toFixed(2)}</Text>
                 </View>
             </Pressable>
         </>

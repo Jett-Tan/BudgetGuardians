@@ -58,8 +58,8 @@ export type userInformation = {
 
 const financialDataCheck = (financialData) => {
     var valid = true;
-    valid = valid && financialData?.transaction && typeof financialData?.transaction === "array"
-    valid = valid && financialData?.goals && typeof financialData?.goals === "array"
+    valid = valid && financialData?.transactions 
+    valid = valid && financialData?.goals 
     return valid
 }
 
@@ -85,6 +85,7 @@ const transactionDataCheck = (transactionData) => {
     valid = valid && transactionData?.amount && transactionData?.amount 
     valid = valid && transactionData?.date && transactionData?.date 
     valid = valid && transactionData?.category && transactionData?.category 
+    valid = valid && transactionData?.description && transactionData?.description 
     return valid
 }
 
@@ -131,7 +132,7 @@ export async function createUserInFirestore(){
             },
         },
         financialData: {
-            transaction: [],
+            transactions: [],
             goals:[]
         }
     }
@@ -180,7 +181,7 @@ export async function addTransactionToFirestore(transactionData){
     const db = getFirestore();
     const docRef = doc(db, "users",auth.currentUser.uid);
     const user = await getUserDataFromFirestore();
-    user?.financialData?.expense.push(transactionData);
+    user?.financialData?.transactions.push(transactionData);
     await updateDoc(docRef, {financialData:user.financialData}).then((data) => {
         console.log(data)
     }).catch((err) => {
