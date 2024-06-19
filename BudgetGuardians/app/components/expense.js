@@ -30,20 +30,12 @@ const DropdownComponent = () => {
     if (user) {
       setCurrentUser(user);
     }
-    const unsubscribe = liveUpdate((data) => {
+    liveUpdate((data) => {
       setCurrentUser(data?.financialData?.transactions || []);
+      console.log(data)
     });
 
-    (async () => {
-        await getUserDataFromFirestore().then((data) => {
-            setCurrentUser(data?.financialData?.transactions);
-            console.log(data?.financialData?.transactions)
-        })
-        .catch((err) => {
-            router.replace('./createProfilePage');
-        });
-    })()
-    return ()=> unsubscribe();
+    
   }, [user]);
 
   const renderLabel = () => {
