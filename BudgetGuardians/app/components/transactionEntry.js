@@ -5,6 +5,8 @@ import styleSetting from "../setting/setting"
 export default function TransactionEntry({
     onPress = (e) => {console.log(e);}, //modal
     props = {},
+    deleteTransaction = (e) => {console.log(e);},
+    editTransaction = (e) => {console.log(e);},
 }) {
     console.log(props)
     return (
@@ -19,10 +21,10 @@ export default function TransactionEntry({
                     </View>
                     <Text style={styles.right}>${props.amount?.toFixed(2)}</Text>
                     <View style={styles.row}>
-                    <Pressable style={styles.button}>
+                    <Pressable style={styles.button} onPress={(e)=>{deleteTransaction(e)}}>
                         <Text>Delete Transaction</Text>
                     </Pressable>
-                    <Pressable style={styles.button}>
+                    <Pressable style={styles.button} onPress={(e)=>{editTransaction(e)}}>
                         <Text>Edit Transaction</Text>
                     </Pressable>
                     </View>

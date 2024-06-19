@@ -22,15 +22,15 @@ import ProfileTab from "./(tabs)/ProfileTab";
 
 export default function Page() {
     const router = useRouter();
-    const [currentUser, setCurrentUser] = useState({});
+    const [currentUser, setCurrentUser] = useState();
     const user = auth.currentUser;
     const [tab, setTab] = useState("home");
 
     useEffect(() => {
-        if (user) {
-          setCurrentUser(user);
-        }
-        liveUpdate((x) => {setCurrentUser(x||{})});
+
+        liveUpdate((x) => {
+            setCurrentUser(x)
+        });
         (async () => {
             await getUserDataFromFirestore().then((data) => {
                 setCurrentUser(data);
@@ -101,10 +101,12 @@ export default function Page() {
                     <View style={styles.content}>
                         {/* <TransactionEntry props={{date:"01.12.2022",amount:123.3,description:"money"}}/> */}
                         {tab === "home" && <HomeTab/>}
-                        {tab === "calendar" && <CalendarTab/>}
+                        {/* {tab === "calendar" && <CalendarTab/>} */}
+                        {tab === "calendar" && <Text>Coming soon</Text>}
                         {tab === "profile" && <ProfileTab/>}
-                        {tab === "settings" && <Text>Settings</Text>}
-                        {tab === "transaction" && <TransactionTab/>}
+                        {tab === "settings" && <Text>Coming soon</Text>}
+                        {tab === "transactions" && <TransactionTab/>}
+                        {tab === "goals" && <GoalTab/>}
                         {/* <Button title="Add Expense" onPress={addExpense}/> */}
                         {/* <DropdownComponent/> */}
                     </View>
@@ -130,7 +132,7 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
     },
     content: {
-        flex: 7,
+        flex: 1,
         alignItems: 'center',
         justifyContent:'center'
         

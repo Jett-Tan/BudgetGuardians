@@ -20,9 +20,13 @@ export default function SideBar({   setValue}){
                     <FaIcon name="calendar-days" size={styleSetting.size.em24} color={styleSetting.color.white}/>
                     <Text style={styles.sideBarText}>Calendar</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.sideBarContent} onPress={() => setValue("transaction")}>
+                <TouchableOpacity style={styles.sideBarContent} onPress={() => setValue("transactions")}>
                     <FaIcon name="calendar-days" size={styleSetting.size.em24} color={styleSetting.color.white}/>
                     <Text style={styles.sideBarText}>Add Transactions</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.sideBarContent} onPress={() => setValue("goals")}>
+                    <FaIcon name="calendar-days" size={styleSetting.size.em24} color={styleSetting.color.white}/>
+                    <Text style={styles.sideBarText}>Add Goals</Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.sideBarContent} onPress={() => setValue("profile")}>
                     <FaIcon name="circle-user" size={styleSetting.size.em24} color={styleSetting.color.white}/>
@@ -64,8 +68,9 @@ const styles = StyleSheet.create({
     },
     
     sideBarText: {
-        fontSize: styleSetting.size.em20,
+        fontSize: styleSetting.size.em15,
         color: styleSetting.color.white,
-        marginLeft:20
+        marginLeft:20,
+        flexWrap:"wrap",
     }
 });

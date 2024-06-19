@@ -36,7 +36,7 @@ const DropdownComponent = () => {
     }
     liveUpdate((data) => {
       setCurrentUser(data?.financialData?.transactions || []);
-      console.log(data)
+      // console.log(data)
     });
 
     
@@ -110,6 +110,21 @@ const DropdownComponent = () => {
     }
   };
 
+  const deleteTransaction = (id) => {
+    console.log(currentUser);
+    console.log(typeof currentUser);
+    console.log(id);
+    let newTransactions1 = currentUser.splice(0, id);
+    let newTransactions2 = currentUser.splice(id, currentUser.length - 1);
+    console.log(newTransactions1);
+    console.log(newTransactions2);
+    console.log(newTransactions1.join(newTransactions2));
+    setCurrentUser(newTransactions1.join(newTransactions2));
+  }
+  const editTransaction = (id) => {
+    // setCurrentUser(Array(currentUser).delete(id));
+  }
+
   return (<>
     <View style={styles.container}>
       {renderLabel()}
@@ -163,7 +178,12 @@ const DropdownComponent = () => {
     </View>
     <View style={styles.container}>
     {Array.isArray(currentUser) && currentUser.map((x, index) => (
-          <TransactionEntry key={index} props={{ amount: x?.amount, date: x?.date, category: x?.category }} />
+          <TransactionEntry 
+            deleteTransaction={() => deleteTransaction(index)} 
+            // editTransaction={editTransaction(index)} 
+            key={index} 
+            props={{ amount: x?.amount, date: x?.date, category: x?.category }} 
+          />
         ))}
     </View>
     
