@@ -25,6 +25,7 @@ const DropdownComponent = () => {
   const [currentUser, setCurrentUser] = useState();
   const [errorMessage, setErrorMessage] = useState("");
   const user = auth.currentUser;
+  
   useEffect(() => {
     if (user) {
       setCurrentUser(user);
@@ -42,18 +43,23 @@ const DropdownComponent = () => {
     return null;
   };
   
-  const addExpense = async(numericAmount) => {
+  // Function to add expense
+  const addExpense = async() => {
+    const numericAmount = parseFloat(amount);
     try {
       const docRef = await addDoc(collection(db, currentUser.email), {
         transactionType: value,
-        amount: numericAmount,
+        amount: -numericAmount,
       });
       console.log("Document written with ID: ", docRef.id);
     } catch (e) {
       console.error("Error adding document: ", e);
     }
   }
-  const addIncome = async(numericAmount) => {
+
+  // Function to add income
+  const addIncome = async() => {
+    const numericAmount = parseFloat(amount);
     try {
       const docRef = await addDoc(collection(db, currentUser.email), {
         transactionType: value,
@@ -65,6 +71,7 @@ const DropdownComponent = () => {
     }
   }
 
+  // Not needed anymore
   const handleSubmit = () => {
     const numericAmount = parseFloat(amount);
     if (numericAmount < 0) {
@@ -73,7 +80,8 @@ const DropdownComponent = () => {
       addIncome(numericAmount);
     }
   };
-
+  
+  // Not needed anymore
   const handleAddExpense = () => {
     const numericAmount = parseFloat(amount);
     if (numericAmount >= 0) {
@@ -84,6 +92,7 @@ const DropdownComponent = () => {
     }
   };
 
+  // Not needed anymore
   const handleAddIncome = () => {
     const numericAmount = parseFloat(amount);
     if (numericAmount < 0) {
@@ -133,18 +142,14 @@ const DropdownComponent = () => {
         value={amount}
         onChangeText={setAmount}
         keyboardType='numeric'
-        onSubmitEditing={handleSubmit}
       />
-      <Pressable style={styles.button} onPress={handleAddIncome}>
+      <Pressable style={styles.button} onPress={addIncome}>
           <Text>Add Income</Text>
       </Pressable>
-        <Pressable style={styles.button} onPress={handleAddExpense}>
+        <Pressable style={styles.button} onPress={addExpense}>
           <Text>Add Expense</Text>
         </Pressable>
       </View>
-      {errorMessage ? (
-        <Text style={styles.error}>{errorMessage}</Text>
-      ) : null}
     </View>
     
   );
