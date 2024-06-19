@@ -18,10 +18,11 @@ import { set } from "firebase/database";
 import HomeTab from "./(tabs)/HomeTab";
 import TransactionTab from "./(tabs)/TransactionTab";
 import CalendarTab from "./(tabs)/CalendarTab";
+import ProfileTab from "./(tabs)/ProfileTab";
 
 export default function Page() {
     const router = useRouter();
-    const [currentUser, setCurrentUser] = useState();
+    const [currentUser, setCurrentUser] = useState({});
     const user = auth.currentUser;
     const [tab, setTab] = useState("home");
 
@@ -29,7 +30,7 @@ export default function Page() {
         if (user) {
           setCurrentUser(user);
         }
-        liveUpdate((x) => {console.log(x)});
+        liveUpdate((x) => {setCurrentUser(x||{})});
         (async () => {
             await getUserDataFromFirestore().then((data) => {
                 setCurrentUser(data);
@@ -101,7 +102,7 @@ export default function Page() {
                         {/* <TransactionEntry props={{date:"01.12.2022",amount:123.3,description:"money"}}/> */}
                         {tab === "home" && <HomeTab/>}
                         {tab === "calendar" && <CalendarTab/>}
-                        {tab === "profile" && <Text>Profile</Text>}
+                        {tab === "profile" && <ProfileTab/>}
                         {tab === "settings" && <Text>Settings</Text>}
                         {tab === "transaction" && <TransactionTab/>}
                         {/* <Button title="Add Expense" onPress={addExpense}/> */}

@@ -1,6 +1,5 @@
 import { getFirestore, doc, setDoc, updateDoc, addDoc, getDoc, collection ,onSnapshot } from "firebase/firestore";
 import { auth } from "../auth/firebaseConfig";
-import { set } from "firebase/database";
 /*
 export type userData = {
     age: Number,
@@ -88,7 +87,22 @@ const transactionDataCheck = (transactionData) => {
     valid = valid && transactionData?.description && transactionData?.description 
     return valid
 }
+export async function updateUserDataToFirestore(userData) {
+    if(!userDataCheck(userData)){
+        console.error("Invalid userData", userData)
+        throw new Error("Invalid userData")
+    }
+    // console.log("userData", userData)
+    const db = getFirestore();
+    const docRef = doc(db, "users", auth.currentUser.uid);
+    userData.email = auth.currentUser.email;
 
+    await updateDoc(docRef, {userData:userData});
+    return new Promise((resolve, reject) => {
+        resolve("Document written with ID: ", auth.currentUser.uid);
+        reject("Error adding document: ", error);
+    });
+}
 export async function addFinancialDataToFirestore(financialData){
     if(!financialDataCheck(financialData)){
         console.error("Invalid financialData", financialData)
@@ -125,7 +139,6 @@ export async function createUserInFirestore(){
     const userData = {
         userData: {
             age: 0,
-            gender:  "Male" ,
             name:{
                 firstName: '',
                 lastName: '',
@@ -195,6 +208,9 @@ export async function addTransactionToFirestore(transactionData){
 
 export const liveUpdate = (callback) => {
     const db = getFirestore();
+    if (auth.currentUser === null) {
+        return null;
+    }
     const docRef = doc(db, "users", auth.currentUser.uid);
     const observer = onSnapshot(docRef,(doc) => {
         callback(doc.data());
