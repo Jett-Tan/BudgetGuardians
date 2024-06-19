@@ -22,6 +22,7 @@ export default function SideBar({   setValue}){
     let calendar = selected === "calendar" ? styleSelected.selected : {};        
     let transactions = selected === "transactions" ? styleSelected.selected : {};        
     let goals = selected === "goals" ? styleSelected.selected : {};        
+    let reports = selected === "reports" ? styleSelected.selected : {};        
     let profile = selected === "profile" ? styleSelected.selected : {};        
     let settings = selected === "settings" ? styleSelected.selected : {};        
     let sideBar = minimized ? {width:60} : {};
@@ -57,6 +58,13 @@ export default function SideBar({   setValue}){
                     <FaIcon name="calendar-days" size={styleSetting.size.em24} color={styleSetting.color.white}/>
                     {!minimized && <Text style={styles.sideBarText}>Add Goals</Text>}
                 </TouchableOpacity>
+                <TouchableOpacity style={[styles.sideBarContent,reports,sideBarContent]} onPress={() => {
+                    setValue("reports")
+                    setSelected("reports")
+                }}>
+                    <FaIcon name="calendar-days" size={styleSetting.size.em24} color={styleSetting.color.white}/>
+                    {!minimized && <Text style={styles.sideBarText}>View Reports</Text>}
+                </TouchableOpacity>
                 <TouchableOpacity style={[styles.sideBarContent,profile,sideBarContent]} onPress={() => {
                     setValue("profile")
                     setSelected("profile")
@@ -71,7 +79,7 @@ export default function SideBar({   setValue}){
                     <FaIcon name="gears" size={styleSetting.size.em24} color={styleSetting.color.white}/>
                     {!minimized && <Text style={styles.sideBarText}>Settings</Text>}
                 </TouchableOpacity>
-                <TouchableOpacity style={[styles.sideBarContent,sideBarContent]} onPress={() => {auth.signOut();router.push('/')}}>
+                <TouchableOpacity style={[styles.sideBarContent,sideBarContent]} onPress={() => {auth.signOut();router.push('../')}}>
                     <FaIcon name="right-from-bracket" size={styleSetting.size.em24} color={styleSetting.color.white}/>
                     {!minimized && <Text style={styles.sideBarText}>Logout</Text>}
                 </TouchableOpacity>
