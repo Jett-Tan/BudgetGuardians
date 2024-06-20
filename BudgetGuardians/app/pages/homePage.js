@@ -27,18 +27,24 @@ export default function Page() {
     const router = useRouter();
     const [currentUser, setCurrentUser] = useState({});
     const [tab, setTab] = useState("home");
-    onAuthStateChanged(auth, (user) => {
-    if (user) {
-        console.log('User is signed in.', user.email);
-    } else {
-        router.replace('./initPage');
-    }
-    });
+
+    
+
     useEffect(() => {
         liveUpdate((x) => {
             setCurrentUser(x)
         });
+        (async () => {
+            await getUserDataFromFirestore()
+            .then((data) => {
+                setCurrentUser(data);
+            })
+            .catch((err) => {
+                alert(err);
+            });
+        })();
     }, []);
+
     const loadData = setInterval(async () => {
         await getUserDataFromFirestore()
         .then((data) => {

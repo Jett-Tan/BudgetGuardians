@@ -16,15 +16,16 @@ export default function CustomInput({
     values2 = "",
     errorExist = true,
     hiddenEye = false,
+    containerStyle = {},
+    inputContainerStyle = {},
+    inputStyle = {},
     errorHandle = (e,type,props = {}) => {return Errors.errorGetter(Errors.handleError(e,type,props))},
 }) {
     const[error1, setError1] = useState('');
-    const[value1, setValue1] = useState(values);
     const[showPassword1, setShowPassword1] = useState(false);
 
     /* Only for type === confirm*/
     const[error2, setError2] = useState('');
-    const[value2, setValue2] = useState(values2);
     const[showPassword2, setShowPassword2] = useState(false);
 
     
@@ -38,49 +39,44 @@ export default function CustomInput({
         if (type === "confirm") {
             if (inputNo === 1) {
                 onChange1(e)
-                setValue1(e)
                 await delay(1);
                 setError1(errorHandle(e,"password"))
-                setError2(errorHandle(value2,"confirm",{password:e,confirmPassword:value2}))
+                setError2(errorHandle(values2,"confirm",{password:e,confirmPassword:values2}))
             } else if (inputNo === 2) {
                 onChange2(e)
-                setValue2(e)
                 await delay(1);
-                setError1(errorHandle(value1,"password"))
-                setError2(errorHandle(value2,"confirm",{password:value1,confirmPassword:e}))
+                setError1(errorHandle(values,"password"))
+                setError2(errorHandle(values2,"confirm",{password:values,confirmPassword:e}))
             }
         } else if(type === "password") {
             onChange1(e)
-            setValue1(e)
             await delay(1);
             setError1(errorHandle(e,type))
         } else if(type === "email") {
             onChange1(e)
-            setValue1(e)
             await delay(1);
             setError1(errorHandle(e,type))
         } else {
             onChange1(e)
-            setValue1(e)
             setError1(errorHandle(e,type))
         }
     }
     
     const errorMargin = errorExist ? styles.existError:{};
-    const ok1 = !error1 && value1 ? styles.ok:{};
-    const ok2 = !error2 && value2 ? styles.ok:{};
-    const notok1 = error1 && value1 ? styles.notok:{};
-    const notok2 = error2 && value2 ? styles.notok:{};
+    const ok1 = !error1 && values ? styles.ok:{};
+    const ok2 = !error2 && values2 ? styles.ok:{};
+    const notok1 = error1 && values ? styles.notok:{};
+    const notok2 = error2 && values2 ? styles.notok:{};
 
     return (
         <>
-            <View style= {[styles.container,errorMargin]}>
-                <View style ={[styles.inputContainer,ok1,notok1]}>
+            <View style= {[styles.container,errorMargin,containerStyle]}>
+                <View style ={[styles.inputContainer,ok1,notok1,inputContainerStyle]}>
                     <TextInput
-                        value={value1}
+                        value={values}
                         placeholder={placeholder}
                         secureTextEntry={password && !showPassword1}
-                        style={[styles.input]}
+                        style={[styles.input,inputStyle]}
                         autoCapitalize="none"
                         
                         onChangeText={(e) => {
@@ -107,13 +103,13 @@ export default function CustomInput({
             </View>
             {
                 type === "confirm" &&
-                <View style= {[styles.container,errorMargin]}>
-                    <View style ={[styles.inputContainer,ok2,notok2]}>
+                <View style= {[styles.container,errorMargin,containerStyle]}>
+                    <View style ={[styles.inputContainer,ok2,notok2,inputContainerStyle]}>
                         <TextInput
-                            value={value2}
+                            value={values2}
                             placeholder={placeholder}
                             secureTextEntry={password && !showPassword2}
-                            style={styles.input}
+                            style={[styles.input,inputStyle]}
                             autoCapitalize="none"
                             
                             onChangeText={(e) => {

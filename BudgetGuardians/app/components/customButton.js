@@ -6,7 +6,6 @@ import styleSetting from "../setting/setting.js";
 const props = {
     type: "primary" | "secondary" | "login" | "signup" | "danger" | "link",
     text: "",
-        
     getStyle: (e) => {
         switch (e) {
             case "primary":
@@ -62,17 +61,24 @@ const props = {
     },
 }
 
-export default function CustomButton({type,text,onPress = (e) => {},href = null}) {
+export default function CustomButton({
+    type,
+    text,
+    onPress = (e) => {},
+    href = null,
+    containerStyle = {},
+    textStyle={}
+}) {
     return (
         <>
-            <Pressable style = {[props.getStyle(type).pressable]} onPress={e => onPress(e)}>
+            <Pressable style = {[props.getStyle(type).pressable,containerStyle]} onPress={e => onPress(e)}>
                 {href != null ? 
-                    <Link href={href} style = {[props.getStyle(type).text]}>
+                    <Link href={href} style = {[props.getStyle(type).text,textStyle]}>
                         <Text>{text}</Text>
                     </Link> 
                     :
-                    <View>
-                        <Text style = {[props.getStyle(type).text]} >{text}</Text>
+                    <View style={{height:"100%",width:"100%",justifyContent:"center",alignItems:"center"}}>
+                        <Text style = {[props.getStyle(type).text,textStyle]} >{text}</Text>
                     </View>
                 }
             </Pressable>

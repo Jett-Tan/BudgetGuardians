@@ -1,0 +1,181 @@
+import { View, Text, StyleSheet } from "react-native";
+import { Dropdown } from "react-native-element-dropdown";
+import { useState } from "react";
+import {DatePickerInput} from 'react-native-paper-dates';
+
+import { addTransactionToFirestore } from "../setting/fireStoreFunctions";
+import CustomInput from "./customInput";
+import CustomButton from "./customButton";
+import FaIcon from "./FaIcon";
+import styleSetting from "../setting/setting";
+
+export const defaultCategory = [
+  { label: 'Transport', value: 'Transport' },
+  { label: 'Food', value: 'Food' },
+  { label: 'Groceries', value: 'Groceries' },
+  { label: 'Utilities', value: 'Utilities' },
+  { label: 'Rent', value: 'Rent' },
+  { label: 'Allowance', value: 'Allowance' },
+  { label: 'Others', value: 'Others' },
+];
+
+export default function ExpenseInput() {
+    const [category, setCategory] = useState("");
+    const [amount, setAmount] = useState("");
+    const [date, setDate] = useState("");
+    const [categoryError, setCategoryError] = useState("");
+    const [amountError, setAmountError] = useState("");
+    const [dateError, setDateError] = useState("");
+
+    const reset =() => {
+        setCategory("");
+        setAmount("");
+        setDate("");
+        setCategoryError("");
+        setAmountError("");
+        setDateError("");
+    }
+    const validate = () => {
+        let valid = true
+        if (!category) {
+            setCategoryError("Category is required.");
+            valid = valid && false;
+        }
+        const numericAmount = Number.parseFloat(amount);
+        if (!numericAmount || numericAmount === NaN || numericAmount === 0) {
+            setAmountError("Amount is required.");
+            valid = valid && false;
+        }
+        if (!isValidDate(date)) {
+            setDateError("Invalid date. Please select a valid date.");
+            valid = valid && false;
+        }
+        return valid;
+    }
+    // Function to add expense
+    const addExpense = async() => {
+        if(validate() === false) {
+            return;
+        }
+
+        const numericAmount = parseFloat(amount);
+        const formatteddate = new Date(date).toLocaleDateString('en-SG')
+        await addTransactionToFirestore({category: category, amount:-numericAmount, date:formatteddate, description:"Food"})
+        .then((data) => {
+            console.log(data)
+            reset();
+        }).catch((err) => {
+            console.log(err)
+        })
+    }
+
+    // Function to add income
+    const addIncome = async() => {
+        if(validate() === false) {
+            return;
+        }
+
+        const numericAmount = Number.parseFloat(amount);
+        const formatteddate = new Date(date).toLocaleDateString('en-SG')
+        await addTransactionToFirestore({category: category, amount:numericAmount, date:formatteddate, description:"Food"})
+        .then((data) => {
+            console.log(data)
+            reset();
+        }).catch((err) => {
+            console.log(err)
+        })
+    }
+
+    // To check if the date given by user is a valid date
+    const isValidDate = (date) => {
+        return date instanceof Date && !isNaN(date);
+    };
+
+    return (
+        <>
+            <View style={{flexDirection:"row",justifyContent:"space-evenly",width:"100%"}}>
+                <View  style={{}}>
+                    <Text style={{fontSize: 13, fontWeight: 'bold', margin: 10}}>Transaction Type</Text>
+                    <Dropdown
+                        data={defaultCategory}
+                        style={{width: 220,borderRadius: 10,height:50, borderColor: 'black', borderWidth: 1, padding: 5,marginVertical:5}}
+                        placeholderStyle={{fontSize: 16,marginLeft:10, whiteSpace: 'nowrap'}}
+                        selectedTextStyle={{fontSize: 16,marginLeft:10, whiteSpace: 'nowrap'}}
+                        inputSearchStyle={{fontSize: 16,justifyContent:"center",height:50, whiteSpace: 'nowrap'}}
+                        labelField="label"
+                        valueField="value"
+                        maxHeight={300}
+                        search
+                        searchPlaceholder="Search..."
+                        placeholder="Select Category"
+                        value={category}
+                        onChange={(item) => setCategory(item.value)}
+                        renderLeftIcon={() => (
+                            <FaIcon name="money-bill" size={20}/>
+                        )}
+                    />
+                    <Text style={{color: 'red', fontSize: 12, marginLeft: 10}}>{categoryError}</Text>
+                </View>
+                <View style={{}}>
+                    <Text style={{fontSize: 13, fontWeight: 'bold', margin: 10}}>Amount</Text>
+                    <CustomInput
+                        placeholder="Enter Amount"
+                        values={amount}
+                        onChange1={(x) => setAmount(x)}
+                        containerStyle={{width: 100,margin:0,minWidth:100, justifyContent: 'center', alignItems: 'center'}}
+                        inputContainerStyle={{width: 100,minWidth:100, height: 50, borderColor: 'black', borderWidth: 1, padding: 5, margin: 5}}
+                        inputStyle={{width: 90,minWidth:90}}
+                    />  
+                    <Text style={{color: 'red', fontSize: 12, marginLeft: 10}}>{amountError}</Text>
+                </View>
+                <View style={{}}>
+                    <Text style={{fontSize: 13, fontWeight: 'bold', margin: 10}}>Transaction Date</Text>
+                    <DatePickerInput 
+                        style={{width:270,fontSize:13,maxHeight:50,height:50, backgroundColor:"white",borderRadius:10,borderTopRightRadius:10,borderTopLeftRadius:10,borderWidth:1,borderColor:"black"}}
+                        locale="en-SG"
+                        value={date}
+                        onChange={(d) => setDate(d)}
+                        inputMode="start"
+                        label="Transaction Date"
+
+                        display="calendar"
+                        activeUnderlineColor="black"
+                    />
+                    <Text style={{color: 'red', fontSize: 12, marginLeft: 10}}>{dateError}</Text>
+                </View>
+                <View>
+                    <Text style={{fontSize: 13, fontWeight: 'bold', margin: 10}}>    </Text>
+                    <CustomButton
+                        text={"Add Income"}
+                        onPress={() => {addIncome()}}
+                        containerStyle={styles.button}
+                        textStyle={{fontSize: 13}}
+                    />
+                </View>
+                <View>
+                    <Text style={{fontSize: 13, fontWeight: 'bold', margin: 10}}>    </Text>
+                    <CustomButton
+                        text={"Add Expense"}
+                        onPress={() => {addExpense()}}
+                        containerStyle={styles.button}
+                        textStyle={{fontSize: 13}}
+                    />
+                </View>
+            </View>
+        </>
+    )
+}
+const styles = StyleSheet.create({
+    button:{
+        backgroundColor:styleSetting.color.lightblue,
+        width: "100%",
+        minWidth: 100,
+        height: 50,
+        fontSize: "85%",
+        flexWrap: 'wrap',
+        shadowColor:"black",
+        margin:0,
+        shadowOffset : {width: 2, height: 2},
+        shadowOpacity: 0.5,
+    }
+});

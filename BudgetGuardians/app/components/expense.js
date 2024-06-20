@@ -166,7 +166,8 @@ const DropdownComponent = () => {
       {renderLabel()}
       <Modal visible={modalVisible} transparent={true}>
         <Pressable onPress={() => setModalVisible(false)} style={{width:"100%",height:"100%",backgroundColor:"black",opacity:0.5,position:"absolute",left:0,top:0}}></Pressable>
-        <View style={{width:"80%",height:"80%",backgroundColor:"white",margin:"auto",shadowColor:"black",shadowOpacity:0.5,shadowRadius:5,borderRadius:10}}>
+        <View style={{width:"80%",height:"80%",backgroundColor:"white",margin:"auto",alignItems:"center",shadowColor:"black",shadowOpacity:0.5,shadowRadius:5,borderRadius:10}}>
+          <View style={{width:500}}>
             <View>
               <Text style={{marginLeft:20}}>Amount</Text>
               <CustomInput
@@ -174,26 +175,51 @@ const DropdownComponent = () => {
                 onChange1={(e) => setToEditTransactionAmount(e)}
                 password={false}
                 placeholder={toEditTransactionAmount}
+                
               />
             </View>
             <View>
               <Text style={{marginLeft:20}}>Category</Text>
-              <CustomInput
-                values={toEditTransactionCatergory}
-                onChange1={(e) => setToEditTransactionCatergory(e)}
-                password={false}
-                placeholder={setToEditTransactionCatergory}
+              <Dropdown
+                style={[styles.dropdown,{width:370,marginLeft:10}]}
+                placeholderStyle={styles.placeholderStyle}
+                selectedTextStyle={styles.selectedTextStyle}
+                inputSearchStyle={styles.inputSearchStyle}
+                iconStyle={styles.iconStyle}
+                data={data}
+                search
+                maxHeight={300}
+                labelField="label"
+                valueField="value"
+                placeholder={!isFocus ? 'Select Transaction Type' : '-'}
+                searchPlaceholder="Search..."
+                value={toEditTransactionCatergory}
+                onFocus={() => setIsFocus(true)}
+                onBlur={() => setIsFocus(false)}
+                onChange={item => {
+                  setToEditTransactionCatergory(item.value);
+                  setIsFocus(false);
+                }}
+                renderLeftIcon={() => (
+                  <FontAwesome
+                    style={styles.icon}
+                    color={isFocus ? 'blue' : 'black'}
+                    name="money"
+                    size={20}
+                  />
+                )}
               />
             </View>
             <View>
-              <Text style={{marginLeft:20}}>Amount</Text>
+              <Text style={{marginLeft:20}}>Date</Text>
               <CustomInput
                 values={toEditTransactionAmount}
-                onChange1={(e) => setToEditTransactionAmount(e)}
+                onChange1={(e) => setToEditTransactionDate(e)}
                 password={false}
                 placeholder={toEditTransactionAmount}
               />
             </View>
+          </View>
         </View>
       </Modal>
       {/* <View style={styles.row}> */}

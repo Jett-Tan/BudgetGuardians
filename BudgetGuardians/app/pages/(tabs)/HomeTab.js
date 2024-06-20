@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 import { View,Text,StyleSheet, } from "react-native"
-import { liveUpdate } from "../../setting/fireStoreFunctions";
+import { liveUpdate, getUserDataFromFirestore } from "../../setting/fireStoreFunctions";
 import { set } from "firebase/database";
 import TransactionEntry from "../../components/transactionEntry";
 
@@ -16,7 +16,30 @@ export default function HomeTab() {
             findGoals(x);
             findTransactions(x);
         });
+        (async () => {
+            await getUserDataFromFirestore()
+            .then((data) => {
+                setCurrentUser(data);
+                findGoals(data);
+                findTransactions(data);
+            })
+            .catch((err) => {
+                alert(err);
+            });
+        })();
     },[])
+    const loadData = setInterval(async () => {
+        await getUserDataFromFirestore()
+        .then((data) => {
+            setCurrentUser(data);
+            findGoals(data);
+            findTransactions(data);
+        })
+        .catch((err) => {
+            alert(err);
+        });
+    }, 100);
+    setTimeout(()=>{clearInterval(loadData)} ,500);
     
     const findTransactions = (x) => {
         if (x?.financialData?.transactions === undefined) {
