@@ -48,21 +48,21 @@ export default function SideBar({   setValue}){
                     setValue("transactions")
                     setSelected("transactions")
                 }}>
-                    <FaIcon name="calendar-days" size={styleSetting.size.em24} color={styleSetting.color.white}/>
+                    <FaIcon name="money-bill-transfer" size={styleSetting.size.em24} color={styleSetting.color.white}/>
                     {!minimized && <Text style={styles.sideBarText}>Add Transactions</Text>}
                 </TouchableOpacity>
                 <TouchableOpacity style={[styles.sideBarContent,goals,sideBarContent]} onPress={() => {
                     setValue("goals")
                     setSelected("goals")
                 }}>
-                    <FaIcon name="calendar-days" size={styleSetting.size.em24} color={styleSetting.color.white}/>
+                    <FaIcon name="money-bill-trend-up" size={styleSetting.size.em24} color={styleSetting.color.white}/>
                     {!minimized && <Text style={styles.sideBarText}>Add Goals</Text>}
                 </TouchableOpacity>
                 <TouchableOpacity style={[styles.sideBarContent,reports,sideBarContent]} onPress={() => {
                     setValue("reports")
                     setSelected("reports")
                 }}>
-                    <FaIcon name="calendar-days" size={styleSetting.size.em24} color={styleSetting.color.white}/>
+                    <FaIcon name="chart-pie" size={styleSetting.size.em24} color={styleSetting.color.white}/>
                     {!minimized && <Text style={styles.sideBarText}>View Reports</Text>}
                 </TouchableOpacity>
                 <TouchableOpacity style={[styles.sideBarContent,profile,sideBarContent]} onPress={() => {

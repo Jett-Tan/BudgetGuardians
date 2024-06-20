@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { auth } from "../auth/firebaseConfig";
-import { View, Text, Pressable, StyleSheet, TextInput, ScrollView } from 'react-native';
+import { View, Text, Pressable, StyleSheet, TextInput, ScrollView, Modal } from 'react-native';
 import {Dropdown} from 'react-native-element-dropdown'
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import { app, db, getFirestore, collection, addDoc } from "../auth/firebaseConfig";
@@ -8,6 +8,7 @@ import TransactionEntry from './transactionEntry';
 import { addTransactionToFirestore, getUserDataFromFirestore, liveUpdate, updateTransactionToFirestore } from '../setting/fireStoreFunctions';
 import DateChooser from "./datepicker" 
 import { DatePickerInput } from 'react-native-paper-dates';
+import CustomInput from './customInput'
 
 
 const data = [
@@ -30,7 +31,14 @@ const DropdownComponent = () => {
   const user = auth.currentUser;
   const [date, setDate] = useState();
   const [amountError, setAmountError] = useState("");
-  
+
+
+
+  const [toEditTransactionDate, setToEditTransactionDate] = useState('');
+  const [toEditTransactionAmount, setToEditTransactionAmount] = useState('');
+  const [toEditTransactionCatergory, setToEditTransactionCatergory] = useState('');
+  const [modalVisible, setModalVisible] = useState(false);
+
   useEffect(() => {
     if (user) {
       setCurrentUser(user);
@@ -134,9 +142,47 @@ const DropdownComponent = () => {
     updateTransactionToFirestore(newTransactions1.concat(newTransactions2));
   }
 
+  const editTransaction = (id) =>{
+    setToEditTransactionAmount(currentUser[id].amount)
+    setToEditTransactionCatergory(currentUser[id].category)
+    setToEditTransactionDate(currentUser[id].date)
+    setModalVisible(true);
+  }
   return (<>
     <View style={[{minWidth:"auto",flexDirection:'row',width:"80%",minHeight:"auto",flexWrap:"wrap",height:"20%",justifyContent:"space-evenly",alignItems:"center"}]}>
       {renderLabel()}
+      <Modal visible={modalVisible} transparent={true}>
+        <Pressable onPress={() => setModalVisible(false)} style={{width:"100%",height:"100%",backgroundColor:"black",opacity:0.5,position:"absolute",left:0,top:0}}></Pressable>
+        <View style={{width:"80%",height:"80%",backgroundColor:"white",margin:"auto",shadowColor:"black",shadowOpacity:0.5,shadowRadius:5,borderRadius:10}}>
+            <View>
+              <Text style={{marginLeft:20}}>Amount</Text>
+              <CustomInput
+                values={toEditTransactionAmount}
+                onChange1={(e) => setToEditTransactionAmount(e)}
+                password={false}
+                placeholder={toEditTransactionAmount}
+              />
+            </View>
+            <View>
+              <Text style={{marginLeft:20}}>Category</Text>
+              <CustomInput
+                values={toEditTransactionCatergory}
+                onChange1={(e) => setToEditTransactionCatergory(e)}
+                password={false}
+                placeholder={setToEditTransactionCatergory}
+              />
+            </View>
+            <View>
+              <Text style={{marginLeft:20}}>Amount</Text>
+              <CustomInput
+                values={toEditTransactionAmount}
+                onChange1={(e) => setToEditTransactionAmount(e)}
+                password={false}
+                placeholder={toEditTransactionAmount}
+              />
+            </View>
+        </View>
+      </Modal>
       {/* <View style={styles.row}> */}
       <View style={{width:"25%"}}>
         <Dropdown
@@ -201,7 +247,7 @@ const DropdownComponent = () => {
         {Array.isArray(currentUser) && currentUser.map((x, index) => (
               <TransactionEntry 
                 deleteTransaction={() => deleteTransaction(index)} 
-                // editTransaction={editTransaction(index)} 
+                editTransaction={() => editTransaction(index)} 
                 key={index} 
                 props={{ amount: x?.amount, date: x?.date, category: x?.category }} 
               />
