@@ -176,6 +176,7 @@ const DropdownComponent = () => {
           value={amount}
           onChangeText={setAmount}
           keyboardType='numeric'
+          textAlign='center'
         />
         {amountError ? <Text style={styles.error}>{amountError}</Text> : <></>}
       </View>
@@ -239,6 +240,7 @@ const styles = StyleSheet.create({
     // marginLeft: 10,
     // flex: 2,
     justifyContent: 'center',
+    textAlign: 'center',
     alignItems: 'center',
     borderRadius: 8,
     shadowColor: 'black',
