@@ -67,6 +67,12 @@ const DropdownComponent = () => {
     await addTransactionToFirestore({category: value, amount:-numericAmount, date:formatteddate, description:"Food"})
     .then((data) => {
       console.log(data)
+      setValue(null);
+      setIsFocus(false);
+      setAmount("");
+      setErrorMessage("");
+      setDate();
+      setAmountError("");
     }).catch((err) => {
       console.log(err)
     })
@@ -79,11 +85,18 @@ const DropdownComponent = () => {
       setErrorMessage("Invalid date. Please select a valid date.");
       return;
     }
+
     const numericAmount = parseFloat(amount);
     const formatteddate = new Date(date).toLocaleDateString('en-SG')
     await addTransactionToFirestore({category: value, amount:numericAmount, date:formatteddate, description:"Food"})
     .then((data) => {
       console.log(data)
+      setValue(null);
+      setIsFocus(false);
+      setAmount("");
+      setErrorMessage("");
+      setDate();
+      setAmountError("");
     }).catch((err) => {
       console.log(err)
     })
@@ -135,7 +148,7 @@ const DropdownComponent = () => {
   }
 
   return (<>
-    <View style={[{minWidth:"auto",flexDirection:'row',width:"80%",minHeight:"auto",flexWrap:"wrap",height:"20%",justifyContent:"space-evenly",alignItems:"center"}]}>
+    <View style={[{minWidth:"auto",flexDirection:'row',width:"80%",minHeight:"auto",flexWrap:"wrap",height:"10%",justifyContent:"space-evenly",alignItems:"center"}]}>
       {renderLabel()}
       {/* <View style={styles.row}> */}
       <View style={{width:"25%"}}>
@@ -191,12 +204,14 @@ const DropdownComponent = () => {
             <Text>Add Expense</Text>
           </Pressable>
         {/* </View> */}
-        {errorMessage ? (
-            <Text style={styles.error}>{errorMessage}</Text>
-          ) : null}
       </View>
       {/* Styling of transaction box is under datepicker.js*/}
     </View>
+    <View>
+        {errorMessage ? (
+            <Text style={styles.error}>{errorMessage}</Text>
+          ) : null}
+        </View>
     <View style={[styles.container,{height:"60%",width:"80%"}]}>
       <ScrollView>
         {Array.isArray(currentUser) && currentUser.map((x, index) => (
@@ -281,7 +296,7 @@ const styles = StyleSheet.create({
   },
   error: {
     color: 'red',
-    marginTop: 10,
+    
   },
 });
 
