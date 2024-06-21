@@ -21,7 +21,7 @@ export default function SideBar({   setValue}){
     let home = selected === "home" ? styleSelected.selected : {};        
     let calendar = selected === "calendar" ? styleSelected.selected : {};        
     let transactions = selected === "transactions" ? styleSelected.selected : {};        
-    let goals = selected === "goals" ? styleSelected.selected : {};        
+    let budget = selected === "budget" ? styleSelected.selected : {};        
     let reports = selected === "reports" ? styleSelected.selected : {};        
     let profile = selected === "profile" ? styleSelected.selected : {};        
     let settings = selected === "settings" ? styleSelected.selected : {};        
@@ -51,12 +51,12 @@ export default function SideBar({   setValue}){
                     <FaIcon name="money-bill-transfer" size={styleSetting.size.em24} color={styleSetting.color.white}/>
                     {!minimized && <Text style={styles.sideBarText}>Add Transactions</Text>}
                 </TouchableOpacity>
-                <TouchableOpacity style={[styles.sideBarContent,goals,sideBarContent]} onPress={() => {
-                    setValue("goals")
-                    setSelected("goals")
+                <TouchableOpacity style={[styles.sideBarContent,budget,sideBarContent]} onPress={() => {
+                    setValue("budget")
+                    setSelected("budget")
                 }}>
                     <FaIcon name="money-bill-trend-up" size={styleSetting.size.em24} color={styleSetting.color.white}/>
-                    {!minimized && <Text style={styles.sideBarText}>Add Goals</Text>}
+                    {!minimized && <Text style={styles.sideBarText}>Manage Budget</Text>}
                 </TouchableOpacity>
                 <TouchableOpacity style={[styles.sideBarContent,reports,sideBarContent]} onPress={() => {
                     setValue("reports")
