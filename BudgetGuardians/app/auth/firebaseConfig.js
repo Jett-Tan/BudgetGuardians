@@ -27,13 +27,15 @@ export const auth = initializeAuth(app, {
   persistence: getReactNativePersistence(ReactNativeAsyncStorage)
 
 });
+const router = useRouter();
+
 onAuthStateChanged(auth, (user) => {
-        if (user) {
-            console.log('User is signed in.', user.email);
-        } else {
-            router.replace('./initPage');
-        }
-    });
+    if (user) {
+        console.log('User is signed in.', user.email);
+    } else {
+        router.replace('./initPage');
+    }
+});
 // To Initialize Cloud Firestore and get a reference to the service
 const firestore = getFirestore();
 const db = getFirestore(app);

@@ -1,6 +1,6 @@
 import DropdownComponent from "../../components/expense"
 import { View, Text, StyleSheet } from "react-native";
-import ExpenseInput from "../../components/newExpense";
+import ExpenseInput from "../../components/expenseInput";
 import TransactionLoader from "../../components/transactionLoader";
 
 export default function TransactionTab() {

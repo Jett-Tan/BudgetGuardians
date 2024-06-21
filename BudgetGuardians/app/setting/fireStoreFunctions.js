@@ -221,7 +221,9 @@ export async function addTransactionToFirestore(transactionData){
 export async function updateTransactionToFirestore(transactionData){
     if(!transactionsDataCheck(transactionData)){
         console.error("Invalid transactionData", transactionData)
-        throw new Error("Invalid transactionData")
+        return new Promise((resolve, reject) => {
+            reject("Invalid transactionData");
+        })
     }
     // console.log("userData", userData)
     const db = getFirestore();
