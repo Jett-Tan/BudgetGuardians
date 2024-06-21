@@ -65,20 +65,25 @@ export default function HomeTab() {
     return (
         <>
             <View style={{width:'100%',height:'90%',justifyContent:"space-around",alignItems:"center",flexDirection:"row"}}>
-                <View style={{borderRadius:5,width:"40%",height:"80%", alignItems:"center", justifyContent:"center"}}> 
-                    {/* {!lastestTransaction5  && <Text>No Transaction</Text>} */}
+                <View style={{borderRadius:15,width:"40%",height:"80%", padding:25,alignItems:"center", justifyContent:"flex-start",shadowOpacity:0.5,shadowColor:"black",shadowRadius:15}}> 
+                    <Text style={{fontWeight:"bold"}}>Recent Transactions</Text>
                     {Array.isArray(lastestTransaction5) && lastestTransaction5.length <= 0 && <Text>No Transaction</Text>}
                     {lastestTransaction5 && lastestTransaction5.map((transaction,index) => {
                         return(
-                            <View key={index} style={{borderColor:"black",width:'100%',borderWidth:1,marginVertical:10, borderRadius:10,shadowColor:"black",shadowRadius:3,shadowOffset:{height:1,width:0}}}>
+                            <View key={index} style={{width:'100%',marginVertical:10, borderRadius:10,shadowColor:"black",shadowOpacity:0.5,shadowRadius:5}}>
                                 <TransactionEntry showbutton={false}props={{date:transaction.date, category:transaction.category, amount:transaction.amount}} />
                             </View>
                         )
                     })}
                 </View>
 
-                <View style={{borderRadius:5,width:"40%",height:"80%",borderWidth:1,borderColor:"black",justifyContent:"center",alignItems:"center"}}> 
-                    {!lastestGoal  && <Text>No Goal</Text>}
+                <View style={{borderRadius:15,width:"40%",height:"80%", padding:25,alignItems:"center", justifyContent:"flex-start",shadowOpacity:0.5,shadowColor:"black",shadowRadius:15}}> 
+                    <Text style={{fontWeight:"bold"}}>Current Goal</Text>
+                    {!lastestGoal  && (
+                        <View style={{margin:"auto"}}>
+                            <Text>No Goal</Text>
+                        </View>
+                    )}
                     {/* {lastestGoal && } */}
                 </View>
             </View>
