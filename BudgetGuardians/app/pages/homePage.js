@@ -177,8 +177,9 @@ const styles = StyleSheet.create({
         alignItems: "center",
         padding: 10,
         shadowColor: styleSetting.color.black,
-        shadowOpacity:0.25,
+        shadowOpacity:0.5,
         shadowOffset:{width:0,height:3},
+        shadowRadius:5,
     },
     modalHeader: {
         backgroundColor: "white",

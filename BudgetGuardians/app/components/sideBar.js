@@ -99,8 +99,7 @@ const styles = StyleSheet.create({
         backgroundColor: styleSetting.color.mildblue,
         shadowColor: styleSetting.color.black,
         shadowOpacity:0.25,
-        shadowOffset:{width:3,height:0},
-        
+        shadowOffset:{width:3,height:0},     
     },
     sideBarContent: {
         marginVertical:5,

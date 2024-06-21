@@ -67,9 +67,13 @@ export default function TransactionLoader() {
     };
 
     const deleteTransaction = (id) => {
-        let newTransactions1 = transactions.splice(0, id);
-        let newTransactions2 = transactions.splice(id, transactions.length - 1);
-        updateTransactionToFirestore(newTransactions1.concat(newTransactions2));
+        let newTransactions = []
+        for (let i = 0; i < transactions.length; i++) {
+            if (i !== id) {
+                newTransactions.push(transactions[i]);
+            }
+        }
+        updateTransactionToFirestore(newTransactions);
     }
 
     /* This fuction will enable the popup for edit*/ 
@@ -161,9 +165,10 @@ export default function TransactionLoader() {
                   </View>
                 </View>
             </Modal>
-            <ScrollView style={{width:"90%"}}>
+            <View style={{width:"70%",shadowColor:"black",shadowOpacity:0.5,shadowRadius:15,borderRadius:15,height:"100%",alignItems:"center"}}>
+              <ScrollView style={{width:"95%"}}>
                 {Array.isArray(transactions) && transactions.map((x, index) => (
-                    <View key={index} style={{shadowColor:"black",shadowRadius:10,shadowOpacity:0.5,borderColor:"black",borderWidth:1,borderRadius:15,marginHorizontal:250,marginVertical:20}}>
+                    <View key={index} style={{shadowColor:"black",shadowRadius:10,shadowOpacity:0.5,borderRadius:15,marginHorizontal:"10%",marginVertical:20}}>
                         <TransactionEntry 
                             deleteTransaction={() => deleteTransaction(index)} 
                             editTransaction={() => editTransaction(index)} 
@@ -172,7 +177,8 @@ export default function TransactionLoader() {
                         />
                     </View>
                     ))}
-            </ScrollView>
+              </ScrollView>
+            </View>
         </>
     )
 }

@@ -23,6 +23,8 @@ export default function ExpenseInput() {
     const [category, setCategory] = useState("");
     const [amount, setAmount] = useState("");
     const [date, setDate] = useState("");
+    const [description, setDescription] = useState("");
+
     const [categoryError, setCategoryError] = useState("");
     const [amountError, setAmountError] = useState("");
     const [dateError, setDateError] = useState("");
@@ -93,74 +95,95 @@ export default function ExpenseInput() {
 
     return (
         <>
-            <View style={{flexDirection:"row",justifyContent:"space-evenly",width:"100%"}}>
-                <View  style={{}}>
-                    <Text style={{fontSize: 13, fontWeight: 'bold', margin: 10}}>Transaction Type</Text>
-                    <Dropdown
-                        data={defaultCategory}
-                        style={{width: 220,borderRadius: 10,height:50, borderColor: 'black', borderWidth: 1, padding: 5,marginVertical:5}}
-                        placeholderStyle={{fontSize: 16,marginLeft:10, whiteSpace: 'nowrap'}}
-                        selectedTextStyle={{fontSize: 16,marginLeft:10, whiteSpace: 'nowrap'}}
-                        inputSearchStyle={{fontSize: 16,justifyContent:"center",height:50, whiteSpace: 'nowrap'}}
-                        labelField="label"
-                        valueField="value"
-                        maxHeight={300}
-                        search
-                        searchPlaceholder="Search..."
-                        placeholder="Select Category"
-                        value={category}
-                        onChange={(item) => setCategory(item.value)}
-                        renderLeftIcon={() => (
-                            <FaIcon name="money-bill" size={20}/>
-                        )}
-                    />
-                    <Text style={{color: 'red', fontSize: 12, marginLeft: 10}}>{categoryError}</Text>
-                </View>
-                <View style={{}}>
-                    <Text style={{fontSize: 13, fontWeight: 'bold', margin: 10}}>Amount</Text>
-                    <CustomInput
-                        placeholder="Enter Amount"
-                        values={amount}
-                        onChange1={(x) => setAmount(x)}
-                        containerStyle={{width: 150,margin:0,minWidth:150, justifyContent: 'center', alignItems: 'center'}}
-                        inputContainerStyle={{width: 150,minWidth:150, height: 50, borderColor: 'black', borderWidth: 1, padding: 5, margin: 5}}
-                        inputStyle={{width: 130,minWidth:130}}
-                    />  
-                    <Text style={{color: 'red', fontSize: 12, marginLeft: 10}}>{amountError}</Text>
-                </View>
-                <View style={{}}>
-                    <Text style={{fontSize: 13, fontWeight: 'bold', margin: 10}}>Transaction Date</Text>
-                    <DatePickerInput 
-                        style={{width:270,fontSize:13,maxHeight:50,height:50, backgroundColor:"white",borderRadius:10,borderTopRightRadius:10,borderTopLeftRadius:10,borderWidth:1,borderColor:"black"}}
-                        locale="en-SG"
-                        value={date}
-                        onChange={(d) => setDate(d)}
-                        inputMode="start"
-                        label="Transaction Date"
+            <View style={{flexDirection:"row",alignSelf:"center",justifyContent:"space-evenly",width:"70%",flexWrap:"wrap", height:"auto",paddingBottom:10,borderRadius:15,shadowRadius:15,shadowColor:"black",shadowOpacity:0.5}}>
+                <View style={{width:"80%",maxWidth:"100%",paddingHorizontal:10}}>
+                    <View style={{flexDirection:"row", justifyContent:"space-between",flexWrap:"wrap"}}>
+                        <View  style={{}}>
+                            <Text style={{fontSize: 13, fontWeight: 'bold', margin: 10}}>Transaction Type</Text>
+                            <Dropdown
+                                data={defaultCategory}
+                                style={{width: 220,borderRadius: 10,height:50, borderColor: 'black', borderWidth: 1, padding: 5,marginVertical:5}}
+                                placeholderStyle={{fontSize: 16,marginLeft:10, whiteSpace: 'nowrap'}}
+                                selectedTextStyle={{fontSize: 16,marginLeft:10, whiteSpace: 'nowrap'}}
+                                inputSearchStyle={{fontSize: 16,justifyContent:"center",height:50, whiteSpace: 'nowrap'}}
+                                labelField="label"
+                                valueField="value"
+                                maxHeight={300}
+                                search
+                                searchPlaceholder="Search..."
+                                placeholder="Select Category"
+                                value={category}
+                                onChange={(item) => setCategory(item.value)}
+                                renderLeftIcon={() => (
+                                    <FaIcon name="money-bill" size={20}/>
+                                )}
+                            />
+                            <Text style={{color: 'red', fontSize: 12, marginLeft: 10}}>{categoryError}</Text>
+                        </View>
+                        <View style={{}}>
+                            <Text style={{fontSize: 13, fontWeight: 'bold', margin: 10}}>Amount</Text>
+                            <CustomInput
+                                placeholder="Enter Amount"
+                                values={amount}
+                                onChange1={(x) => setAmount(x)}
+                                containerStyle={{width: 150,margin:0,minWidth:150, justifyContent: 'center', alignItems: 'center'}}
+                                inputContainerStyle={{width: 150,minWidth:150, height: 50, borderColor: 'black', borderWidth: 1, padding: 5, margin: 5}}
+                                inputStyle={{width: 130,minWidth:130}}
+                            />  
+                            <Text style={{color: 'red', fontSize: 12, marginLeft: 10}}>{amountError}</Text>
+                        </View>
+                        <View style={{}}>
+                            <Text style={{fontSize: 13, fontWeight: 'bold', margin: 10}}>Transaction Date</Text>
+                            <DatePickerInput 
+                                style={{width:270,fontSize:13,maxHeight:50,height:50,minWidth:0, backgroundColor:"white",borderRadius:10,borderTopRightRadius:10,borderTopLeftRadius:10,borderWidth:1,borderColor:"black"}}
+                                locale="en-SG"
+                                value={date}
+                                onChange={(d) => setDate(d)}
+                                inputMode="start"
+                                label="Transaction Date"
 
-                        display="calendar"
-                        activeUnderlineColor="black"
-                    />
-                    <Text style={{color: 'red', fontSize: 12, marginLeft: 10}}>{dateError}</Text>
+                                display="calendar"
+                                activeUnderlineColor="black"
+                            />
+                            <Text style={{color: 'red', fontSize: 12, marginLeft: 10}}>{dateError}</Text>
+                        </View>
+                    </View>
+                    <View>
+                        <View style={{}}>
+                            <Text style={{fontSize: 13, fontWeight: 'bold', margin: 10}}>Description</Text>
+                            <CustomInput
+                                placeholder="Enter Descriptions"
+                                values={description}
+                                onChange1={(x) => setDescription(x)}
+                                containerStyle={{width: "100%",margin:0,minWidth:"100%", justifyContent: 'center', alignItems: 'center'}}
+                                inputContainerStyle={{width: "100%",minWidth:"100%", height: 50, borderColor: 'black', borderWidth: 1, padding: 5, margin: 5}}
+                                inputStyle={{width: "100%",minWidth:"100%"}}
+                            />  
+                            <Text style={{color: 'red', fontSize: 12, marginLeft: 10}}>{amountError}</Text>
+                        </View>
+                    </View>
                 </View>
-                <View>
-                    <Text style={{fontSize: 13, fontWeight: 'bold', margin: 10}}>    </Text>
-                    <CustomButton
-                        text={"Add Income"}
-                        onPress={() => {addIncome()}}
-                        containerStyle={styles.button}
-                        textStyle={{fontSize: 13}}
-                    />
+                <View style={{paddingHorizontal:10,height:"auto",width:"auto",maxHeight:"100%",justifyContent:"space-between",maxWidth:"100%"}}>
+                    <View style={{marginVertical:5,width:"100%"}}>
+                        <Text style={{fontSize: 13, fontWeight: 'bold', margin: 10}}>    </Text>
+                        <CustomButton
+                            text={"Add Income"}
+                            onPress={() => {addIncome()}}
+                            containerStyle={[styles.button,{width:"100%"}]}
+                            textStyle={{fontSize: 13}}
+                        />
+                    </View>
+                    <View style={{marginVertical:5,width:"100%"}}>
+                        <Text style={{fontSize: 13, fontWeight: 'bold', margin: 10}}>    </Text>
+                        <CustomButton
+                            text={"Add Expense"}
+                            onPress={() => {addExpense()}}
+                            containerStyle={styles.button}
+                            textStyle={{fontSize: 13}}
+                        />
+                    </View>
                 </View>
-                <View>
-                    <Text style={{fontSize: 13, fontWeight: 'bold', margin: 10}}>    </Text>
-                    <CustomButton
-                        text={"Add Expense"}
-                        onPress={() => {addExpense()}}
-                        containerStyle={styles.button}
-                        textStyle={{fontSize: 13}}
-                    />
-                </View>
+                
             </View>
         </>
     )
