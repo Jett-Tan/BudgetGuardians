@@ -1,21 +1,25 @@
 import { ScrollView,View,Modal,Pressable,StyleSheet,Text } from "react-native"
 import { useState,useEffect } from "react"
-import {DatePickerInput} from 'react-native-paper-dates';
+import {DatePickerInput, de} from 'react-native-paper-dates';
 import TransactionEntry from "./transactionEntry"
 import { liveUpdate, updateTransactionToFirestore } from "../setting/fireStoreFunctions"
 import styleSetting from "../setting/setting";
 import CustomInput from "./customInput";
 import {Dropdown} from 'react-native-element-dropdown'
-import { defaultCategory } from "./newExpense";
+import { defaultCategory } from "./expenseInput";
 import FaIcon from "./FaIcon";
+import CustomButton from "./customButton";
+import { set } from "firebase/database";
 
 export default function TransactionLoader() {
     
     const [transactions, setTransactions] = useState();
      
+    const [toEditTransactionID, setToEditTransactionID] = useState();
     const [toEditTransactionDate, setToEditTransactionDate] = useState();
     const [toEditTransactionAmount, setToEditTransactionAmount] = useState('');
     const [toEditTransactionCatergory, setToEditTransactionCatergory] = useState('');
+    const [toEditTransactionDescription, setToEditTransactionDescription] = useState('');
     const [modalVisible, setModalVisible] = useState(false);
 
     const [categoryError, setCategoryError] = useState("");
@@ -30,9 +34,11 @@ export default function TransactionLoader() {
 
 
     const reset =() => {
-        setCategory("");
-        setAmount("");
-        setDate("");
+        setToEditTransactionCatergory("");
+        setToEditTransactionAmount("");
+        setToEditTransactionDate("");
+        setToEditTransactionDescription("");
+        setToEditTransactionID("");
         setCategoryError("");
         setAmountError("");
         setDateError("");
@@ -40,21 +46,25 @@ export default function TransactionLoader() {
 
     const validate = () => {
         let valid = true
-        if (!category) {
+        if (!toEditTransactionCatergory) {
             setCategoryError("Category is required.");
             valid = valid && false;
         }
-        const numericAmount = Number.parseFloat(amount);
+        const numericAmount = Number.parseFloat(toEditTransactionAmount);
         if (!numericAmount || numericAmount === NaN || numericAmount === 0) {
             setAmountError("Amount is required.");
             valid = valid && false;
         }
-        if (!isValidDate(date)) {
+        if (!isValidDate(toEditTransactionDate)) {
             setDateError("Invalid date. Please select a valid date.");
             valid = valid && false;
         }
         return valid;
     }
+
+    const isValidDate = (date) => {
+        return date instanceof Date && !isNaN(date);
+    };
 
     const deleteTransaction = (id) => {
         let newTransactions1 = transactions.splice(0, id);
@@ -62,78 +72,102 @@ export default function TransactionLoader() {
         updateTransactionToFirestore(newTransactions1.concat(newTransactions2));
     }
 
+    /* This fuction will enable the popup for edit*/ 
     const editTransaction = (id) =>{
         setToEditTransactionAmount(transactions[id].amount)
         setToEditTransactionCatergory(transactions[id].category)
         let newDate = transactions[id].date.split("/").reverse().join("-")
         setToEditTransactionDate(new Date(newDate))
+        setToEditTransactionDescription(transactions[id].description)
+        setToEditTransactionID(id)
         setModalVisible(true);
+    }
+    /* This fucntion will save the edited details to firestore*/
+    const saveTransaction = () => {
+        if (!validate()) {
+            return;
+        }
+        let newTransactions = transactions;        
+        const numericAmount = Number.parseFloat(toEditTransactionAmount);
+        const formatteddate = new Date(toEditTransactionDate).toLocaleDateString('en-SG')
+        newTransactions[toEditTransactionID] = ({amount: numericAmount, category: toEditTransactionCatergory, date: formatteddate,description: toEditTransactionDescription});
+        updateTransactionToFirestore(newTransactions);
+        reset();
     }
     return (
         <>  
             <Modal visible={modalVisible} transparent={true}>
                 <Pressable onPress={() => setModalVisible(false)} style={{width:"100%",height:"100%",backgroundColor:"black",opacity:0.5,position:"absolute",left:0,top:0}}></Pressable>
-                <View style={{width:"80%",height:"80%",backgroundColor:"white",margin:"auto",alignItems:"center",shadowColor:"black",shadowOpacity:0.5,shadowRadius:5,borderRadius:10}}>
-                    <View style={{width:500}}>
+                <View style={{width:"30%",minWidth:350,height:"80%",backgroundColor:"white",margin:"auto",alignItems:"center",shadowColor:"black",shadowOpacity:0.5,shadowRadius:5,borderRadius:10}}>
+                    <View style={{width:"90%",padding:"5%",height:"90%",justifyContent:"space-evenly"}}>
+                        <Text style={{fontSize: 20, fontWeight: 'bold', textAlign:"center",textDecorationLine:"underline",width:"100%"}}>Edit Transaction</Text>
                         <View  style={{}}>
-                    <Text style={{fontSize: 13, fontWeight: 'bold', margin: 10}}>Transaction Type</Text>
-                    <Dropdown
-                        data={defaultCategory}
-                        style={{width: 220,borderRadius: 10,height:50, borderColor: 'black', borderWidth: 1, padding: 5,marginVertical:5}}
-                        placeholderStyle={{fontSize: 16,marginLeft:10, whiteSpace: 'nowrap'}}
-                        selectedTextStyle={{fontSize: 16,marginLeft:10, whiteSpace: 'nowrap'}}
-                        inputSearchStyle={{fontSize: 16,justifyContent:"center",height:50, whiteSpace: 'nowrap'}}
-                        labelField="label"
-                        valueField="value"
-                        maxHeight={300}
-                        search
-                        searchPlaceholder="Search..."
-                        placeholder="Select Category"
-                        value={toEditTransactionCatergory}
-                        onChange={(item) => setToEditTransactionCatergory(item.value)}
-                        renderLeftIcon={() => (
-                            <FaIcon name="money-bill" size={20}/>
-                        )}
-                    />
-                    <Text style={{color: 'red', fontSize: 12, marginLeft: 10}}>{categoryError}</Text>
-                    </View>
-                    <View style={{}}>
-                        <Text style={{fontSize: 13, fontWeight: 'bold', margin: 10}}>Amount</Text>
-                        <CustomInput
-                            placeholder="Enter Amount"
-                            values={toEditTransactionAmount}
-                            onChange1={(x) => setToEditTransactionAmount(x)}
-                            containerStyle={{width: 100,margin:0,minWidth:100, justifyContent: 'center', alignItems: 'center'}}
-                            inputContainerStyle={{width: 100,minWidth:100, height: 50, borderColor: 'black', borderWidth: 1, padding: 5, margin: 5}}
-                            inputStyle={{width: 90,minWidth:90}}
-                        />  
-                        <Text style={{color: 'red', fontSize: 12, marginLeft: 10}}>{amountError}</Text>
-                    </View>
-                    <View style={{}}>
-                        <Text style={{fontSize: 13, fontWeight: 'bold', margin: 10}}>Transaction Date</Text>
-                        <DatePickerInput 
-                            style={{width:270,fontSize:13,maxHeight:50,height:50, backgroundColor:"white",borderRadius:10,borderTopRightRadius:10,borderTopLeftRadius:10,borderWidth:1,borderColor:"black"}}
-                            locale="en-SG"
-                            value={toEditTransactionDate}
-                            onChange={(d) => setToEditTransactionDate(d)}
-                            inputMode="start"
-                            label="Transaction Date"
+                          <Text style={{fontSize: 13, fontWeight: 'bold', margin: 10}}>Transaction Type</Text>
+                          <Dropdown
+                              data={defaultCategory}
+                              style={{width: "100%",borderRadius: 10,height:50, borderColor: 'black', borderWidth: 1, padding: 5,marginVertical:5}}
+                              placeholderStyle={{fontSize: 16,marginLeft:10, whiteSpace: 'nowrap'}}
+                              selectedTextStyle={{fontSize: 16,marginLeft:10, whiteSpace: 'nowrap'}}
+                              inputSearchStyle={{fontSize: 16,justifyContent:"center",height:50, whiteSpace: 'nowrap'}}
+                              labelField="label"
+                              valueField="value"
+                              maxHeight={300}
+                              search
+                              searchPlaceholder="Search..."
+                              placeholder="Select Category"
+                              value={toEditTransactionCatergory}
+                              onChange={(item) => setToEditTransactionCatergory(item.value)}
+                              renderLeftIcon={() => (
+                                  <FaIcon name="money-bill" size={20}/>
+                              )}
+                          />
+                          <Text style={{color: 'red', fontSize: 12, marginLeft: 10}}>{categoryError}</Text>
+                        </View>
+                        <View style={{}}>
+                          <Text style={{fontSize: 13, fontWeight: 'bold', margin: 10}}>Amount</Text>
+                          <CustomInput
+                              placeholder="Enter Amount"
+                              values={toEditTransactionAmount}
+                              onChange1={(x) => setToEditTransactionAmount(x)}
+                              containerStyle={{width: "100%",margin:0,minWidth:100,maxWidth:'100%', justifyContent: 'center', alignItems: 'center'}}
+                              inputContainerStyle={{width: "100%",minWidth:100,maxWidth:'100%', height: 50, borderColor: 'black', borderWidth: 1, padding: 5, margin: 5}}
+                              inputStyle={{width: "90%",minWidth:90}}
+                          />  
+                          <Text style={{color: 'red', fontSize: 12, marginLeft: 10}}>{amountError}</Text>
+                        </View>
+                      <View style={{}}>
+                          <Text style={{fontSize: 13, fontWeight: 'bold', margin: 10}}>Transaction Date</Text>
+                          <DatePickerInput 
+                              style={{width:270,fontSize:13,maxHeight:50,height:50, backgroundColor:"white",borderRadius:10,borderTopRightRadius:10,borderTopLeftRadius:10,borderWidth:1,borderColor:"black"}}
+                              locale="en-SG"
+                              value={toEditTransactionDate}
+                              onChange={(d) => setToEditTransactionDate(d)}
+                              inputMode="start"
+                              label="Transaction Date"
 
-                            display="calendar"
-                            activeUnderlineColor="black"
+                              display="calendar"
+                              activeUnderlineColor="black"
+                          />
+                          <Text style={{color: 'red', fontSize: 12, marginLeft: 10}}>{dateError}</Text>
+                      </View>
+                      <View>
+                        <CustomButton
+                          onPress={() => {saveTransaction(); setModalVisible(false)}}
+                          text={"Save"}
+                          containerStyle={{width:"100%",maxWidth:"100%",marginHorizontal:0}}
+                          type={"primary"}
                         />
-                        <Text style={{color: 'red', fontSize: 12, marginLeft: 10}}>{dateError}</Text>
-                    </View>
-                </View>
+                      </View>
+                  </View>
                 </View>
             </Modal>
             <ScrollView style={{width:"90%"}}>
                 {Array.isArray(transactions) && transactions.map((x, index) => (
-                    <View style={{shadowColor:"black",shadowRadius:10,shadowOpacity:0.5,borderColor:"black",borderWidth:1,borderRadius:15,marginHorizontal:250,marginVertical:20}}>
+                    <View key={index} style={{shadowColor:"black",shadowRadius:10,shadowOpacity:0.5,borderColor:"black",borderWidth:1,borderRadius:15,marginHorizontal:250,marginVertical:20}}>
                         <TransactionEntry 
                             deleteTransaction={() => deleteTransaction(index)} 
                             editTransaction={() => editTransaction(index)} 
-                            key={index} 
+                            
                             props={{ amount: x?.amount, date: x?.date, category: x?.category }} 
                         />
                     </View>
