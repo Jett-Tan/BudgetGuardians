@@ -22,6 +22,7 @@ import TransactionTab from "./(tabs)/TransactionTab";
 import CalendarTab from "./(tabs)/CalendarTab";
 import ProfileTab from "./(tabs)/ProfileTab";
 import BudgetTab from "./(tabs)/BudgetTab";
+import CategoriseTab from "./(tabs)/CategoriseTab"
 
 export default function Page() {
     const router = useRouter();
@@ -111,6 +112,7 @@ export default function Page() {
                         {tab === "calendar" && <Text>Coming soon</Text>}
                         {tab === "profile" && <ProfileTab/>}
                         {tab === "settings" && <Text>Coming soon</Text>}
+                        {tab === "categorise" && <CategoriseTab/>}
                         {tab === "transactions" && <TransactionTab/>}
                         {tab === "budget" && <BudgetTab/>}
                         {/* <Button title="Add Expense" onPress={addExpense}/> */}
