@@ -35,30 +35,30 @@ export default function CustomInput({
             setTimeout(resolve, ms));
     }
 
-    async function handleValueChange(e,inputNo = 0) {
+    async function handleValueChange(value, inputNo = 0) {
         if (type === "confirm") {
             if (inputNo === 1) {
-                onChange1(e)
+                onChange1(value); // Ensure the correct value is passed to onChange1
                 await delay(1);
-                setError1(errorHandle(e,"password"))
-                setError2(errorHandle(values2,"confirm",{password:e,confirmPassword:values2}))
+                setError1(errorHandle(value, "password"));
+                setError2(errorHandle(values2, "confirm", { password: value, confirmPassword: values2 }));
             } else if (inputNo === 2) {
-                onChange2(e)
+                onChange2(value); // Ensure the correct value is passed to onChange2
                 await delay(1);
-                setError1(errorHandle(values,"password"))
-                setError2(errorHandle(values2,"confirm",{password:values,confirmPassword:e}))
+                setError1(errorHandle(values, "password"));
+                setError2(errorHandle(value, "confirm", { password: values, confirmPassword: value }));
             }
-        } else if(type === "password") {
-            onChange1(e)
+        } else if (type === "password") {
+            onChange1(value); // Ensure the correct value is passed to onChange1
             await delay(1);
-            setError1(errorHandle(e,type))
-        } else if(type === "email") {
-            onChange1(e)
+            setError1(errorHandle(value, type));
+        } else if (type === "email") {
+            onChange1(value); // Ensure the correct value is passed to onChange1
             await delay(1);
-            setError1(errorHandle(e,type))
+            setError1(errorHandle(value, type));
         } else {
-            onChange1(e)
-            setError1(errorHandle(e,type))
+            onChange1(value); // Ensure the correct value is passed to onChange1
+            setError1(errorHandle(value, type));
         }
     }
     
@@ -79,9 +79,7 @@ export default function CustomInput({
                         style={[styles.input,inputStyle]}
                         autoCapitalize="none"
                         
-                        onChangeText={(e) => {
-                            handleValueChange(e,1)
-                        }}
+                        onChangeText={(value) => handleValueChange(value, 1)}
                     />
                     {!hiddenEye ? null : 
                         <Pressable 
@@ -112,8 +110,8 @@ export default function CustomInput({
                             style={[styles.input,inputStyle]}
                             autoCapitalize="none"
                             
-                            onChangeText={(e) => {
-                                handleValueChange(e,2)
+                            onChangeText={(value) => {
+                                handleValueChange(value,2)
                             }}
                         />
                         {!hiddenEye ? null : 
