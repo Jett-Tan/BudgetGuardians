@@ -4,11 +4,12 @@ import { MultiSelect } from 'react-native-element-dropdown';
 import AntDesign from '@expo/vector-icons/AntDesign';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 
+
 const data = [
   { label: 'Transport', value: '1', icon: 'car' },
   { label: 'Food', value: '2', icon: 'cutlery' },
   { label: 'Groceries', value: '3', icon: 'shopping-cart' },
-  { label: 'Utilities', value: '4', icon: 'bolt' },
+  { label: 'Utilities', value: '4', icon: 'lightbulb-o' },
   { label: 'Rent', value: '5', icon: 'home' },
   { label: 'Allowance', value: '6', icon: 'money' },
   { label: 'Others', value: '7', icon: 'ellipsis-h' },
@@ -50,14 +51,14 @@ const MultiSelectComponent = () => {
     <View style={styles.container}>
       <MultiSelect
         style={styles.dropdown}
-        placeholderStyle={styles.placeholderStyle}
-        selectedTextStyle={styles.selectedTextStyle}
-        inputSearchStyle={styles.inputSearchStyle}
+        placeholderStyle={{fontSize: 16,marginLeft:10, whiteSpace: 'nowrap'}}
+        selectedTextStyle={{fontSize: 16,marginLeft:10, whiteSpace: 'nowrap'}}
+        inputSearchStyle={{fontSize: 16,justifyContent:"center",height:50, whiteSpace: 'nowrap'}}
         iconStyle={styles.iconStyle}
         data={data}
         labelField="label"
         valueField="value"
-        placeholder="Select item"
+        placeholder="Select Category"
         value={selected}
         search
         searchPlaceholder="Search..."
@@ -65,10 +66,10 @@ const MultiSelectComponent = () => {
           setSelected(item);
         }}
         renderLeftIcon={() => (
-          <AntDesign
+          <FontAwesome
             style={styles.icon}
-            color="black"
-            name="Safety"
+            color="#7b9a6d"
+            name="money"
             size={20}
           />
         )}
@@ -116,6 +117,7 @@ const styles = StyleSheet.create({
   inputSearchStyle: {
     height: 40,
     fontSize: 16,
+    
   },
   icon: {
     marginRight: 10, // Adjusted margin to separate icon from text

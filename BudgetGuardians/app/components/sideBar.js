@@ -5,6 +5,7 @@ import { useState } from 'react';
 import styleSetting from '../setting/setting';
 import Icon from './icon';
 import FaIcon from './FaIcon';
+import FontAwesome from '@expo/vector-icons/FontAwesome';
 import { auth } from '../auth/firebaseConfig';
 
 export default function SideBar({   setValue}){
@@ -56,7 +57,7 @@ export default function SideBar({   setValue}){
                     setValue("categorise")
                     setSelected("categorise")
                 }}>
-                    <FaIcon name="sort" size={styleSetting.size.em24} color={styleSetting.color.white}/>
+                    <FontAwesome name="sort-amount-desc" size={styleSetting.size.em24} color={styleSetting.color.white}/>
                     {!minimized && <Text style={styles.sideBarText}>Categorise Transactions</Text>}
                 </TouchableOpacity>
                 <TouchableOpacity style={[styles.sideBarContent,budget,sideBarContent]} onPress={() => {
