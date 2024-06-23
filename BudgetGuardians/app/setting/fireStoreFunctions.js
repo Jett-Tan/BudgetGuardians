@@ -239,7 +239,6 @@ export async function updateTransactionToFirestore(transactionData){
 }
 
 
-
 export async function getTransactionsAndCategorize() {
     try {
       const user = await getUserDataFromFirestore();

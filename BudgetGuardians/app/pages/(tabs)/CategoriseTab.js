@@ -3,7 +3,7 @@ import { ScrollView, View, TouchableOpacity, Text, StyleSheet } from 'react-nati
 import { MultiSelect } from 'react-native-element-dropdown';
 import AntDesign from '@expo/vector-icons/AntDesign';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
-import { getTransactionsAndCategorize } from '../../setting/fireStoreFunctions'; // Adjust the path accordingly
+import { getTransactionsAndCategorize, liveUpdate } from '../../setting/fireStoreFunctions'; // Adjust the path accordingly
 
 const data = [
   { label: 'Transport', value: 'Transport', icon: 'car' },
@@ -19,6 +19,13 @@ const CategoriseTransaction = () => {
   const [selected, setSelected] = useState([]);
   const [categorizedTransactions, setCategorizedTransactions] = useState({});
   const [filteredTransactions, setFilteredTransactions] = useState([]);
+  /*const [transaction, setTransactions] = useState();
+  useEffect(() => {
+    liveUpdate((data) => {
+        setTransactions(data?.financialData?.transactions || []);
+    });
+  }, []);*/
+
 
   useEffect(() => {
     const fetchAndCategorizeTransactions = async () => {
@@ -112,7 +119,7 @@ const CategoriseTransaction = () => {
               <Text>Category: {transaction.category}</Text> 
               <Text>Date: {transaction.date}</Text>
               <Text>Description: {transaction.description}</Text>
-              <Text>Amount: {transaction.amount}</Text>
+              <Text>Amount: ${transaction.amount}</Text>
             </View>
           ))}
         </View>
