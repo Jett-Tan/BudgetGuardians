@@ -36,6 +36,7 @@ export default function ExpenseInput() {
         setCategoryError("");
         setAmountError("");
         setDateError("");
+        setDescription("");
     }
     const validate = () => {
         let valid = true
@@ -62,7 +63,7 @@ export default function ExpenseInput() {
 
         const numericAmount = parseFloat(amount);
         const formatteddate = new Date(date).toLocaleDateString('en-SG')
-        await addTransactionToFirestore({category: category, amount:-numericAmount, date:formatteddate, description:"Food"})
+        await addTransactionToFirestore({category: category, amount:-numericAmount, date:formatteddate, description:description || null})
         .then((data) => {
             console.log(data)
             reset();
@@ -79,9 +80,10 @@ export default function ExpenseInput() {
 
         const numericAmount = Number.parseFloat(amount);
         const formatteddate = new Date(date).toLocaleDateString('en-SG')
-        await addTransactionToFirestore({category: category, amount:numericAmount, date:formatteddate, description:"Food"})
+        await addTransactionToFirestore({category: category, amount:numericAmount, date:formatteddate, description:description || null})
         .then((data) => {
             console.log(data)
+            console.log(description)
             reset();
         }).catch((err) => {
             console.log(err)

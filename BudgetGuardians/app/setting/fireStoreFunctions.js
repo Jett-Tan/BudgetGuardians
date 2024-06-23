@@ -84,7 +84,7 @@ const transactionDataCheck = (transactionData) => {
     valid = valid && transactionData?.amount && transactionData?.amount 
     valid = valid && transactionData?.date && transactionData?.date 
     valid = valid && transactionData?.category && transactionData?.category 
-    valid = valid && transactionData?.description && transactionData?.description 
+    
     return valid
 }
 
