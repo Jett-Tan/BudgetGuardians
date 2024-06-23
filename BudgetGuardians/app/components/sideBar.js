@@ -1,6 +1,6 @@
 import {View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { useRouter } from 'expo-router';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import styleSetting from '../setting/setting';
 import Icon from './icon';
@@ -8,12 +8,17 @@ import FaIcon from './FaIcon';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import { auth } from '../auth/firebaseConfig';
 
-export default function SideBar({   setValue}){
+export default function SideBar({ value,  setValue}){
 
     const router = useRouter();
     const [minimized, setMinimized] = useState(false);
-    const [selected, setSelected] = useState("home");
+    const [selected, setSelected] = useState(value);
+    useEffect(() => {
 
+        if ( window.innerWidth < 800){
+            setMinimized(true);
+        }
+    }, [])
     const styleSelected = {
         selected:{
             backgroundColor:styleSetting.color.gentleblue,
@@ -29,6 +34,7 @@ export default function SideBar({   setValue}){
     let settings = selected === "settings" ? styleSelected.selected : {};        
     let sideBar = minimized ? {width:60} : {};
     let sideBarContent = minimized ? {justifyContent:"center"} : {};
+
     return (
         <>
             <View style={[styles.sideBar,sideBar]}>

@@ -1,73 +1,32 @@
 import { getFirestore, doc, setDoc, updateDoc, addDoc, getDoc, collection ,onSnapshot, deleteField } from "firebase/firestore";
 import { auth } from "../auth/firebaseConfig";
-/*
-export type userData = {
-    age: Number,
-    gender: String | "Male" | "Female" | "Other",
-    name:{
-        firstName: String,
-        lastName: String,
-    },
-}
-export type expenseData = {
-    expenseAmount: Number,
-    expenseDate: Date,
-    expenseDescription: String,
-    expenseCategory: String ,
-    expenseStatus: String | "Paid" | "Unpaid" | "Pending",
-}
 
-export type goalData = {
-    goalAmount: Number,
-    goalDate: Date,
-    goalDescription: String,
-    goalPriority: Number,
-    goalCategory: String,
-    goalStatus: String | "Completed" | "In Progress" | "Pending",
-    goalReminder: {
-        goalReminderDate: Date,
-        goalReminderRepeat: {
-            goalReminderRepeatUntil: Date,
-            goalReminderRepeatTimes: Number,
-            goalReminderRepeatFrequency: String | "Daily" | "Weekly" | "Monthly" | "Yearly",
-            goalReminderRepeatOn: String | "Sunday" | "Monday" | "Tuesday" | "Wednesday" | "Thursday" | "Friday" | "Saturday",
-            goalReminderRepeatBy: String | "Day" | "Week" | "Month" | "Year",
-            goalReminderEnd: {
-                goalReminderEndTimes: Number,
-                goalReminderEndDate: Date,
-                goalReminderEndOn: String | "Sunday" | "Monday" | "Tuesday" | "Wednesday" | "Thursday" | "Friday" | "Saturday",
-                goalReminderEndBy: String | "Day" | "Week" | "Month" | "Year",
-                goalReminderEndFrequency: String | "Daily" | "Weekly" | "Monthly" | "Yearly",
-            }
-        }
-    }
-}
-
-export type financialData = {
-    income: Number ,
-    savings: Number,
-    expense: expenseData[],
-    goals:goalData[]
-}
-export type userInformation = {
-    userData: userData,
-    financialData: financialData
-}
-    */
-
+// Structure Check Functions
 const financialDataCheck = (financialData) => {
     var valid = true;
     valid = valid && financialData?.transactions 
-    valid = valid && financialData?.goals 
+    valid = valid && financialData?.budgetInfo
+    // valid = valid && financialData?.categories 
     return valid
 }
 
-const goalDataCheck = (goalData) => {
+const budgetsDataCheck = (budgetsData) => {
+    return budgetsData
+    .map((budgetData) => budgetDataCheck(budgetData))
+    .reduce((a,b) => a && b, true)
+}
+
+const budgetDataCheck = (budgetData) => {
     var valid = true;
-    valid = valid && goalData?.goalAmount
-    valid = valid && goalData?.goalDate
-    valid = valid && goalData?.goalCategory
-    valid = valid && goalData?.goalReminder
+    valid = valid && budgetData?.budgetAmount
+    valid = valid && budgetData?.budgetCategory
+    return valid
+}
+
+const budgetInfoDataCheck = (budgetInfoData) => {
+    var valid = true;
+    valid = valid && budgetInfoData?.budgetAmount
+    valid = valid && budgetInfoData?.budgets && budgetsDataCheck(budgetInfoData?.budgets)
     return valid
 }
 
@@ -93,6 +52,141 @@ const transactionsDataCheck = (transactionsData) => {
     .map((transactionsData) => transactionDataCheck(transactionsData))
     .reduce((a,b) => a && b, true)
 }
+// User Functions
+export async function addFinancialDataToFirestore(financialData){
+    if(!financialDataCheck(financialData)){
+        console.error("Invalid financialData", financialData)
+        throw new Error("Invalid financialData")
+    }
+    // console.log("userData", userData)
+    const db = getFirestore();
+    const docRef = doc(db, "users", auth.currentUser.uid);
+
+    await updateDoc(docRef, {financialData:financialData});
+    return new Promise((resolve, reject) => {
+        resolve("Document written with ID: ", auth.currentUser.uid);
+        reject("Error adding document: ", error);
+    });
+    
+}
+
+export async function createUserInFirestore(){
+    const db = getFirestore();
+    const docRef = doc(db, "users", auth.currentUser.uid);
+    const userData = {
+        userData: {
+            age: 0,
+            name:{
+                firstName: '',
+                lastName: '',
+            },
+        },
+        financialData: {
+            transactions: [],
+            budgetInfo:{
+                budgetAmount: 0,
+                budgets:[]
+            },
+        }
+    }
+    await setDoc(docRef, userData);
+}
+
+// Budget Functions
+export async function addBudgetToFirestore(budgetData){
+    // if(!budgetDataCheck(budgetData)){
+    //     console.error("Invalid userData", budgetData)
+    //     throw new Error("Invalid userData")
+    // }
+    // const db = getFirestore();
+    // const docRef = doc(db, "budgets");
+    // const user = await getUserDataFromFirestore();
+    // user.financialData.budget.push(budgetData);
+    // await addDoc(docRef, budgetData);
+    // await updateDoc(docRef, {financialData:user.financialData});
+    // return new Promise((resolve, reject) => {
+    //     resolve("Document written with ID: ", auth.currentUser.uid);
+    //     reject("Error adding document: ", error);
+    // });
+}
+
+export async function updateBudgetsToFirestore(budgetData){
+}
+
+export async function updateBudgetAmountToFirestore(budgetAmount){
+    if(!budgetAmount && typeof budgetAmount !== "number"){
+        console.error("Invalid budgetAmount", budgetAmount)
+        throw new Error("Invalid budgetAmount")
+    }
+    const db = getFirestore();
+    const docRef = doc(db, "users", auth.currentUser.uid);
+    const user = await getUserDataFromFirestore();
+    user.financialData.budgetInfo.budgetAmount = budgetAmount;
+    await updateDoc(docRef, {financialData:user.financialData});
+    return new Promise((resolve, reject) => {
+        resolve("Document written with ID: ", auth.currentUser.uid);
+        reject("Error adding document: ", error);
+    });
+}
+
+export async function updateBudgetInfoToFirestore(budgetInfoData){
+    if(!budgetInfoDataCheck(budgetInfoData)){
+        console.error("Invalid userData", budgetInfoData)
+        throw new Error("Invalid userData")
+    }
+    const db = getFirestore();
+    const docRef = doc(db, "users", auth.currentUser.uid);
+    const user = await getUserDataFromFirestore();
+    user.financialData.budgetInfo = budgetInfoData;
+    await updateDoc(docRef, {financialData:user.financialData});
+    return new Promise((resolve, reject) => {
+        resolve("Document written with ID: ", auth.currentUser.uid);
+        reject("Error adding document: ", error);
+    });
+}
+
+export async function getBudgetsFromFirestore(){
+    const db = getFirestore();
+    const docRef = doc(db, "users", auth.currentUser.uid);
+    const docSnap = await getDoc(docRef);
+    return new Promise((resolve, reject) => {
+        if (docSnap.exists()) {
+            resolve(docSnap.data().financialData.budgetInfo.budgets);
+        } else {
+            reject("No such document!");
+        }
+    });
+}
+
+export async function getBudgetAmountFromFirestore(){
+    const db = getFirestore();
+    const docRef = doc(db, "users", auth.currentUser.uid);
+    const docSnap = await getDoc(docRef);
+    return new Promise((resolve, reject) => {
+        if (docSnap.exists()) {
+            resolve(docSnap.data().financialData.budgetInfo.budgetAmount);
+        } else {
+            reject("No such document!");
+        }
+    });
+}
+// UserData Functions
+export async function addUserDataToFirestore(userData) {
+    if(!userDataCheck(userData)){
+        console.error("Invalid userData", userData)
+        throw new Error("Invalid userData")
+    }
+    // console.log("userData", userData)
+    const db = getFirestore();
+    const docRef = doc(db, "users", auth.currentUser.uid);
+    userData.email = auth.currentUser.email;
+
+    await updateDoc(docRef, {userData:userData});
+    return new Promise((resolve, reject) => {
+        resolve("Document written with ID: ", auth.currentUser.uid);
+        reject("Error adding document: ", error);
+    });
+}
 
 export async function updateUserDataToFirestore(userData) {
     if(!userDataCheck(userData)){
@@ -111,24 +205,6 @@ export async function updateUserDataToFirestore(userData) {
     });
 }
 
-export async function addFinancialDataToFirestore(financialData){
-    if(!financialDataCheck(financialData)){
-        console.error("Invalid financialData", financialData)
-        throw new Error("Invalid financialData")
-    }
-    // console.log("userData", userData)
-    const db = getFirestore();
-    const docRef = doc(db, "users", auth.currentUser.uid);
-
-    await updateDoc(docRef, {financialData:financialData});
-    return new Promise((resolve, reject) => {
-        resolve("Document written with ID: ", auth.currentUser.uid);
-        reject("Error adding document: ", error);
-    });
-    
-}
-
-
 export async function getUserDataFromFirestore(){
     if (auth.currentUser === null) {
         return null;
@@ -145,59 +221,7 @@ export async function getUserDataFromFirestore(){
     });
 }
 
-export async function createUserInFirestore(){
-    const db = getFirestore();
-    const docRef = doc(db, "users", auth.currentUser.uid);
-    const userData = {
-        userData: {
-            age: 0,
-            name:{
-                firstName: '',
-                lastName: '',
-            },
-        },
-        financialData: {
-            transactions: [],
-            goals:[]
-        }
-    }
-    await setDoc(docRef, userData);
-}
-
-export async function addUserDataToFirestore(userData) {
-    if(!userDataCheck(userData)){
-        console.error("Invalid userData", userData)
-        throw new Error("Invalid userData")
-    }
-    // console.log("userData", userData)
-    const db = getFirestore();
-    const docRef = doc(db, "users", auth.currentUser.uid);
-    userData.email = auth.currentUser.email;
-
-    await updateDoc(docRef, {userData:userData});
-    return new Promise((resolve, reject) => {
-        resolve("Document written with ID: ", auth.currentUser.uid);
-        reject("Error adding document: ", error);
-    });
-}
-
-export async function addGoalToFirestore(goalData){
-    if(!goalDataCheck(goalData)){
-        console.error("Invalid userData", goalData)
-        throw new Error("Invalid userData")
-    }
-    const db = getFirestore();
-    const docRef = doc(db, "goals");
-    const user = await getUserDataFromFirestore();
-    user.financialData.goals.push(goalData);
-    await addDoc(docRef, goalData);
-    await updateDoc(docRef, {financialData:user.financialData});
-    return new Promise((resolve, reject) => {
-        resolve("Document written with ID: ", auth.currentUser.uid);
-        reject("Error adding document: ", error);
-    });
-}
-
+// Transactions Functions
 export async function addTransactionToFirestore(transactionData){
     if(!transactionDataCheck(transactionData)){
         console.error("Invalid userData", transactionData)
@@ -238,7 +262,6 @@ export async function updateTransactionToFirestore(transactionData){
     
 }
 
-
 export async function getTransactionsAndCategorize() {
     try {
       const user = await getUserDataFromFirestore();
@@ -265,6 +288,7 @@ export async function getTransactionsAndCategorize() {
     }
 }
 
+// Live Update
 export const liveUpdate = (callback) => {
     const db = getFirestore();
     if (auth.currentUser === null) {

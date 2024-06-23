@@ -3,6 +3,7 @@ import { View,Text,StyleSheet, } from "react-native"
 import { liveUpdate, getUserDataFromFirestore } from "../../setting/fireStoreFunctions";
 import { set } from "firebase/database";
 import TransactionEntry from "../../components/transactionEntry";
+import CustomButton from "../../components/customButton";
 
 
 export default function HomeTab() {
@@ -78,11 +79,9 @@ export default function HomeTab() {
                 </View>
 
                 <View style={{borderRadius:15,width:"40%",height:"80%", padding:25,alignItems:"center", justifyContent:"flex-start",shadowOpacity:0.5,shadowColor:"black",shadowRadius:15}}> 
-                    <Text style={{fontWeight:"bold"}}>Current Goal</Text>
+                    <Text style={{fontWeight:"bold"}}>Current Budget</Text>
                     {!lastestGoal  && (
-                        <View style={{margin:"auto"}}>
-                            <Text>No Goal</Text>
-                        </View>
+                        <Text>No Budget</Text>
                     )}
                     {/* {lastestGoal && } */}
                 </View>

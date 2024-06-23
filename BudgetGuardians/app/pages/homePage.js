@@ -44,6 +44,9 @@ export default function Page() {
                 alert(err);
             });
         })();
+        if (currentUser?.financialData?.budget?.amount === undefined) {
+            setTab("budget");
+        }
     }, []);
 
     const loadData = setInterval(async () => {

@@ -18,7 +18,7 @@ export default function createProfilePage(){
     // }
     const [firstName,setFirstName] = useState("")
     const [lastName,setLastName] = useState("")
-    const [age,setAge] = useState(0)
+    const [age,setAge] = useState("")
 
     const [firstNameError,setFirstNameError] = useState("")
     const [lastNameError,setLastNameError] = useState("")
@@ -34,13 +34,6 @@ export default function createProfilePage(){
             valid = true;
         }).catch((error)=>{ 
             valid = false;
-            console.error("Error adding document: ", error);
-        });
-        await addFinancialDataToFirestore({transactions:[],goals:[]})
-        .then(()=>{
-            valid = true;
-        }).catch((error)=>{
-            valid = false; 
             console.error("Error adding document: ", error);
         });
 
@@ -61,7 +54,7 @@ export default function createProfilePage(){
                     type="default"
                     placeholder="Set your first name"
                     onChange1={e => setFirstName(e)}
-                    values1={firstName}
+                    values={firstName}
                     errorExist={true}
                     errorHandle={ (e) => {
                         if(e === ''){
@@ -75,7 +68,7 @@ export default function createProfilePage(){
                     type="default"
                     placeholder="Set your last name"
                     onChange1={e => setLastName(e)}
-                    values1={lastName}
+                    values={lastName}
                     errorExist={true}
                     errorHandle={ (e) => {
                         if(e === '' ){
@@ -89,12 +82,14 @@ export default function createProfilePage(){
                     type="default"
                     placeholder="Set your age"
                     onChange1={e => setAge(e)}
-                    values1={age}
+                    values={age}
                     errorExist={true}
                     errorHandle={ (e) => {
-                        if(e === '' || e < 0){
+                        if(e === '' ){
                             return "Missing Value"
-                        }else{
+                        }else if( e < 0 || Number.isNaN(Number.parseInt(e)) ){
+                            return 'Enter a valid age'
+                        }else {
                             return ''
                         }
                     }}

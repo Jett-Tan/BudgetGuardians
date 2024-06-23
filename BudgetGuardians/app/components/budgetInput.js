@@ -1,0 +1,200 @@
+import { View, Text, StyleSheet } from "react-native";
+import { Dropdown } from "react-native-element-dropdown";
+import { useEffect, useState } from "react";
+
+import { updateBudgetAmountToFirestore , getBudgetAmountFromFirestore, getBudgetsFromFirestore, addBudgetToFirestore } from "../setting/fireStoreFunctions";
+import CustomInput from "./customInput";
+import CustomButton from "./customButton";
+import FaIcon from "./FaIcon";
+import styleSetting from "../setting/setting";
+
+export const defaultCategory = [
+  { label: 'Transport', value: 'Transport' },
+  { label: 'Food', value: 'Food' },
+  { label: 'Groceries', value: 'Groceries' },
+  { label: 'Utilities', value: 'Utilities' },
+  { label: 'Rent', value: 'Rent' },
+  { label: 'Allowance', value: 'Allowance' },
+  { label: 'Others', value: 'Others' },
+];
+
+export default function BudgetInput() {
+    const [category, setCategory] = useState("");
+    const [amount, setAmount] = useState("");
+    
+    const [totalBudgetAmount, setTotalBudgetAmount] = useState();
+
+    const [categoryError, setCategoryError] = useState("");
+    const [amountError, setAmountError] = useState("");
+
+    const [categoryBudget, setCategoryBudget] = useState([]);
+
+    const reset =() => {
+        setCategory("");
+        setAmount("");
+        setCategoryError("");
+        setAmountError("");
+    }
+
+    useEffect(() => {
+        (async()=>{
+            await getBudgetAmountFromFirestore()
+            .then((data) => {
+                setTotalBudgetAmount(data)
+            }).catch((err) => {
+                console.log(err)
+            })
+
+            await getBudgetsFromFirestore()
+            .then((data) => {
+                setCategoryBudget(data)
+            }).catch((err) => {
+                console.log(err)
+            })
+        })()
+    }, [])
+
+    const validatBudget = () => {
+        let valid = true
+        if (!category) {
+            setCategoryError("Category is required.");
+            valid = valid && false;
+        }
+        const numericAmount = Number.parseFloat(amount);
+        if (!numericAmount || numericAmount === NaN || numericAmount === 0) {
+            setAmountError("Amount is required.");
+            valid = valid && false;
+        }
+        return valid;
+    }
+    const validateTotalBudgetAmount = () => {
+        let valid = true
+        // if (!category) {
+        //     setCategoryError("Category is required.");
+        //     valid = valid && false;
+        // }
+        const numericAmount = Number.parseFloat(totalBudgetAmount);
+        if (!numericAmount || numericAmount === NaN || numericAmount === 0) {
+            setAmountError("Amount is required.");
+            valid = valid && false;
+        }
+        return valid;
+    }
+
+    const addBudgetAmount = async() => {
+        if(validateTotalBudgetAmount() === false) {
+            console.log("Validation failed");
+            return;
+        }
+
+        const numericAmount = Number.parseFloat(totalBudgetAmount);
+        await updateBudgetAmountToFirestore(numericAmount)
+        .then((data) => {
+            console.log(data);
+        }).catch((err) => {
+            console.log(err)
+        })
+    }
+
+    const addCategoryBudget = async() => {
+        if(validatBudget() === false) {
+            console.log("Validation failed");
+            return;
+        }
+
+        const numericAmount = Number.parseFloat(amount);
+        await addBudgetToFirestore({amount:numericAmount, category:category})
+        .then((data) => {
+            console.log(data);
+        }).catch((err) => {
+            console.log(err)
+        })
+    }
+
+    return (
+        <>
+            <View style={{flexDirection:"column",alignItems:"center",width:"90%",flexWrap:"wrap", height:"auto",padding:10,borderRadius:15,shadowRadius:15,shadowColor:"black",shadowOpacity:0.5}}>
+                <Text>Total Budget</Text>
+                <CustomInput
+                    placeholder="Amount"
+                    values={totalBudgetAmount}
+                    onChange1={(e) => setTotalBudgetAmount(e)}
+                    errorHandle={(e) => {
+                        // console.log(Number.parseFloat(e));
+                        // e.reduce((x) => {Number.parseFloat(x) !== NaN }, true)
+                        if (!e || Number.parseFloat(e) === undefined || Number.parseFloat(e) === NaN){
+                            return "Amount is required."
+                        }
+                        return "";
+                    }}
+                    containerStyle={{width:"80%",marginHorizontal:"auto",marginTop:20,minWidth:0,height:50}}
+                    inputContainerStyle={{width:"80%",marginHorizontal:"auto",minWidth:0,height:50}}
+                    inputStyle={{width:"80%",height:50}}
+                />
+                <CustomButton
+                    type={"signup"}
+                    text={"Set Budget"}
+                    onPress={() => addBudgetAmount()}
+                    containerStyle={{width:"65%",height:50,marginHorizontal:"auto"}}
+                    textStyle={{fontWeight:"bold",fontSize:"95%"}}
+                />
+            </View>
+            <View style={{flexDirection:"column",alignItems:"center",width:"90%",flexWrap:"wrap", height:"auto",padding:10,marginVertical:20,borderRadius:15,shadowRadius:15,shadowColor:"black",shadowOpacity:0.5}}>
+                <Text>Category Budget</Text>
+                <Dropdown
+                    data={defaultCategory}
+                    style={{width: 220,borderRadius: 10,height:50, marginTop:20,borderColor: 'black', borderWidth: 1, padding: 5,marginVertical:5}}
+                    placeholderStyle={{fontSize: 16,marginLeft:10, whiteSpace: 'nowrap'}}
+                    selectedTextStyle={{fontSize: 16,marginLeft:10, whiteSpace: 'nowrap'}}
+                    inputSearchStyle={{fontSize: 16,justifyContent:"center",height:50, whiteSpace: 'nowrap'}}
+                    labelField="label"
+                    valueField="value"
+                    maxHeight={300}
+                    search
+                    searchPlaceholder="Search..."
+                    placeholder="Select Category"
+                    value={category}
+                    onChange={(item) => setCategory(item.value)}
+                    renderLeftIcon={() => (
+                        <FaIcon name="money-bill" size={20}/>
+                    )}
+                />
+                <CustomInput
+                    placeholder="Amount"
+                    values={amount}
+                    onChange1={(e) => setAmount(e)}
+                    errorHandle={(e) => {
+                        if (!e) {
+                            return "Amount is required."
+                        }
+                        return "";
+                    }}
+                    containerStyle={{width:"80%",marginHorizontal:"auto",marginTop:20,minWidth:0,height:50}}
+                    inputContainerStyle={{width:"80%",marginHorizontal:"auto",minWidth:0,height:50}}
+                    inputStyle={{width:"80%",height:50}}
+                />
+                <CustomButton
+                    type={"signup"}
+                    text={"Set Budget"}
+                    onPress={() => addCategoryBudget()}
+                    containerStyle={{width:"65%",height:50,marginHorizontal:"auto"}}
+                    textStyle={{fontWeight:"bold",fontSize:"95%"}}
+                />
+            </View>
+        </>
+    )
+}
+const styles = StyleSheet.create({
+    button:{
+        backgroundColor:styleSetting.color.lightblue,
+        width: "100%",
+        minWidth: 100,
+        height: 50,
+        fontSize: "85%",
+        flexWrap: 'wrap',
+        shadowColor:"black",
+        margin:0,
+        shadowOffset : {width: 2, height: 2},
+        shadowOpacity: 0.5,
+    }
+});

@@ -45,6 +45,7 @@ export default function Page() {
         }
         return true;
     }
+
     function handleSignup(e) {
         e.preventDefault;
         setError("")
@@ -111,14 +112,14 @@ export default function Page() {
                 type="email"
                 placeholder="Your Email"
                 onChange1={e => onChangeEmail(e)}
-                values1={email}
+                values={email}
             />
             <CustomInput
                 password = {true}
                 placeholder="Your Password"
                 onChange1={e => handlePasswordChange(e)}
                 onChange2={e => handlePasswordChange(e,true)}
-                values1={password}
+                values={password}
                 values2={confirmPassword}
                 hiddenEye = {true}
                 type="confirm"
