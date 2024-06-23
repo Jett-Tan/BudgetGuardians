@@ -19,13 +19,8 @@ const CategoriseTransaction = () => {
   const [selected, setSelected] = useState([]);
   const [categorizedTransactions, setCategorizedTransactions] = useState({});
   const [filteredTransactions, setFilteredTransactions] = useState([]);
-  /*const [transaction, setTransactions] = useState();
-  useEffect(() => {
-    liveUpdate((data) => {
-        setTransactions(data?.financialData?.transactions || []);
-    });
-  }, []);*/
-
+  const [sortOrder, setSortOrder] = useState('asc'); // State to track sort order
+  const [sortCriteria, setSortCriteria] = useState('none'); // State to track sort criteria
 
   useEffect(() => {
     const fetchAndCategorizeTransactions = async () => {
@@ -42,15 +37,30 @@ const CategoriseTransaction = () => {
 
   useEffect(() => {
     const filterTransactions = () => {
-      if (selected.length === 0) {
-        setFilteredTransactions([]);
-      } else {
-        const filtered = selected.flatMap(category => categorizedTransactions[category] || []);
-        setFilteredTransactions(filtered);
+      let filtered = [];
+      if (selected.length > 0) {
+        filtered = selected.flatMap(category => categorizedTransactions[category] || []);
       }
+
+      // Sort the transactions by the selected criteria
+      if (sortCriteria === 'amount') {
+        if (sortOrder === 'asc') {
+          filtered.sort((a, b) => a.amount - b.amount);
+        } else {
+          filtered.sort((a, b) => b.amount - a.amount);
+        }
+      } else if (sortCriteria === 'date') {
+        if (sortOrder === 'asc') {
+          filtered.sort((a, b) => new Date(a.date.split("/").reverse().join("-")) - new Date(b.date.split("/").reverse().join("-")));
+        } else {
+          filtered.sort((a, b) => new Date(b.date.split("/").reverse().join("-")) - new Date(a.date.split("/").reverse().join("-")));
+        }
+      }
+
+      setFilteredTransactions(filtered);
     };
     filterTransactions();
-  }, [selected, categorizedTransactions]);
+  }, [selected, categorizedTransactions, sortOrder, sortCriteria]);
 
   const renderItem = item => (
     <View style={styles.item}>
@@ -110,6 +120,26 @@ const CategoriseTransaction = () => {
           renderSelectedItem={renderSelectedItem}
         />
 
+        <View style={styles.sortContainer}>
+          <Text>Sort by: </Text>
+          <TouchableOpacity onPress={() => setSortCriteria('none')}>
+            <Text style={[styles.sortButton, sortCriteria === 'none' && styles.activeSort]}>None</Text>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => setSortCriteria('amount')}>
+            <Text style={[styles.sortButton, sortCriteria === 'amount' && styles.activeSort]}>Amount</Text>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => setSortCriteria('date')}>
+            <Text style={[styles.sortButton, sortCriteria === 'date' && styles.activeSort]}>Date</Text>
+          </TouchableOpacity>
+          <Text>Order: </Text>
+          <TouchableOpacity onPress={() => setSortOrder('asc')}>
+            <Text style={[styles.sortButton, sortOrder === 'asc' && styles.activeSort]}>Ascending</Text>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => setSortOrder('desc')}>
+            <Text style={[styles.sortButton, sortOrder === 'desc' && styles.activeSort]}>Descending</Text>
+          </TouchableOpacity>
+        </View>
+
         <View style={styles.transactionsContainer}>
           {filteredTransactions.length === 0 && (
             <Text>No transactions found for the selected category.</Text>
@@ -117,25 +147,24 @@ const CategoriseTransaction = () => {
           {filteredTransactions.map((transaction, index) => (
             <View key={index} style={styles.transactionItem}>
               <View>
-              <Text style={styles.underline}>Category: </Text>
-              <Text>{transaction.category}</Text>
+                <Text style={styles.underline}>Category: </Text>
+                <Text>{transaction.category}</Text>
               </View>
 
               <View>
-              <Text style={styles.underline}>Date: </Text>
-              <Text>{transaction.date}</Text>
+                <Text style={styles.underline}>Date: </Text>
+                <Text>{transaction.date}</Text>
               </View> 
 
               <View>
-              <Text style={styles.underline}>Description: </Text>
-              <Text>{transaction.description}</Text>
+                <Text style={styles.underline}>Description: </Text>
+                <Text>{transaction.description}</Text>
               </View> 
 
               <View>
-              <Text style={styles.underline}>Amount: $</Text>
-              <Text>{transaction.amount}</Text>
+                <Text style={styles.underline}>Amount: </Text>
+                <Text>${transaction.amount}</Text>
               </View> 
-              
             </View>
           ))}
         </View>
@@ -149,7 +178,6 @@ export default CategoriseTransaction;
 const styles = StyleSheet.create({
   scrollView: {
     flex: 1,
-    
   },
   container: {
     width: "95%",
@@ -220,14 +248,27 @@ const styles = StyleSheet.create({
     fontSize: 16,
     marginLeft: 10, // Add margin to separate text from icon
   },
+  sortContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginVertical: 10,
+  },
+  sortButton: {
+    marginHorizontal: 10,
+    padding: 5,
+    borderRadius: 5,
+    backgroundColor: '#f0f0f0',
+  },
+  activeSort: {
+    backgroundColor: '#d0d0d0',
+  },
   transactionsContainer: {
     marginTop: 20,
     width: '100%',
     alignItems: 'center',
-    
   },
   transactionItem: {
-    flexDirection:'row',
+    flexDirection: 'row',
     justifyContent: 'space-between',
     width: '100%',
     padding: 10,
@@ -235,5 +276,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#f0f0f0',
     borderRadius: 10,
   },
-  underline: {textDecorationLine: 'underline'},
+  underline: {
+    textDecorationLine: 'underline',
+  },
 });
