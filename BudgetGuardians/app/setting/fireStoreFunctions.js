@@ -238,6 +238,34 @@ export async function updateTransactionToFirestore(transactionData){
     
 }
 
+
+
+export async function getTransactionsAndCategorize() {
+    try {
+      const user = await getUserDataFromFirestore();
+      const transactions = user.financialData.transactions;
+  
+      if (!transactionsDataCheck(transactions)) {
+        throw new Error("Invalid transaction data");
+      }
+  
+      // Categorize transactions
+      const categorizedTransactions = transactions.reduce((acc, transaction) => {
+        const category = transaction.category;
+        if (!acc[category]) {
+          acc[category] = [];
+        }
+        acc[category].push(transaction);
+        return acc;
+      }, {});
+  
+      return categorizedTransactions;
+    } catch (error) {
+      console.error("Error fetching or categorizing transactions:", error);
+      throw error;
+    }
+}
+
 export const liveUpdate = (callback) => {
     const db = getFirestore();
     if (auth.currentUser === null) {

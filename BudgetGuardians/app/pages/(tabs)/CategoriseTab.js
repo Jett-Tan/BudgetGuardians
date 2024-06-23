@@ -1,36 +1,61 @@
-import React, { useState } from 'react';
-import { StyleSheet, View, TouchableOpacity, Text } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { ScrollView, View, TouchableOpacity, Text, StyleSheet } from 'react-native';
 import { MultiSelect } from 'react-native-element-dropdown';
 import AntDesign from '@expo/vector-icons/AntDesign';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
-
+import { getTransactionsAndCategorize } from '../../setting/fireStoreFunctions'; // Adjust the path accordingly
 
 const data = [
-  { label: 'Transport', value: '1', icon: 'car' },
-  { label: 'Food', value: '2', icon: 'cutlery' },
-  { label: 'Groceries', value: '3', icon: 'shopping-cart' },
-  { label: 'Utilities', value: '4', icon: 'lightbulb-o' },
-  { label: 'Rent', value: '5', icon: 'home' },
-  { label: 'Allowance', value: '6', icon: 'money' },
-  { label: 'Others', value: '7', icon: 'ellipsis-h' },
+  { label: 'Transport', value: 'Transport', icon: 'car' },
+  { label: 'Food', value: 'Food', icon: 'cutlery' },
+  { label: 'Groceries', value: 'Groceries', icon: 'shopping-cart' },
+  { label: 'Utilities', value: 'Utilities', icon: 'lightbulb-o' },
+  { label: 'Rent', value: 'Rent', icon: 'home' },
+  { label: 'Allowance', value: 'Allowance', icon: 'money' },
+  { label: 'Others', value: 'Others', icon: 'ellipsis-h' },
 ];
 
-const MultiSelectComponent = () => {
+const CategoriseTransaction = () => {
   const [selected, setSelected] = useState([]);
+  const [categorizedTransactions, setCategorizedTransactions] = useState({});
+  const [filteredTransactions, setFilteredTransactions] = useState([]);
 
-  const renderItem = item => {
-    return (
-      <View style={styles.item}>
-        <FontAwesome
-          style={styles.icon}
-          color="#33CBFF"
-          name={item.icon}
-          size={20}
-        />
-        <Text style={styles.selectedTextStyle}>{item.label}</Text>
-      </View>
-    );
-  };
+  useEffect(() => {
+    const fetchAndCategorizeTransactions = async () => {
+      try {
+        const categorizedData = await getTransactionsAndCategorize();
+        setCategorizedTransactions(categorizedData);
+      } catch (error) {
+        console.error("Error fetching or categorizing transactions:", error);
+      }
+    };
+    
+    fetchAndCategorizeTransactions();
+  }, []);
+
+  useEffect(() => {
+    const filterTransactions = () => {
+      if (selected.length === 0) {
+        setFilteredTransactions([]);
+      } else {
+        const filtered = selected.flatMap(category => categorizedTransactions[category] || []);
+        setFilteredTransactions(filtered);
+      }
+    };
+    filterTransactions();
+  }, [selected, categorizedTransactions]);
+
+  const renderItem = item => (
+    <View style={styles.item}>
+      <FontAwesome
+        style={styles.icon}
+        color="#33CBFF"
+        name={item.icon}
+        size={20}
+      />
+      <Text style={styles.selectedTextStyle}>{item.label}</Text>
+    </View>
+  );
 
   const renderSelectedItem = (item, unSelect) => (
     <TouchableOpacity onPress={() => unSelect && unSelect(item)}>
@@ -48,46 +73,65 @@ const MultiSelectComponent = () => {
   );
 
   return (
-    <View style={styles.container}>
-      <MultiSelect
-        style={styles.dropdown}
-        placeholderStyle={{fontSize: 16,marginLeft:10, whiteSpace: 'nowrap'}}
-        selectedTextStyle={{fontSize: 16,marginLeft:10, whiteSpace: 'nowrap'}}
-        inputSearchStyle={{fontSize: 16,justifyContent:"center",height:50, whiteSpace: 'nowrap'}}
-        iconStyle={styles.iconStyle}
-        data={data}
-        labelField="label"
-        valueField="value"
-        placeholder="Select Category"
-        value={selected}
-        search
-        searchPlaceholder="Search..."
-        onChange={item => {
-          setSelected(item);
-        }}
-        renderLeftIcon={() => (
-          <FontAwesome
-            style={styles.icon}
-            color="#7b9a6d"
-            name="money"
-            size={20}
-          />
-        )}
-        renderItem={renderItem}
-        renderSelectedItem={renderSelectedItem}
-      />
-    </View>
+    <ScrollView style={styles.scrollView}>
+      <View style={styles.container}>
+        <MultiSelect
+          style={styles.dropdown}
+          placeholderStyle={{ fontSize: 16, marginLeft: 10 }}
+          selectedTextStyle={{ fontSize: 16, marginLeft: 10 }}
+          inputSearchStyle={{ fontSize: 16, justifyContent: "center", height: 50 }}
+          iconStyle={styles.iconStyle}
+          data={data}
+          labelField="label"
+          valueField="value"
+          placeholder="Select Category"
+          value={selected}
+          search
+          searchPlaceholder="Search..."
+          onChange={item => {
+            setSelected(item);
+          }}
+          renderLeftIcon={() => (
+            <FontAwesome
+              style={styles.icon}
+              color="#7b9a6d"
+              name="money"
+              size={20}
+            />
+          )}
+          renderItem={renderItem}
+          renderSelectedItem={renderSelectedItem}
+        />
+
+        <View style={styles.transactionsContainer}>
+          {filteredTransactions.length === 0 && (
+            <Text>No transactions found for the selected category.</Text>
+          )}
+          {filteredTransactions.map((transaction, index) => (
+            <View key={index} style={styles.transactionItem}>
+              <Text>Category: {transaction.category}</Text> 
+              <Text>Date: {transaction.date}</Text>
+              <Text>Description: {transaction.description}</Text>
+              <Text>Amount: {transaction.amount}</Text>
+            </View>
+          ))}
+        </View>
+      </View>
+    </ScrollView>
   );
 };
 
-export default MultiSelectComponent;
+export default CategoriseTransaction;
 
 const styles = StyleSheet.create({
+  scrollView: {
+    flex: 1,
+  },
   container: {
     width: "95%",
     height: "95%",
     margin: "2.5%",
-    alignItems: "center"
+    alignItems: "center",
   },
   dropdown: {
     height: 50,
@@ -117,7 +161,6 @@ const styles = StyleSheet.create({
   inputSearchStyle: {
     height: 40,
     fontSize: 16,
-    
   },
   icon: {
     marginRight: 10, // Adjusted margin to separate icon from text
@@ -151,5 +194,19 @@ const styles = StyleSheet.create({
     marginRight: 5,
     fontSize: 16,
     marginLeft: 10, // Add margin to separate text from icon
+  },
+  transactionsContainer: {
+    marginTop: 20,
+    width: '100%',
+    alignItems: 'center',
+  },
+  transactionItem: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    width: '100%',
+    padding: 10,
+    marginBottom: 5,
+    backgroundColor: '#f0f0f0',
+    borderRadius: 10,
   },
 });
