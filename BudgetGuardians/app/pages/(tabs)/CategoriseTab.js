@@ -116,10 +116,26 @@ const CategoriseTransaction = () => {
           )}
           {filteredTransactions.map((transaction, index) => (
             <View key={index} style={styles.transactionItem}>
-              <Text>Category: {transaction.category}</Text> 
-              <Text>Date: {transaction.date}</Text>
-              <Text>Description: {transaction.description}</Text>
-              <Text>Amount: ${transaction.amount}</Text>
+              <View>
+              <Text style={styles.underline}>Category: </Text>
+              <Text>{transaction.category}</Text>
+              </View>
+
+              <View>
+              <Text style={styles.underline}>Date: </Text>
+              <Text>{transaction.date}</Text>
+              </View> 
+
+              <View>
+              <Text style={styles.underline}>Description: </Text>
+              <Text>{transaction.description}</Text>
+              </View> 
+
+              <View>
+              <Text style={styles.underline}>Amount: $</Text>
+              <Text>{transaction.amount}</Text>
+              </View> 
+              
             </View>
           ))}
         </View>
@@ -133,6 +149,7 @@ export default CategoriseTransaction;
 const styles = StyleSheet.create({
   scrollView: {
     flex: 1,
+    
   },
   container: {
     width: "95%",
@@ -153,6 +170,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.2,
     shadowRadius: 1.41,
     elevation: 2,
+    width: "100%",
   },
   placeholderStyle: {
     fontSize: 16,
@@ -206,9 +224,10 @@ const styles = StyleSheet.create({
     marginTop: 20,
     width: '100%',
     alignItems: 'center',
+    
   },
   transactionItem: {
-    flexDirection: 'row',
+    flexDirection:'row',
     justifyContent: 'space-between',
     width: '100%',
     padding: 10,
@@ -216,4 +235,5 @@ const styles = StyleSheet.create({
     backgroundColor: '#f0f0f0',
     borderRadius: 10,
   },
+  underline: {textDecorationLine: 'underline'},
 });
