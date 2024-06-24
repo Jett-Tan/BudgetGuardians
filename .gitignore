@@ -1,2 +1,10 @@
 
 /BudgetGuardians/node_modules
+/BudgetGuardians/.expo
+/BudgetGuardians/.keys
+/BudgetGuardians/.netlify
+/BudgetGuardians/.vscode
+/BudgetGuardians/dist
+/BudgetGuardians/clean_credentials.json
+/BudgetGuardians/credentials.json
+/BudgetGuardians/eas.json
