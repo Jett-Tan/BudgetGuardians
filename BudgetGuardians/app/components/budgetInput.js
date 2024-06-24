@@ -2,7 +2,7 @@ import { View, Text, StyleSheet } from "react-native";
 import { Dropdown } from "react-native-element-dropdown";
 import { useEffect, useState } from "react";
 
-import { updateBudgetAmountToFirestore , getBudgetAmountFromFirestore, getBudgetsFromFirestore, addBudgetToFirestore } from "../setting/fireStoreFunctions";
+import { updateBudgetAmountToFirestore , getBudgetAmountFromFirestore, getBudgetsFromFirestore, addBudgetToFirestore, liveUpdate } from "../setting/fireStoreFunctions";
 import CustomInput from "./customInput";
 import CustomButton from "./customButton";
 import FaIcon from "./FaIcon";
@@ -24,17 +24,12 @@ export default function BudgetInput() {
     
     const [totalBudgetAmount, setTotalBudgetAmount] = useState();
 
-    const [categoryError, setCategoryError] = useState("");
-    const [amountError, setAmountError] = useState("");
-
     const [categoryBudget, setCategoryBudget] = useState([]);
 
-    const reset =() => {
-        setCategory("");
-        setAmount("");
-        setCategoryError("");
-        setAmountError("");
-    }
+
+    // liveUpdate((x) => {
+    //     console.log(x)
+    // })
 
     useEffect(() => {
         (async()=>{
@@ -52,17 +47,15 @@ export default function BudgetInput() {
                 console.log(err)
             })
         })()
-    }, [])
+    }, [totalBudgetAmount, categoryBudget])
 
     const validatBudget = () => {
         let valid = true
-        if (!category) {
-            setCategoryError("Category is required.");
+        if (!category){
             valid = valid && false;
         }
         const numericAmount = Number.parseFloat(amount);
         if (!numericAmount || numericAmount === NaN || numericAmount === 0) {
-            setAmountError("Amount is required.");
             valid = valid && false;
         }
         return valid;
@@ -75,7 +68,6 @@ export default function BudgetInput() {
         // }
         const numericAmount = Number.parseFloat(totalBudgetAmount);
         if (!numericAmount || numericAmount === NaN || numericAmount === 0) {
-            setAmountError("Amount is required.");
             valid = valid && false;
         }
         return valid;
@@ -101,9 +93,9 @@ export default function BudgetInput() {
             console.log("Validation failed");
             return;
         }
-
+        console.log("add")
         const numericAmount = Number.parseFloat(amount);
-        await addBudgetToFirestore({amount:numericAmount, category:category})
+        await addBudgetToFirestore({budgetAmount:numericAmount, budgetCategory:category})
         .then((data) => {
             console.log(data);
         }).catch((err) => {
@@ -113,24 +105,25 @@ export default function BudgetInput() {
 
     return (
         <>
-            <View style={{flexDirection:"column",alignItems:"center",width:"90%",flexWrap:"wrap", height:"auto",padding:10,borderRadius:15,shadowRadius:15,shadowColor:"black",shadowOpacity:0.5}}>
+            <View style={{flexDirection:"column",alignItems:"center",width:"90%",height:"50%",flexWrap:"wrap", padding:10,borderRadius:15,shadowRadius:15,shadowColor:"black",shadowOpacity:0.5}}>
                 <Text>Total Budget</Text>
-                <CustomInput
-                    placeholder="Amount"
-                    values={totalBudgetAmount}
-                    onChange1={(e) => setTotalBudgetAmount(e)}
-                    errorHandle={(e) => {
-                        // console.log(Number.parseFloat(e));
-                        // e.reduce((x) => {Number.parseFloat(x) !== NaN }, true)
-                        if (!e || Number.parseFloat(e) === undefined || Number.parseFloat(e) === NaN){
-                            return "Amount is required."
-                        }
-                        return "";
-                    }}
-                    containerStyle={{width:"80%",marginHorizontal:"auto",marginTop:20,minWidth:0,height:50}}
-                    inputContainerStyle={{width:"80%",marginHorizontal:"auto",minWidth:0,height:50}}
-                    inputStyle={{width:"80%",height:50}}
-                />
+                <View style={{width:"90%",marginTop:20}}>
+                    <Text style={{marginLeft:5}}>Set Total Budget Amount</Text>
+                    <CustomInput
+                        placeholder="Amount"
+                        values={totalBudgetAmount}
+                        onChange1={(e) => setTotalBudgetAmount(e)}
+                        errorHandle={(e) => {
+                            if (!e || Number.parseFloat(e) === undefined || Number.parseFloat(e) === NaN){
+                                return "Amount is required."
+                            }
+                            return "";
+                        }}
+                        containerStyle={{width:"100%",marginHorizontal:"auto",minWidth:0,height:50}}
+                        inputContainerStyle={{width:"100%",marginHorizontal:"auto",minWidth:0,height:50}}
+                        inputStyle={{width:"95%",height:50}}
+                    />
+                </View>
                 <CustomButton
                     type={"signup"}
                     text={"Set Budget"}
@@ -139,47 +132,64 @@ export default function BudgetInput() {
                     textStyle={{fontWeight:"bold",fontSize:"95%"}}
                 />
             </View>
-            <View style={{flexDirection:"column",alignItems:"center",width:"90%",flexWrap:"wrap", height:"auto",padding:10,marginVertical:20,borderRadius:15,shadowRadius:15,shadowColor:"black",shadowOpacity:0.5}}>
-                <Text>Category Budget</Text>
-                <Dropdown
-                    data={defaultCategory}
-                    style={{width: 220,borderRadius: 10,height:50, marginTop:20,borderColor: 'black', borderWidth: 1, padding: 5,marginVertical:5}}
-                    placeholderStyle={{fontSize: 16,marginLeft:10, whiteSpace: 'nowrap'}}
-                    selectedTextStyle={{fontSize: 16,marginLeft:10, whiteSpace: 'nowrap'}}
-                    inputSearchStyle={{fontSize: 16,justifyContent:"center",height:50, whiteSpace: 'nowrap'}}
-                    labelField="label"
-                    valueField="value"
-                    maxHeight={300}
-                    search
-                    searchPlaceholder="Search..."
-                    placeholder="Select Category"
-                    value={category}
-                    onChange={(item) => setCategory(item.value)}
-                    renderLeftIcon={() => (
-                        <FaIcon name="money-bill" size={20}/>
-                    )}
-                />
-                <CustomInput
-                    placeholder="Amount"
-                    values={amount}
-                    onChange1={(e) => setAmount(e)}
-                    errorHandle={(e) => {
-                        if (!e) {
-                            return "Amount is required."
+            <View style={{flexDirection:"column",alignItems:"center",width:"90%",height:"50%",flexWrap:"wrap", padding:10,marginVertical:20,borderRadius:15,shadowRadius:15,shadowColor:"black",shadowOpacity:0.5}}>
+                <Text>Add Budget for Category</Text>
+                <View style={{width:"90%",marginTop:20}}>
+                    <Text  style={{marginLeft:5}}>Category</Text>
+                    <Dropdown
+                        data={defaultCategory}
+                        style={{width: "100%",borderRadius: 10,height:50,borderColor: 'black', borderWidth: 1, padding: 5,marginVertical:5}}
+                        placeholderStyle={{fontSize: 16,marginLeft:10, whiteSpace: 'nowrap'}}
+                        selectedTextStyle={{fontSize: 16,marginLeft:10, whiteSpace: 'nowrap'}}
+                        inputSearchStyle={{fontSize: 16,justifyContent:"center",height:50, whiteSpace: 'nowrap'}}
+                        labelField="label"
+                        valueField="value"
+                        maxHeight={300}
+                        search
+                        searchPlaceholder="Search..."
+                        placeholder="Select Category"
+                        value={category}
+                        onChange={(item) => setCategory(item.value)}
+                        renderLeftIcon={() => (
+                            <FaIcon name="money-bill" size={20}/>
+                        )}
+                    />
+                </View>
+                <View style={{width:"90%",marginTop:20}}>
+                    <Text  style={{marginLeft:5}}>Amount</Text>
+                    <CustomInput
+                        placeholder="Amount"
+                        values={amount}
+                        onChange1={(e) => setAmount(e)}
+                        errorHandle={(e) => {
+                            if (!e) {
+                                return "Amount is required."
+                            }
+                            return "";
+                        }}
+                        containerStyle={{width:"100%",marginHorizontal:"auto",minWidth:0,height:50}}
+                        inputContainerStyle={{width:"100%",marginHorizontal:"auto",minWidth:0,height:50}}
+                        inputStyle={{width:"95%",height:50}}
+                    />
+                    <CustomButton
+                        type={"signup"}
+                        text={( () => {
+                                if (category) {
+                                    if (categoryBudget.find((x) => x.category === category)){
+                                        return "Update Budget for " + category
+                                    }else {
+                                        return "Add Budget for " + category
+                                    }
+                                }else{
+                                    return "Add Budget"
+                                }
+                            })()
                         }
-                        return "";
-                    }}
-                    containerStyle={{width:"80%",marginHorizontal:"auto",marginTop:20,minWidth:0,height:50}}
-                    inputContainerStyle={{width:"80%",marginHorizontal:"auto",minWidth:0,height:50}}
-                    inputStyle={{width:"80%",height:50}}
-                />
-                <CustomButton
-                    type={"signup"}
-                    text={"Set Budget"}
-                    onPress={() => addCategoryBudget()}
-                    containerStyle={{width:"65%",height:50,marginHorizontal:"auto"}}
-                    textStyle={{fontWeight:"bold",fontSize:"95%"}}
-                />
+                        onPress={() => addCategoryBudget()}
+                        containerStyle={{width:"100%",height:50,marginHorizontal:"auto"}}
+                        textStyle={{fontWeight:"bold",fontSize:"95%"}}
+                    />
+                </View>
             </View>
         </>
     )

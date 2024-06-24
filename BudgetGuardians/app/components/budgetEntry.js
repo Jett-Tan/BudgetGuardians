@@ -1,6 +1,7 @@
 import { Text, View, Pressable,StyleSheet } from "react-native";
-import { doc, deleteDoc } from "firebase/firestore";
 import styleSetting from "../setting/setting"
+import PieChart from 'react-native-pie-chart'
+import FaIcon from "./FaIcon";
 
 export default function BudgetEntry({
     onPress = (e) => {console.log(e);}, //modal
@@ -9,9 +10,34 @@ export default function BudgetEntry({
     editBudget = (e) => {console.log(e);},
     showbutton = true,
 }) {
+    const widthAndHeight = 120
+    const series = [123, 321]
+    const sliceColor = ['#fbd203', '#ffb300']
     return (
         <>
-            <View style={styles.row}>
+            <View style={{width:150,height:"auto",shadowColor:"black",margin:15,borderRadius:15,shadowRadius:15,shadowOpacity:0.5}}>
+                <View style={{width:"100%",height:20}}>
+                    <Pressable style={{position:"absolute",left:0,margin:10,width:18,height:18}} onPress={deleteBudget}>
+                        <FaIcon name="x" size={styleSetting.size.em16} style={{margin:0,color:"red"}}/>
+                    </Pressable>
+                    <Pressable style={{position:"absolute",right:0,margin:10,width:18,height:18,}} onPress={editBudget}>
+                        <FaIcon name="edit" size={styleSetting.size.em16} style={{margin:0,color:"black"}}/>
+                    </Pressable>
+                </View>
+                <Text style={{fontWeight:"bold",marginVertical:15,fontSize:20,textAlign:"center"}}>{props.category}</Text>
+                <View style={{justifyContent:"center",marginBottom:15,alignItems:"center"}}>
+                    <Text style={{position:"absolute",zIndex:10,margin:"auto",fontWeight:"bold"}}>${props.amount?.toFixed(2)}</Text>
+                    <PieChart
+                        style={{margin:"auto"}}
+                        widthAndHeight={widthAndHeight}
+                        series={series}
+                        sliceColor={sliceColor}
+                        coverRadius={0.6}
+                        coverFill={'#FFF'}
+                    />
+                </View>
+            </View>
+            {/* <View style={styles.row}>
                 <Pressable style={styles.transaction} onPress={onPress}>
                     <View style={styles.box}>
                         <View style={styles.miniBox}>
@@ -34,7 +60,7 @@ export default function BudgetEntry({
                         </Pressable>
                     </View>
                 )}
-            </View>
+            </View> */}
             
         </>
     )

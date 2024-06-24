@@ -22,7 +22,6 @@ export default function ProfileTab() {
         });
     },[])
 
-    console.log(age);
     async function updateUser(){
         await updateUserDataToFirestore({name:{firstName:firstName,lastName:lastName},age:Number.parseInt(age)})
         .then(() => {

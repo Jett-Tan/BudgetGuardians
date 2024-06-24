@@ -94,20 +94,18 @@ export async function createUserInFirestore(){
 
 // Budget Functions
 export async function addBudgetToFirestore(budgetData){
-    // if(!budgetDataCheck(budgetData)){
-    //     console.error("Invalid userData", budgetData)
-    //     throw new Error("Invalid userData")
-    // }
-    // const db = getFirestore();
-    // const docRef = doc(db, "budgets");
-    // const user = await getUserDataFromFirestore();
-    // user.financialData.budget.push(budgetData);
-    // await addDoc(docRef, budgetData);
-    // await updateDoc(docRef, {financialData:user.financialData});
-    // return new Promise((resolve, reject) => {
-    //     resolve("Document written with ID: ", auth.currentUser.uid);
-    //     reject("Error adding document: ", error);
-    // });
+    if(!budgetDataCheck(budgetData)){
+        console.error("Invalid budgetData", budgetData)
+    }
+    const db = getFirestore();
+    const docRef = doc(db, "users", auth.currentUser.uid);
+    const user = await getUserDataFromFirestore();
+    user.financialData.budgetInfo.budgets.push(budgetData);
+    await updateDoc(docRef, {financialData:user.financialData});
+    return new Promise((resolve, reject) => {
+        resolve("Document written with ID: ", auth.currentUser.uid);
+        reject("Error adding document: ", error);
+    });
 }
 
 export async function updateBudgetsToFirestore(budgetData){

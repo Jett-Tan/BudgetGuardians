@@ -93,11 +93,9 @@ export default function CustomInput({
                         </Pressable>
                     }
                 </View>
-                {error1 &&  
-                    <View style={styles.errorsBox}>
-                        <Text style={styles.errors}>{error1}</Text>
-                    </View>
-                }
+                <View style={styles.errorsBox}>
+                    <Text style={styles.errors}>{error1}</Text>
+                </View>
             </View>
             {
                 type === "confirm" &&
@@ -126,11 +124,9 @@ export default function CustomInput({
                             </Pressable>
                         }
                     </View>
-                    {error2 &&  
-                        <View style={styles.errorsBox}>
-                            <Text style={styles.errors}>{error2}</Text>
-                        </View>
-                    }
+                    <View style={styles.errorsBox}>
+                        <Text style={styles.errors}>{error2}</Text>
+                    </View>
                 </View>
             }
         </>

@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react"
 import { View,Text,StyleSheet, } from "react-native"
 import { liveUpdate, getUserDataFromFirestore } from "../../setting/fireStoreFunctions";
-import { set } from "firebase/database";
 import TransactionEntry from "../../components/transactionEntry";
 import CustomButton from "../../components/customButton";
 
@@ -11,40 +10,14 @@ export default function HomeTab() {
     const [lastestTransaction5, setLastestTransaction5] = useState();
     const [lastestGoal, setLastestGoal] = useState();
     
-    useEffect(() => {
-        liveUpdate((x) => {
-            setCurrentUser(x)
-            findGoals(x);
-            findTransactions(x);
-        });
-        (async () => {
-            await getUserDataFromFirestore()
-            .then((data) => {
-                setCurrentUser(data);
-                findGoals(data);
-                findTransactions(data);
-            })
-            .catch((err) => {
-                alert(err);
-            });
-        })();
-    },[])
-    const loadData = setInterval(async () => {
-        await getUserDataFromFirestore()
-        .then((data) => {
-            setCurrentUser(data);
-            findGoals(data);
-            findTransactions(data);
-        })
-        .catch((err) => {
-            alert(err);
-        });
-    }, 100);
-    setTimeout(()=>{clearInterval(loadData)} ,500);
-    
+    liveUpdate((x) => {
+        setCurrentUser(x)
+        findGoals(x);
+        findTransactions(x);
+    });
     const findTransactions = (x) => {
         if (x?.financialData?.transactions === undefined) {
-            console.log('undefined');
+            console.log("No transaction");
             return;
         }
         let transactions = x?.financialData?.transactions;
@@ -53,15 +26,44 @@ export default function HomeTab() {
         
     }
     const findGoals = (x) => {
-        if (x?.financialData?.goals === undefined) {
-            console.log('undefined');
+        if (x?.financialData?.budgetInfo === undefined) {
+            console.log("No budget");
             return;
         }
-        let goals = x?.financialData?.goals;
-        Array(goals).sort((a,b) => {a.date - b.date});
-        let lastestGoal = goals[0];
-        setLastestGoal(lastestGoal);
+        let budgetInfo = x?.financialData?.budgetInfo;
+        // Array(goals).sort((a,b) => {a.date - b.date});
+        // let lastestGoal = goals[0];
+        // setLastestGoal(lastestGoal);
     }
+
+    // useEffect(() => {
+    //     (async () => {
+    //         await getUserDataFromFirestore()
+    //         .then((data) => {
+    //             setCurrentUser(data);
+    //             findGoals(data);
+    //             findTransactions(data);
+    //         })
+    //         .catch((err) => {
+    //             alert(err);
+    //         });
+    //     })();
+    // },[])
+
+    // const loadData = setInterval(async () => {
+    //     await getUserDataFromFirestore()
+    //     .then((data) => {
+    //         setCurrentUser(data);
+    //         findGoals(data);
+    //         findTransactions(data);
+    //     })
+    //     .catch((err) => {
+    //         alert(err);
+    //     });
+    // }, 100);
+    // setTimeout(()=>{clearInterval(loadData)} ,1000);
+    
+
 
     return (
         <>

@@ -29,13 +29,13 @@ export const auth = initializeAuth(app, {
 });
 const router = useRouter();
 
-onAuthStateChanged(auth, (user) => {
-    if (user) {
-        console.log('User is signed in.', user.email);
-    } else {
-        router.replace('../pages/initPage');
-    }
-});
+// onAuthStateChanged(auth, (user) => {
+//     if (user) {
+//         console.log('User is signed in.', user.email);
+//     } else {
+//         router.replace('../pages/initPage');
+//     }
+// });
 // To Initialize Cloud Firestore and get a reference to the service
 const firestore = getFirestore();
 const db = getFirestore(app);
