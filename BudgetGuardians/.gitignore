@@ -4,5 +4,6 @@
 .netlify
 .keys
 .vscode
+.expo
 node_modules/
 dist/
