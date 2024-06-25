@@ -128,10 +128,10 @@ export default function ExpenseInput() {
                                 placeholder="Enter Amount"
                                 values={amount}
                                 onChange1={(x) => setAmount(x)}
-                                containerStyle={{width: 150,margin:0,minWidth:150, justifyContent: 'center', alignItems: 'center'}}
+                                containerStyle={{width: 150,margin:0,marginVertical:5,minWidth:150, justifyContent: 'center', alignItems: 'center'}}
                                 inputContainerStyle={{width: 150,minWidth:150, height: 50, borderColor: 'black', borderWidth: 1, padding: 5, margin: 5}}
                                 inputStyle={{width: 130,minWidth:130}}
-                                
+                                errorExist={false}
                             />  
                             <Text style={{color: 'red', fontSize: 12, marginLeft: 10}}>{amountError}</Text>
                         </View>
@@ -158,9 +158,10 @@ export default function ExpenseInput() {
                                 placeholder="Enter Descriptions (Optional)"
                                 values={description}
                                 onChange1={(x) => setDescription(x)}
-                                containerStyle={{width: "100%",margin:0,minWidth:"100%", justifyContent: 'center', alignItems: 'center'}}
+                                containerStyle={{width: "100%",margin:0,marginVertical:5,minWidth:"100%", justifyContent: 'center', alignItems: 'center'}}
                                 inputContainerStyle={{width: "100%",minWidth:"100%", height: 50, borderColor: 'black', borderWidth: 1, padding: 5, margin: 5}}
                                 inputStyle={{width: "100%",minWidth:"100%"}}
+                                errorExist={false}
                             />  
                             <Text style={{color: 'red', fontSize: 12, marginLeft: 10}}>{amountError}</Text>
                         </View>

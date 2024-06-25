@@ -2,7 +2,13 @@ import { View, Text, StyleSheet } from "react-native";
 import { Dropdown } from "react-native-element-dropdown";
 import { useEffect, useState } from "react";
 
-import { updateBudgetAmountToFirestore , getBudgetAmountFromFirestore, getBudgetsFromFirestore, addBudgetToFirestore, liveUpdate } from "../setting/fireStoreFunctions";
+import { 
+    updateBudgetAmountToFirestore ,
+    updateBudgetToFirestore,
+    getBudgetAmountFromFirestore, 
+    getBudgetsFromFirestore, 
+    addBudgetToFirestore, 
+    liveUpdate } from "../setting/fireStoreFunctions";
 import CustomInput from "./customInput";
 import CustomButton from "./customButton";
 import FaIcon from "./FaIcon";
@@ -103,6 +109,37 @@ export default function BudgetInput() {
         })
     }
 
+    const updateCategoryBudget = async() => {
+        if(validatBudget() === false) {
+            console.log("Validation failed");
+            return;
+        }
+        console.log("add")
+        const numericAmount = Number.parseFloat(amount);
+        await updateBudgetToFirestore({budgetAmount:numericAmount, budgetCategory:category})
+        .then((data) => {
+            console.log(data);
+        }).catch((err) => {
+            console.log(err)
+        })
+    }
+
+    const updateAmount = (e) => {
+        if (categoryBudget.find((x) => x.budgetCategory === e)){
+            setAmount(categoryBudget.find((x) => x.budgetCategory === e).budgetAmount)
+        }
+    }
+    const updateText = () => {
+         if (category) {
+            if (categoryBudget.find((x) => x.budgetCategory === category)){
+                return "Update Budget for " + category
+            }else {
+                return "Add Budget for " + category
+            }
+        }else{
+            return "Add Budget"
+        }
+    }
     return (
         <>
             <View style={{flexDirection:"column",alignItems:"center",width:"90%",height:"50%",flexWrap:"wrap", padding:10,borderRadius:15,shadowRadius:15,shadowColor:"black",shadowOpacity:0.5}}>
@@ -133,7 +170,7 @@ export default function BudgetInput() {
                 />
             </View>
             <View style={{flexDirection:"column",alignItems:"center",width:"90%",height:"50%",flexWrap:"wrap", padding:10,marginVertical:20,borderRadius:15,shadowRadius:15,shadowColor:"black",shadowOpacity:0.5}}>
-                <Text>Add Budget for Category</Text>
+                <Text style={{fontWeight:"bold"}}>Add / Edit Budget for Category</Text>
                 <View style={{width:"90%",marginTop:20}}>
                     <Text  style={{marginLeft:5}}>Category</Text>
                     <Dropdown
@@ -149,7 +186,7 @@ export default function BudgetInput() {
                         searchPlaceholder="Search..."
                         placeholder="Select Category"
                         value={category}
-                        onChange={(item) => setCategory(item.value)}
+                        onChange={(item) => {setCategory(item.value); updateAmount(item.value)}}
                         renderLeftIcon={() => (
                             <FaIcon name="money-bill" size={20}/>
                         )}
@@ -173,19 +210,20 @@ export default function BudgetInput() {
                     />
                     <CustomButton
                         type={"signup"}
-                        text={( () => {
+                        text={updateText()}
+                        onPress={ (
+                            () => {
                                 if (category) {
-                                    if (categoryBudget.find((x) => x.category === category)){
-                                        return "Update Budget for " + category
+                                    if (categoryBudget.find((x) => x.budgetCategory === category)){
+                                        return  updateCategoryBudget
                                     }else {
-                                        return "Add Budget for " + category
+                                        return  addCategoryBudget
                                     }
                                 }else{
-                                    return "Add Budget"
+                                    return addCategoryBudget
                                 }
-                            })()
-                        }
-                        onPress={() => addCategoryBudget()}
+                            }
+                        )()}
                         containerStyle={{width:"100%",height:50,marginHorizontal:"auto"}}
                         textStyle={{fontWeight:"bold",fontSize:"95%"}}
                     />

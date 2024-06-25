@@ -93,9 +93,11 @@ export default function CustomInput({
                         </Pressable>
                     }
                 </View>
-                <View style={styles.errorsBox}>
-                    <Text style={styles.errors}>{error1}</Text>
-                </View>
+                {errorExist && (
+                    <View key={error1} style={styles.errorsBox}>
+                        <Text style={styles.errors}>{error1}</Text>
+                    </View>
+                )}
             </View>
             {
                 type === "confirm" &&

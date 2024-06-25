@@ -108,7 +108,26 @@ export async function addBudgetToFirestore(budgetData){
     });
 }
 
-export async function updateBudgetsToFirestore(budgetData){
+export async function updateBudgetToFirestore(budgetData){
+    if(!budgetDataCheck(budgetData)){
+        console.error("Invalid budgetData", budgetData)
+    }
+    const db = getFirestore();
+    const docRef = doc(db, "users", auth.currentUser.uid);
+    const user = await getUserDataFromFirestore();
+    const budgets = user.financialData.budgetInfo.budgets;
+    budgets.map((budget) => {
+        if(budgetData.budgetCategory === budget.budgetCategory){
+            budget.budgetAmount = budgetData.budgetAmount;
+        }    
+    })
+    
+    user.financialData.budgetInfo.budgets = budgets;
+    await updateDoc(docRef, {financialData:user.financialData});
+    return new Promise((resolve, reject) => {
+        resolve("Document written with ID: ", auth.currentUser.uid);
+        reject("Error adding document: ", error);
+    });
 }
 
 export async function updateBudgetAmountToFirestore(budgetAmount){

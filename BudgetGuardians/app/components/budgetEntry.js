@@ -10,23 +10,30 @@ export default function BudgetEntry({
     editBudget = (e) => {console.log(e);},
     showbutton = true,
 }) {
-    const widthAndHeight = 120
-    const series = [123, 321]
-    const sliceColor = ['#fbd203', '#ffb300']
+    const totalSpent = props.amountSpent < 0 ? props.amountSpent : 0;
+    const totalBudget = props.amountSpent > 0 ? props.amountSpent + props.amount : props.amount || 0;
+    const remaining = totalBudget - totalSpent;
+
+    const widthAndHeight = 170
+    const series = [Math.abs(totalSpent), totalBudget]
+    const sliceColor = [styleSetting.color.cadmiumRed, styleSetting.color.forestgreen]
+
     return (
         <>
-            <View style={{width:150,height:"auto",shadowColor:"black",margin:15,borderRadius:15,shadowRadius:15,shadowOpacity:0.5}}>
-                <View style={{width:"100%",height:20}}>
+            <View style={{width:200,height:"auto",shadowColor:"black",margin:15,borderRadius:15,shadowRadius:15,shadowOpacity:0.5}}>
+                {/* <View style={{width:"100%",height:20}}>
                     <Pressable style={{position:"absolute",left:0,margin:10,width:18,height:18}} onPress={deleteBudget}>
                         <FaIcon name="x" size={styleSetting.size.em16} style={{margin:0,color:"red"}}/>
                     </Pressable>
                     <Pressable style={{position:"absolute",right:0,margin:10,width:18,height:18,}} onPress={editBudget}>
                         <FaIcon name="edit" size={styleSetting.size.em16} style={{margin:0,color:"black"}}/>
                     </Pressable>
-                </View>
+                </View> */}
                 <Text style={{fontWeight:"bold",marginVertical:15,fontSize:20,textAlign:"center"}}>{props.category}</Text>
                 <View style={{justifyContent:"center",marginBottom:15,alignItems:"center"}}>
-                    <Text style={{position:"absolute",zIndex:10,margin:"auto",fontWeight:"bold"}}>${props.amount?.toFixed(2)}</Text>
+                    <View style={{position:"absolute",zIndex:10,margin:"auto",fontWeight:"bold"}}>
+                        <Text style={{fontWeight:"bold"}}>${remaining.toFixed(2)}</Text>
+                    </View>
                     <PieChart
                         style={{margin:"auto"}}
                         widthAndHeight={widthAndHeight}

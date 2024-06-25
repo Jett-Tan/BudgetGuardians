@@ -20,8 +20,18 @@ export default function BudgetLoader() {
     const [modalVisible, setModalVisible] = useState(false);
 
     liveUpdate((data) => {
-        setBudgets(data?.financialData?.budgetInfo?.budgets || []);
+        const budgets = data?.financialData?.budgetInfo?.budgets || [];
+        const transactions = data?.financialData?.transactions || [];
+        budgets.map((budget) => {
+          const totalSpent = transactions
+            .filter((transaction) => budget.budgetCategory === transaction.category)
+            .reduce((acc, transaction) => acc + transaction.amount, 0);
+          budget.spent = totalSpent;
+          });
+        setBudgets(budgets);
+        // setBudgets(data?.financialData?.budgetInfo?.budgets || []);
     });
+    console.log(budgets);
     useEffect(() => {
       
     }, []);
@@ -145,16 +155,17 @@ export default function BudgetLoader() {
                 </View>
             </Modal> */}
             <View style={{width:"100%",shadowColor:"black",shadowOpacity:0.5,shadowRadius:15,borderRadius:15,height:"100%",alignItems:"center"}}>
-              
-              <ScrollView style={{width:"95%", flexWrap:"wrap",flexDirection:"row"}}>
-                {Array.isArray(budgets) && budgets.map((x, index) => (
-                    <BudgetEntry 
-                        key={index}
-                        deleteBudget={() => deleteBudget(index)} 
-                        editBudget={() => editBudget(index)} 
-                        props={{ amount: x?.budgetAmount, category: x?.budgetCategory }} 
-                    />
-                    ))}
+              <ScrollView style={{width:"95%"}}>
+                <View style={{width:"100%",marginHorizontal:"auto",flexWrap:"wrap",flexDirection:"row"}}>
+                  {Array.isArray(budgets) && budgets.map((x, index) => (
+                      <BudgetEntry 
+                          key={index}
+                          deleteBudget={() => deleteBudget(index)} 
+                          editBudget={() => editBudget(index)} 
+                          props={{ amount: x?.budgetAmount, category: x?.budgetCategory,amountSpent: x?.spent}} 
+                      />
+                      ))}
+                </View>
               </ScrollView>
             </View>
         </>
