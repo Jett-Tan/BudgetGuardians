@@ -1,20 +1,22 @@
 import { useEffect, useState } from "react"
-import { View,Text,StyleSheet, } from "react-native"
+import { View,Text,StyleSheet, ScrollView, } from "react-native"
 import { liveUpdate, getUserDataFromFirestore } from "../../setting/fireStoreFunctions";
 import TransactionEntry from "../../components/transactionEntry";
 import CustomButton from "../../components/customButton";
+import BudgetEntry from "../../components/budgetEntry";
 
 
 export default function HomeTab() {
     const [currentUser, setCurrentUser] = useState();
     const [lastestTransaction5, setLastestTransaction5] = useState();
-    const [lastestGoal, setLastestGoal] = useState();
+    const [budgetInfo, setBudgetInfo] = useState();
     
     liveUpdate((x) => {
         setCurrentUser(x)
-        findGoals(x);
+        findBudgets(x);
         findTransactions(x);
     });
+
     const findTransactions = (x) => {
         if (x?.financialData?.transactions === undefined) {
             console.log("No transaction");
@@ -25,15 +27,26 @@ export default function HomeTab() {
         setLastestTransaction5(transactions.slice(0,5));
         
     }
-    const findGoals = (x) => {
+    const findBudgets = (x) => {
         if (x?.financialData?.budgetInfo === undefined) {
             console.log("No budget");
             return;
         }
-        let budgetInfo = x?.financialData?.budgetInfo;
-        // Array(goals).sort((a,b) => {a.date - b.date});
-        // let lastestGoal = goals[0];
-        // setLastestGoal(lastestGoal);
+        const budgets = x?.financialData?.budgetInfo?.budgets || [];
+        const transactions = x?.financialData?.transactions || [];
+        budgets.map((budget) => {
+            const totalSpent = transactions
+                .filter((transaction) => budget.budgetCategory === transaction.category)
+                .reduce((acc, transaction) => acc + transaction.amount, 0);
+            const addedIncome = transactions
+                .filter((transaction) => transaction.category === budget.budgetCategory && transaction.amount > 0)
+                .reduce((acc, transaction) => acc + transaction.amount, 0);
+            budget.spent = totalSpent;
+            budget.totalIncome = addedIncome;
+          });
+        const temp = x?.financialData?.budgetInfo;
+        temp.budgets = budgets;
+        setBudgetInfo(temp);
     }
 
     // useEffect(() => {
@@ -82,10 +95,23 @@ export default function HomeTab() {
 
                 <View style={{borderRadius:15,width:"40%",height:"80%", padding:25,alignItems:"center", justifyContent:"flex-start",shadowOpacity:0.5,shadowColor:"black",shadowRadius:15}}> 
                     <Text style={{fontWeight:"bold", textDecorationLine: 'underline'}}>Current Budget</Text>
-                    {!lastestGoal  && (
+                    {!budgetInfo  && (
                         <Text>No Budget</Text>
                     )}
-                    {/* {lastestGoal && } */}
+                    <ScrollView style={{height:"90%",width:"100%"}}>
+                        <View style={{width:"100%",height:"100%",justifyContent:"space-around",flexWrap:"wrap",flexDirection:"row"}}>
+                                {budgetInfo && budgetInfo?.budgets.map((x,index) => {
+                                    return(
+                                        <BudgetEntry 
+                                            key={index}
+                                            deleteBudget={() => deleteBudget(index)} 
+                                            editBudget={() => editBudget(index)} 
+                                            props={{ amount: x?.budgetAmount, category: x?.budgetCategory,amountSpent: x?.spent}} 
+                                        />
+                                    )
+                                })}
+                        </View>
+                    </ScrollView>
                 </View>
             </View>
         </>
