@@ -1,14 +1,21 @@
-import { Text, View, Pressable,StyleSheet } from "react-native";
+import { Text, View, Pressable,StyleSheet, Modal } from "react-native";
 import styleSetting from "../setting/setting"
 import PieChart from 'react-native-pie-chart'
 import FaIcon from "./FaIcon";
+import { useState } from "react";
 
 export default function BudgetEntry({
     onPress = (e) => {console.log(e);}, //modal
-    props = {},
+    props = {
+        category: "",
+        amount: 0,
+        amountSpent: 0,
+        additionalIncome: 0,
+    },
     deleteBudget = (e) => {console.log(e);},
     editBudget = (e) => {console.log(e);},
     showbutton = true,
+    clickable = false,
 }) {
     const totalSpent = props.amountSpent < 0 ? props.amountSpent : 0;
     const totalBudget = props.amountSpent > 0 ? props.amountSpent + props.amount : props.amount || 0;
@@ -18,17 +25,36 @@ export default function BudgetEntry({
     const series = [Math.abs(totalSpent), totalBudget]
     const sliceColor = [styleSetting.color.cadmiumRed, styleSetting.color.forestgreen]
 
+    const [modalVisible, setModalVisible] = useState(false)
+
     return (
         <>
-            <View style={{width:200,height:"auto",shadowColor:"black",margin:15,borderRadius:15,shadowRadius:15,shadowOpacity:0.5}}>
-                {/* <View style={{width:"100%",height:20}}>
-                    <Pressable style={{position:"absolute",left:0,margin:10,width:18,height:18}} onPress={deleteBudget}>
-                        <FaIcon name="x" size={styleSetting.size.em16} style={{margin:0,color:"red"}}/>
-                    </Pressable>
-                    <Pressable style={{position:"absolute",right:0,margin:10,width:18,height:18,}} onPress={editBudget}>
-                        <FaIcon name="edit" size={styleSetting.size.em16} style={{margin:0,color:"black"}}/>
-                    </Pressable>
-                </View> */}
+            <Modal visible={modalVisible} transparent={true}>
+                {/* <View style={{width:"100%",height:"100%",zIndex:1,position:"absolute",backgroundColor:"black",opacity:0.2}}></View> */}
+                <View style={{flex:1,justifyContent:"center",alignItems:"center"}}>
+                    <View style={{width:300,height:300,backgroundColor:"white",borderRadius:15,shadowColor:"black",shadowRadius:5,shadowOpacity:0.5}}>
+                        <View style={{flexDirection:"row",justifyContent:"space-between"}}>
+                            <Text style={{fontSize:20,fontWeight:"bold",margin:15}}>{props.category}</Text>
+                            <Pressable onPress={() => setModalVisible(false)}>
+                                <FaIcon name="x" size={20} style={{margin:15}}/>
+                            </Pressable>
+                        </View>
+                        <View style={{margin:15}}>
+                            <Text style={{fontSize:20,fontWeight:"bold"}}>Budget: ${totalBudget.toFixed(2)}</Text>
+                            <Text style={{fontSize:20,fontWeight:"bold"}}>Spent: ${totalSpent.toFixed(2)}</Text>
+                            <Text style={{fontSize:20,fontWeight:"bold"}}>Remaining: ${remaining.toFixed(2)}</Text>
+                            <Text style={{fontSize:20,fontWeight:"bold"}}>Additional Income: ${props?.additionalIncome?.toFixed(2)}</Text>
+                        </View>
+                        <View style={{flexDirection:"row",justifyContent:"space-between"}}>
+                            <Pressable style={[styles.button,{width:"90%"}]} onPress={() => {editBudget(props.category);setModalVisible(false)}}>
+                                <Text style={{fontWeight:"bold"}}>Edit</Text>
+                            </Pressable>
+                        </View>
+                    </View>
+                </View>
+            </Modal>
+            
+            <Pressable onPress={() => setModalVisible(true)} style={{width:200,height:"auto",shadowColor:"black",margin:15,borderRadius:15,shadowRadius:15,shadowOpacity:0.5}}>
                 <Text style={{fontWeight:"bold",marginVertical:15,fontSize:20,textAlign:"center"}}>{props.category}</Text>
                 <View style={{justifyContent:"center",marginBottom:15,alignItems:"center"}}>
                     <View style={{position:"absolute",zIndex:10,margin:"auto",fontWeight:"bold"}}>
@@ -43,31 +69,7 @@ export default function BudgetEntry({
                         coverFill={'#FFF'}
                     />
                 </View>
-            </View>
-            {/* <View style={styles.row}>
-                <Pressable style={styles.transaction} onPress={onPress}>
-                    <View style={styles.box}>
-                        <View style={styles.miniBox}>
-                            <Text style={[]}>{props.date}</Text>
-                            <View style={styles.title}>
-                                <Text style={styles.right}>{props.category}</Text>
-                            </View>
-                        </View>
-                        <Text style={styles.right}>${props.amount?.toFixed(2)}</Text>
-                    </View>
-                    
-                </Pressable>
-                {showbutton && (
-                    <View style={{flexDirection:"row",justifyContent:"center"}}>
-                        <Pressable style={styles.deletebutton} onPress={(e)=>{deleteBudget(e)}}>
-                            <Text style={{textAlign:"center"}}>Delete Budget</Text>
-                        </Pressable>
-                        <Pressable style={styles.button} onPress={(e)=>{editBudget(e)}}>
-                            <Text style={{textAlign:"center"}}>Edit Budget</Text>
-                        </Pressable>
-                    </View>
-                )}
-            </View> */}
+            </Pressable>
             
         </>
     )
