@@ -90,86 +90,89 @@ const CategoriseTransaction = () => {
   );
 
   return (
-    <ScrollView style={styles.scrollView}>
-      <View style={styles.container}>
-        <MultiSelect
-          style={styles.dropdown}
-          placeholderStyle={{ fontSize: 16, marginLeft: 10 }}
-          selectedTextStyle={{ fontSize: 16, marginLeft: 10 }}
-          inputSearchStyle={{ fontSize: 16, justifyContent: "center", height: 50 }}
-          iconStyle={styles.iconStyle}
-          data={data}
-          labelField="label"
-          valueField="value"
-          placeholder="Select Category"
-          value={selected}
-          search
-          searchPlaceholder="Search..."
-          onChange={item => {
-            setSelected(item);
-          }}
-          renderLeftIcon={() => (
-            <FontAwesome
-              style={styles.icon}
-              color="#7b9a6d"
-              name="money"
-              size={20}
-            />
-          )}
-          renderItem={renderItem}
-          renderSelectedItem={renderSelectedItem}
-        />
+    <View style={styles.container}>
+      <ScrollView style={styles.scrollView}>
+        <View style={styles.container}>
+          <MultiSelect
+            style={styles.dropdown}
+            placeholderStyle={{ fontSize: 16, marginLeft: 10 }}
+            selectedTextStyle={{ fontSize: 16, marginLeft: 10 }}
+            inputSearchStyle={{ fontSize: 16, justifyContent: "center", height: 50 }}
+            iconStyle={styles.iconStyle}
+            data={data}
+            labelField="label"
+            valueField="value"
+            placeholder="Select Category"
+            value={selected}
+            search
+            searchPlaceholder="Search..."
+            onChange={item => {
+              setSelected(item);
+            }}
+            renderLeftIcon={() => (
+              <FontAwesome
+                style={styles.icon}
+                color="#7b9a6d"
+                name="money"
+                size={20}
+              />
+            )}
+            renderItem={renderItem}
+            renderSelectedItem={renderSelectedItem}
+          />
 
-        <View style={styles.sortContainer}>
-          <Text>Sort by: </Text>
-          <TouchableOpacity onPress={() => setSortCriteria('none')}>
-            <Text style={[styles.sortButton, sortCriteria === 'none' && styles.activeSort]}>None</Text>
-          </TouchableOpacity>
-          <TouchableOpacity onPress={() => setSortCriteria('amount')}>
-            <Text style={[styles.sortButton, sortCriteria === 'amount' && styles.activeSort]}>Amount</Text>
-          </TouchableOpacity>
-          <TouchableOpacity onPress={() => setSortCriteria('date')}>
-            <Text style={[styles.sortButton, sortCriteria === 'date' && styles.activeSort]}>Date</Text>
-          </TouchableOpacity>
-          <Text>Order: </Text>
-          <TouchableOpacity onPress={() => setSortOrder('asc')}>
-            <Text style={[styles.sortButton, sortOrder === 'asc' && styles.activeSort]}>Ascending</Text>
-          </TouchableOpacity>
-          <TouchableOpacity onPress={() => setSortOrder('desc')}>
-            <Text style={[styles.sortButton, sortOrder === 'desc' && styles.activeSort]}>Descending</Text>
-          </TouchableOpacity>
-        </View>
+          <View style={styles.sortContainer}>
+            <Text>Sort by: </Text>
+            <TouchableOpacity onPress={() => setSortCriteria('none')}>
+              <Text style={[styles.sortButton, sortCriteria === 'none' && styles.activeSort]}>None</Text>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={() => setSortCriteria('amount')}>
+              <Text style={[styles.sortButton, sortCriteria === 'amount' && styles.activeSort]}>Amount</Text>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={() => setSortCriteria('date')}>
+              <Text style={[styles.sortButton, sortCriteria === 'date' && styles.activeSort]}>Date</Text>
+            </TouchableOpacity>
+            <Text>Order: </Text>
+            <TouchableOpacity onPress={() => setSortOrder('asc')}>
+              <Text style={[styles.sortButton, sortOrder === 'asc' && styles.activeSort]}>Ascending</Text>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={() => setSortOrder('desc')}>
+              <Text style={[styles.sortButton, sortOrder === 'desc' && styles.activeSort]}>Descending</Text>
+            </TouchableOpacity>
+          </View>
+              
+          <View style={styles.transactionsContainer}>
+            {filteredTransactions.length === 0 && (
+              <Text>No transactions found for the selected category.</Text>
+            )}
+            {filteredTransactions.map((transaction, index) => (
+              <View key={index} style={styles.transactionItem}>
+                <View>
+                  <Text style={styles.underline}>Category: </Text>
+                  <Text>{transaction.category}</Text>
+                </View>
 
-        <View style={styles.transactionsContainer}>
-          {filteredTransactions.length === 0 && (
-            <Text>No transactions found for the selected category.</Text>
-          )}
-          {filteredTransactions.map((transaction, index) => (
-            <View key={index} style={styles.transactionItem}>
-              <View>
-                <Text style={styles.underline}>Category: </Text>
-                <Text>{transaction.category}</Text>
+                <View>
+                  <Text style={styles.underline}>Date: </Text>
+                  <Text>{transaction.date}</Text>
+                </View> 
+
+                <View>
+                  <Text style={styles.underline}>Description: </Text>
+                  <Text>{transaction.description}</Text>
+                </View> 
+
+                <View>
+                  <Text style={styles.underline}>Amount: </Text>
+                  <Text>${transaction.amount}</Text>
+                </View> 
               </View>
-
-              <View>
-                <Text style={styles.underline}>Date: </Text>
-                <Text>{transaction.date}</Text>
-              </View> 
-
-              <View>
-                <Text style={styles.underline}>Description: </Text>
-                <Text>{transaction.description}</Text>
-              </View> 
-
-              <View>
-                <Text style={styles.underline}>Amount: </Text>
-                <Text>${transaction.amount}</Text>
-              </View> 
-            </View>
-          ))}
+            ))}
+          </View>
+          
         </View>
-      </View>
-    </ScrollView>
+      </ScrollView>  
+    </View>
   );
 };
 
@@ -180,9 +183,8 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   container: {
-    width: "95%",
-    height: "95%",
-    margin: "2.5%",
+    width: "100%",
+    height: "80%",
     alignItems: "center",
   },
   dropdown: {
@@ -260,10 +262,9 @@ const styles = StyleSheet.create({
     backgroundColor: '#f0f0f0',
   },
   activeSort: {
-    backgroundColor: '#d0d0d0',
+    backgroundColor: '#7fd1e6',
   },
   transactionsContainer: {
-    marginTop: 20,
     width: '100%',
     alignItems: 'center',
   },
