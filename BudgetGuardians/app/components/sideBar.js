@@ -94,7 +94,7 @@ export default function SideBar({ value,  setValue}){
                     <FaIcon name="gears" size={styleSetting.size.em24} color={styleSetting.color.white}/>
                     {!minimized && <Text style={styles.sideBarText}>Settings</Text>}
                 </TouchableOpacity>
-                <TouchableOpacity style={[styles.sideBarContent,sideBarContent]} onPress={() => {auth.signOut();router.push('../index')}}>
+                <TouchableOpacity style={[styles.sideBarContent,sideBarContent]} onPress={() => {auth.signOut();router.push('../')}}>
                     <FaIcon name="right-from-bracket" size={styleSetting.size.em24} color={styleSetting.color.white}/>
                     {!minimized && <Text style={styles.sideBarText}>Logout</Text>}
                 </TouchableOpacity>
