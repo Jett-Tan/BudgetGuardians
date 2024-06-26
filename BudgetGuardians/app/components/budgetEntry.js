@@ -19,7 +19,7 @@ export default function BudgetEntry({
 }) {
     const totalSpent = props.amountSpent < 0 ? props.amountSpent : 0;
     const totalBudget = props.amountSpent > 0 ? props.amountSpent + props.amount : props.amount || 0;
-    const remaining = totalBudget - totalSpent;
+    const remaining = totalBudget + totalSpent;
 
     const widthAndHeight = 170
     const series = [Math.abs(totalSpent), totalBudget]
