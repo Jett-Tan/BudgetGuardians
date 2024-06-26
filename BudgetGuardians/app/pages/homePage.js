@@ -50,7 +50,7 @@ export default function Page() {
         if (user) {
             console.log('User is signed in.', user.email);
         } else {
-            router.replace('../pages/initPage');
+            router.replace('../');
         }
     });
 
