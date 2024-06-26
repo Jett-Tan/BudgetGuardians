@@ -21,11 +21,8 @@ export default function BudgetEntry({
     const totalBudget = props.amountSpent > 0 ? props.amountSpent + props.amount : props.amount || 0;
     const remaining = totalBudget + totalSpent;
 
-    const widthAndHeight = 170
-    const series = [Math.abs(totalSpent), totalBudget]
-    const sliceColor = [styleSetting.color.cadmiumRed, styleSetting.color.forestgreen]
-
     const [modalVisible, setModalVisible] = useState(false)
+    
 
     return (
         <>
@@ -54,20 +51,27 @@ export default function BudgetEntry({
                 </View>
             </Modal>
             
-            <Pressable onPress={() => setModalVisible(true)} style={{width:200,height:"auto",shadowColor:"black",margin:15,borderRadius:15,shadowRadius:15,shadowOpacity:0.5}}>
-                <Text style={{fontWeight:"bold",marginVertical:15,fontSize:20,textAlign:"center"}}>{props.category}</Text>
-                <View style={{justifyContent:"center",marginBottom:15,alignItems:"center"}}>
-                    <View style={{position:"absolute",zIndex:10,margin:"auto",fontWeight:"bold"}}>
-                        <Text style={{fontWeight:"bold"}}>${remaining.toFixed(2)}</Text>
+            <Pressable onPress={() => setModalVisible(true)} style={{width:"90%",marginHorizontal:"auto",height:"auto",shadowColor:"black",margin:15,borderRadius:15,shadowRadius:15,shadowOpacity:0.5}}>
+                <View style={{flexDirection:"row",width:"90%",justifyContent:"space-between",margin:15}}>
+                    <View style={{flexDirection:"column"}}>
+                        <Text style={{fontSize:20,fontWeight:"bold"}}>Budget:</Text>
+                        <Text style={{fontSize:20,fontWeight:"bold"}}>{totalBudget.toFixed(2)}</Text>
                     </View>
-                    <PieChart
-                        style={{margin:"auto"}}
-                        widthAndHeight={widthAndHeight}
-                        series={series}
-                        sliceColor={sliceColor}
-                        coverRadius={0.6}
-                        coverFill={'#FFF'}
-                    />
+                    <View style={{flexDirection:"column"}}>
+                        <Text style={{fontSize:20,fontWeight:"bold"}}>Spent:</Text>
+                        <Text style={{fontSize:20,fontWeight:"bold"}}>{totalSpent.toFixed(2)}</Text>
+                    </View>
+                    <View style={{flexDirection:"column"}}>
+                        <Text style={{fontSize:20,fontWeight:"bold"}}>Remaining:</Text>
+                        <Text style={{fontSize:20,fontWeight:"bold"}}>{remaining.toFixed(2)}</Text>
+                    </View>
+                    <View style={{flexDirection:"column"}}>
+                    <Text style={{fontSize:20,fontWeight:"bold"}}>Additional Income:</Text>
+                    <Text style={{fontSize:20,fontWeight:"bold"}}>{props?.additionalIncome?.toFixed(2)}</Text>
+                    </View>
+                    <View style={{flexDirection:"column"}}>
+                    </View>
+                    <Text style={{fontSize:20,fontWeight:"bold"}}>{props?.category}</Text>
                 </View>
             </Pressable>
             
