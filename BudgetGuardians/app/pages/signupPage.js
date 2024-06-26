@@ -63,6 +63,7 @@ export default function Page() {
             sendEmailVerification(auth.currentUser)
             .then(() => {
                 setSuccess("Email verification sent!")
+                Alert.alert("Email verification sent!","Please check your email to verify your account.")
             })
             .catch((error) => {
                 const errorCode = error.code;
