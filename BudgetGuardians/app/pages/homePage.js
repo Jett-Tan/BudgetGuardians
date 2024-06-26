@@ -30,11 +30,11 @@ export default function Page() {
     const [tab, setTab] = useState("home");
 
     
+    liveUpdate((x) => {
+        setCurrentUser(x)
+    });
 
     useEffect(() => {
-        liveUpdate((x) => {
-            setCurrentUser(x)
-        });
         (async () => {
             await getUserDataFromFirestore()
             .then((data) => {
@@ -45,6 +45,14 @@ export default function Page() {
             });
         })();
     }, []);
+
+    onAuthStateChanged(auth, (user) => {
+        if (user) {
+            console.log('User is signed in.', user.email);
+        } else {
+            router.replace('../pages/initPage');
+        }
+    });
 
     const loadData = setInterval(async () => {
         await getUserDataFromFirestore()

@@ -1,5 +1,5 @@
 import { StyleSheet, Text, View, TextInput, Button, TouchableOpacity, Image, Switch, Pressable, Alert } from "react-native";
-import { Link, router } from 'expo-router';
+import { Link, useRouter } from 'expo-router';
 import { getAuth, createUserWithEmailAndPassword, sendEmailVerification  } from "firebase/auth";
 import React from 'react';
 
@@ -11,6 +11,7 @@ import CustomInput from "../components/customInput";
 import CustomButton from "../components/customButton";
 import { auth } from "../auth/firebaseConfig";
 import { Entypo } from "@expo/vector-icons"
+import { useRoute } from "@react-navigation/native";
 
 export default function Page() {
     const [email, onChangeEmail] = React.useState('');
@@ -29,6 +30,8 @@ export default function Page() {
     function isPasswordConfirmed(password,confirmPassword) {
         return (password && confirmPassword && password === confirmPassword) 
     } 
+
+    const router = useRoute();
     
     function checkValid(){
         if (Errors.handleError(email,"email") !== '') {
@@ -61,9 +64,11 @@ export default function Page() {
             // console.log(auth)   
             delay(1000)
             sendEmailVerification(auth.currentUser)
-            .then(() => {
+            .then(async () => {
                 setSuccess("Email verification sent!")
-                Alert.alert("Email verification sent!","Please check your email to verify your account.")
+                alert("Email verification sent! Please check your email to verify your account.")
+                await delay(2000);
+                router.push('./createProfilePage')
             })
             .catch((error) => {
                 const errorCode = error.code;
@@ -72,7 +77,6 @@ export default function Page() {
                 setError(Errors.errorGetter(error.code))
                 return;
             });
-            router.push('./createProfilePage')
             // auth.signOut() 
         })
         .catch((error) => {
@@ -132,6 +136,11 @@ export default function Page() {
             />
             {error && <Text style = {styles.error}>Error: {error}</Text>}
             {success && <Text style = {styles.success}>{success}</Text>}
+            <CustomButton
+                type={"link"}
+                text={"Already have an account? Login here!"}
+                onPress={() => router.push('./loginPage')}
+            />
             <Text>{'\n'}</Text>
             </View>
             </View>
@@ -166,7 +175,7 @@ const styles = StyleSheet.create({
         marginTop:"auto",
         marginBottom:"auto",
         backgroundColor:styleSetting.color.white,
-        maxHeight:styleSetting.size.em500,
+        maxHeight:550,
         minHeight:styleSetting.size.em400,
         borderRadius:styleSetting.size.em24,
         flex:1,
