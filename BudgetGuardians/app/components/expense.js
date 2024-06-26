@@ -21,7 +21,7 @@ const data = [
   { label: 'Others', value: 'Others' },
 ];
 
-
+//
 const DropdownComponent = () => {
   const [value, setValue] = useState(null);
   const [isFocus, setIsFocus] = useState(false);
