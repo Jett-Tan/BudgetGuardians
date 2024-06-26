@@ -50,7 +50,7 @@ import {
           console.log(resetEmail);
           sendPasswordResetEmail(auth, resetEmail)
           .then(() => {
-              Alert.alert("Email sent! Check email for password reset instructions.");
+              alert("If an account exists, an email will be sent. Check email for password reset instructions!");
               setModalVisible(false);
           }).catch((error) => {
               const errorCode = error.code;
@@ -126,6 +126,13 @@ import {
                           type="link" 
                           text="Forget Password ?" 
                           onPress={() => setModalVisible(true)}
+                          
+                      /> 
+                      {error && <Text style={styles.error}>Error: {error}</Text>}
+                      <CustomButton 
+                          type="link" 
+                          text="Don't have an account ? Sign Up Now!" 
+                          onPress={() => router.push("./signupPage")}
                       /> 
                       <Text>{'\n'}</Text>
                   </View>
