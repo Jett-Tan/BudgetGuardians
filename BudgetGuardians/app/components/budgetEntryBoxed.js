@@ -92,11 +92,11 @@ export default function BudgetEntryBoxed({
                                 <Text style={{fontSize:20,fontWeight:"bold"}}>Over Spent ${Math.abs(displayNumber).toFixed(2)}</Text>
                             }
                         </View>
-                        <View style={{flexDirection:"row",justifyContent:"space-between"}}>
+                        {/* <View style={{flexDirection:"row",justifyContent:"space-between"}}>
                             <Pressable style={[styles.button,{width:"90%"}]} onPress={() => {editBudget(props.category);setModalVisible(false)}}>
                                 <Text style={{fontWeight:"bold"}}>Edit</Text>
                             </Pressable>
-                        </View>
+                        </View> */}
                     </View>
                 </View>
             </Modal>
