@@ -1,4 +1,4 @@
-import {View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import {View, Text, StyleSheet, TouchableOpacity, Pressable, Modal } from 'react-native';
 import { useRouter } from 'expo-router';
 import { useEffect, useState } from 'react';
 
@@ -7,6 +7,7 @@ import Icon from './icon';
 import FaIcon from './FaIcon';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import { auth } from '../auth/firebaseConfig';
+import { set } from 'firebase/database';
 
 export default function SideBar({ value,  setValue}){
 
@@ -35,16 +36,21 @@ export default function SideBar({ value,  setValue}){
     let sideBar = minimized ? {width:60} : {};
     let sideBarContent = minimized ? {justifyContent:"center"} : {};
 
+    const [modalVisible, setModalVisible] = useState(false);
+    const [modalContent, setModalContent] = useState("");
     return (
         <>
             <View style={[styles.sideBar,sideBar]}>
-                <TouchableOpacity style={[styles.sideBarContent,home,sideBarContent]} onPress={() => {
+                <Pressable style={[styles.sideBarContent,home,sideBarContent]} onPress={() => {
                     setValue("home")
                     setSelected("home")
-                }}>
+                }}
+                    onHoverIn={() => {setModalVisible(true);setModalContent("home")}}
+                >
                     <FaIcon name="house" size={styleSetting.size.em24} color={styleSetting.color.white}/>
                     {!minimized && <Text style={styles.sideBarText}>Home</Text>}
-                </TouchableOpacity>
+
+                </Pressable>
                 <TouchableOpacity style={[styles.sideBarContent,calendar,sideBarContent]} onPress={() => {
                     setValue("calendar")
                     setSelected("calendar")

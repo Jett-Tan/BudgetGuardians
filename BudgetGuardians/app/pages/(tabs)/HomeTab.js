@@ -3,8 +3,8 @@ import { View,Text,StyleSheet, ScrollView, } from "react-native"
 import { liveUpdate, getUserDataFromFirestore } from "../../setting/fireStoreFunctions";
 import TransactionEntry from "../../components/transactionEntry";
 import CustomButton from "../../components/customButton";
-import BudgetEntry from "../../components/budgetEntry";
-
+import BudgetEntryBoxed from "../../components/budgetEntryBoxed";
+import BudgetLoader from "../../components/budgetLoader";
 
 export default function HomeTab() {
     const [currentUser, setCurrentUser] = useState();
@@ -84,32 +84,39 @@ export default function HomeTab() {
                 <View style={{borderRadius:15,width:"40%",height:"80%", padding:25,alignItems:"center", justifyContent:"flex-start",shadowOpacity:0.5,shadowColor:"black",shadowRadius:15}}> 
                     <Text style={{fontWeight:"bold", textDecorationLine: 'underline'}}>Recent Transactions</Text>
                     {Array.isArray(lastestTransaction5) && lastestTransaction5.length <= 0 && <Text>No Transaction</Text>}
-                    {lastestTransaction5 && lastestTransaction5.map((transaction,index) => {
-                        return(
-                            <View key={index} style={{width:'100%',marginVertical:10, borderRadius:10,shadowColor:"black",shadowOpacity:0.5,shadowRadius:5}}>
-                                <TransactionEntry showbutton={false}props={{date:transaction.date, category:transaction.category, amount:transaction.amount}} />
-                            </View>
-                        )
-                    })}
+                    
+                    <ScrollView style={{height:"90%",width:"100%"}}>
+                         <View style={{width:"100%",height:"100%",justifyContent:"space-around",flexWrap:"wrap",flexDirection:"row"}}>
+                            {lastestTransaction5 && lastestTransaction5.map((transaction,index) => {
+                                return(
+                                    <View key={index} style={{width:'90%',marginVertical:10, borderRadius:10,shadowColor:"black",shadowOpacity:0.5,shadowRadius:5}}>
+                                        <TransactionEntry showbutton={false}props={{date:transaction.date, category:transaction.category, amount:transaction.amount}} />
+                                    </View>
+                                )
+                            })}
+                        
+                        </View>
+                    </ScrollView>
                 </View>
 
                 <View style={{borderRadius:15,width:"40%",height:"80%", padding:25,alignItems:"center", justifyContent:"flex-start",shadowOpacity:0.5,shadowColor:"black",shadowRadius:15}}> 
                     <Text style={{fontWeight:"bold", textDecorationLine: 'underline'}}>Current Budget</Text>
-                    {!budgetInfo  && (
+                    {!budgetInfo?.budgets || budgetInfo?.budget?.size < 0  && (
                         <Text>No Budget</Text>
                     )}
                     <ScrollView style={{height:"90%",width:"100%"}}>
                         <View style={{width:"100%",height:"100%",justifyContent:"space-around",flexWrap:"wrap",flexDirection:"row"}}>
-                                {budgetInfo && budgetInfo?.budgets.map((x,index) => {
+                            <BudgetLoader background={false}/>
+                                {/* {budgetInfo && budgetInfo?.budgets.map((x,index) => {
                                     return(
-                                        <BudgetEntry 
+                                        <BudgetEntryBoxed 
                                             key={index}
                                             deleteBudget={() => deleteBudget(index)} 
                                             editBudget={() => editBudget(index)} 
                                             props={{ amount: x?.budgetAmount, category: x?.budgetCategory,amountSpent: x?.spent}} 
                                         />
                                     )
-                                })}
+                                })} */}
                         </View>
                     </ScrollView>
                 </View>

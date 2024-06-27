@@ -31,7 +31,7 @@ export default function Page() {
         return (password && confirmPassword && password === confirmPassword) 
     } 
 
-    const router = useRoute();
+    const router = useRouter();
     
     function checkValid(){
         if (Errors.handleError(email,"email") !== '') {

@@ -168,7 +168,7 @@ export default function TransactionLoader() {
             <View style={{width:"70%",shadowColor:"black",shadowOpacity:0.5,shadowRadius:15,borderRadius:15,height:"100%",alignItems:"center"}}>
               <ScrollView style={{width:"95%"}}>
                 {Array.isArray(transactions) && transactions.map((x, index) => (
-                  <>
+
                     <View key={index} style={{shadowColor:"black",shadowRadius:10,shadowOpacity:0.5,borderRadius:15,marginHorizontal:"10%",marginVertical:20}}>
                         <TransactionEntry 
                             deleteTransaction={() => deleteTransaction(index)} 
@@ -177,7 +177,6 @@ export default function TransactionLoader() {
                             props={{ amount: x?.amount, date: x?.date, category: x?.category }} 
                         />
                     </View>
-                  </>
                     ))}
               </ScrollView>
             </View>

@@ -38,6 +38,11 @@ export default function Overlay({visible}) {
             }
         })
     }
+
+    const check = setInterval(() => {
+        checkVerify()
+    }, 100)
+    clearInterval(check,300)
     return (
         <>
             <Modal 

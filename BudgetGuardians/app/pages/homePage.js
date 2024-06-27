@@ -33,22 +33,14 @@ export default function Page() {
         !auth.currentUser && router.replace('./initPage') ;
     },100)
 
-    setTimeout(() => {clearInterval(check)}, 1000);
+    setTimeout(() => {clearInterval(check)}, 300);
     
-    liveUpdate((x) => {
-        setCurrentUser(x)
-    });
-
-    onAuthStateChanged(auth,(user) => {
-        if (user) {
-            console.log('User is signed in.', user.email);
-        } else {
-            console.log('User not found.');
-            router.replace('../');
-        }
-    });
-
+    
+    
     useEffect(() => {
+        liveUpdate((x) => {
+            setCurrentUser(x)
+        });
         (async () => {
             await getUserDataFromFirestore()
             .then((data) => {
@@ -60,14 +52,6 @@ export default function Page() {
         })();
     }, []);
 
-    onAuthStateChanged(auth, (user) => {
-        if (user) {
-            console.log('User is signed in.', user.email);
-        } else {
-            console.log('User not found.');
-            router.push('../');
-        }
-    });
 
     const loadData = setInterval(async () => {
         await getUserDataFromFirestore()
@@ -78,7 +62,7 @@ export default function Page() {
             alert(err);
         });
     }, 100);
-    setTimeout(()=>{clearInterval(loadData)} ,500);
+    setTimeout(()=>{clearInterval(loadData)} ,300);
 
     const[modalVisible,setModalVisible] = useState(false)
 
