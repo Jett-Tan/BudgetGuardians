@@ -101,7 +101,7 @@ export default function HomeTab() {
 
                 <View style={{borderRadius:15,width:"40%",height:"80%", padding:25,alignItems:"center", justifyContent:"flex-start",shadowOpacity:0.5,shadowColor:"black",shadowRadius:15}}> 
                     <Text style={{fontWeight:"bold", textDecorationLine: 'underline'}}>Current Budget</Text>
-                    {!budgetInfo?.budgets || budgetInfo?.budget?.size < 0  && (
+                    {Array.isArray(budgetInfo?.budgets) && budgetInfo?.budgets.length <= 0  && (
                         <Text>No Budget</Text>
                     )}
                     <ScrollView style={{height:"90%",width:"100%"}}>
