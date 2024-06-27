@@ -119,6 +119,8 @@ export default function BudgetInput() {
         await updateBudgetToFirestore({budgetAmount:numericAmount, budgetCategory:category})
         .then((data) => {
             console.log(data);
+            setCategory("")
+            setAmount("")
         }).catch((err) => {
             console.log(err)
         })
@@ -129,6 +131,7 @@ export default function BudgetInput() {
             setAmount(categoryBudget.find((x) => x.budgetCategory === e).budgetAmount)
         }
     }
+
     const updateText = () => {
          if (category) {
             if (categoryBudget.find((x) => x.budgetCategory === category)){

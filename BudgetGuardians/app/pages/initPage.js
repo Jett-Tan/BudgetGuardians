@@ -20,10 +20,10 @@ export default function Page() {
     
     onAuthStateChanged(auth, (user) => {
         if (user) {
-            console.log('User is signed in.', user.email);
+            // console.log('User is signed in.', user.email);
             return <Redirect href="./homePage"/>
         } else {
-            console.log('User not found.');
+            // console.log('User not found.');
         }
     }); 
 

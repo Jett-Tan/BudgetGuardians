@@ -13,10 +13,10 @@ const Blink = () => {
 
   auth.onAuthStateChanged((user) => {
     if (user) {
-      console.log("user is signed in")
+      // console.log("user is signed in")
         setHasToken(true);
     } else {
-      console.log("user is not signed in")
+      // console.log("user is not signed in")
       setHasToken(false);
     }
   });
