@@ -41,19 +41,22 @@ export default function Overlay({visible}) {
     return (
         <>
             <Modal 
-            visible = {visible && modalVisible}
-            transparent={true}
+                visible = {visible && modalVisible}
+                transparent={true}
             >
                 <TouchableOpacity style={styles.overlay} onPress={e => checkVerify()}>
-                    <View style={styles.card}>
-                        <CustomButton
-                        type={"danger"}
-                        text = "Verify your email"
-                        onPress={e => handleEmailVerification()}/>
-                        {success ? <Text style={styles.success}>{success}</Text> : <Text></Text>}
-                        {error ? <Text style={styles.error}>{error}</Text> : <Text></Text>}
-                    </View>
                 </TouchableOpacity>
+                <View style={styles.card}>
+                    <CustomButton
+                    type={"danger"}
+                    text = "Verify your email"
+                    onPress={e => handleEmailVerification()}
+                    containerStyle={{backgroundColor:styleSetting.color.cadmiumRed,paddingHorizontal:10}}
+                    textStyle={{color:styleSetting.color.white,fontSize:24,fontWeight:"bold"}}
+                    />
+                    {success ? <Text style={styles.success}>{success}</Text> : <Text></Text>}
+                    {error ? <Text style={styles.error}>{error}</Text> : <Text></Text>}
+                </View>
             </Modal>
         </>
     )
@@ -61,7 +64,8 @@ export default function Overlay({visible}) {
 
 const styles = StyleSheet.create({
     overlay: {
-        flex: 1,
+        position: "absolute",
+        zIndex:-1,
         alignItems: "center",
         justifyContent: "center",
         verticalAlign: "center",
@@ -91,6 +95,7 @@ const styles = StyleSheet.create({
         elevation:5,
         width:300,
         height:150,
+        margin:"auto",
         justifyContent:"center",
         alignItems:"center",
     }
