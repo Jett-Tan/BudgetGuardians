@@ -5,15 +5,27 @@ import Icon from '../components/icon'
 import styleSetting from "../setting/setting";
 import { auth } from "../auth/firebaseConfig";
 import CustomButton from "../components/customButton";
+import { onAuthStateChanged } from "firebase/auth";
 
 export default function Page() {
   // get cookies or token to see if login in else set to init page
     
     const user = auth.currentUser;
-    console.log(user);
-    if(user !== null){
-        return <Redirect href="./homePage"/>
-    }
+    const router = useRouter();
+    const check = setInterval(() => {
+        auth.currentUser && router.replace('./homePage') ;
+    },100)
+
+    setTimeout(() => {clearInterval(check)}, 300);
+    
+    onAuthStateChanged(auth, (user) => {
+        if (user) {
+            console.log('User is signed in.', user.email);
+            return <Redirect href="./homePage"/>
+        } else {
+            console.log('User not found.');
+        }
+    }); 
 
     return (      
         <View style={styles.container}>
