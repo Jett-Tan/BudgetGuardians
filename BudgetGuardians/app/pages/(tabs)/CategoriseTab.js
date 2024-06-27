@@ -91,10 +91,10 @@ const CategoriseTransaction = () => {
 
   return (
     <View style={styles.container}>
-      <ScrollView style={styles.scrollView}>
+      
         <View style={styles.container}>
           <MultiSelect
-            style={styles.dropdown}
+            style={[styles.dropdown,{shadowColor:"black",shadowRadius:15,padding:10, borderRadius:15,shadowOpacity:0.5,marginVertical:10}]}
             placeholderStyle={{ fontSize: 16, marginLeft: 10 }}
             selectedTextStyle={{ fontSize: 16, marginLeft: 10 }}
             inputSearchStyle={{ fontSize: 16, justifyContent: "center", height: 50 }}
@@ -123,29 +123,29 @@ const CategoriseTransaction = () => {
 
           <View style={styles.sortContainer}>
             <Text>Sort by: </Text>
-            <TouchableOpacity onPress={() => setSortCriteria('none')}>
-              <Text style={[styles.sortButton, sortCriteria === 'none' && styles.activeSort]}>None</Text>
+            <TouchableOpacity onPress={() => setSortCriteria('none')} >
+              <Text style={[styles.sortButton, sortCriteria === 'none' && styles.activeSort,{shadowOffset:{height:2,width:2},shadowColor:"black",shadowOpacity:0.2}]}>None</Text>
             </TouchableOpacity>
-            <TouchableOpacity onPress={() => setSortCriteria('amount')}>
-              <Text style={[styles.sortButton, sortCriteria === 'amount' && styles.activeSort]}>Amount</Text>
+            <TouchableOpacity onPress={() => setSortCriteria('amount')} >
+              <Text style={[styles.sortButton, sortCriteria === 'amount' && styles.activeSort,{shadowOffset:{height:2,width:2},shadowColor:"black",shadowOpacity:0.2}]}>Amount</Text>
             </TouchableOpacity>
-            <TouchableOpacity onPress={() => setSortCriteria('date')}>
-              <Text style={[styles.sortButton, sortCriteria === 'date' && styles.activeSort]}>Date</Text>
+            <TouchableOpacity onPress={() => setSortCriteria('date')} >
+              <Text style={[styles.sortButton, sortCriteria === 'date' && styles.activeSort,{shadowOffset:{height:2,width:2},shadowColor:"black",shadowOpacity:0.2}]}>Date</Text>
             </TouchableOpacity>
             <Text>Order: </Text>
-            <TouchableOpacity onPress={() => setSortOrder('asc')}>
-              <Text style={[styles.sortButton, sortOrder === 'asc' && styles.activeSort]}>Ascending</Text>
+            <TouchableOpacity onPress={() => setSortOrder('asc')} >
+              <Text style={[styles.sortButton, sortOrder === 'asc' && styles.activeSort,{shadowOffset:{height:2,width:2},shadowColor:"black",shadowOpacity:0.2}]}>Ascending</Text>
             </TouchableOpacity>
-            <TouchableOpacity onPress={() => setSortOrder('desc')}>
-              <Text style={[styles.sortButton, sortOrder === 'desc' && styles.activeSort]}>Descending</Text>
+            <TouchableOpacity onPress={() => setSortOrder('desc')} >
+              <Text style={[styles.sortButton, sortOrder === 'desc' && styles.activeSort,{shadowOffset:{height:2,width:2},shadowColor:"black",shadowOpacity:0.2}]}>Descending</Text>
             </TouchableOpacity>
           </View>
-              
-          <View style={styles.transactionsContainer}>
+          <View style={[styles.transactionsContainer,{shadowColor:"black",shadowRadius:15,padding:10, borderRadius:15,shadowOpacity:0.5,marginVertical:10}]}>
+          <ScrollView style={[styles.scrollView,{padding:5}]}>
             {filteredTransactions.length === 0 && (
-              <Text>No transactions found for the selected category.</Text>
+              <Text style={{margin:"auto"}}>No transactions found for the selected category.</Text>
             )}
-            {filteredTransactions.map((transaction, index) => (
+            {filteredTransactions.length !== 0 && filteredTransactions.map((transaction, index) => (
               <View key={index} style={styles.transactionItem}>
                 <View>
                   <Text style={styles.underline}>Category: </Text>
@@ -168,10 +168,10 @@ const CategoriseTransaction = () => {
                 </View> 
               </View>
             ))}
+        </ScrollView>  
           </View>
           
         </View>
-      </ScrollView>  
     </View>
   );
 };
@@ -181,9 +181,10 @@ export default CategoriseTransaction;
 const styles = StyleSheet.create({
   scrollView: {
     flex: 1,
+    width: '100%',
   },
   container: {
-    width: "100%",
+    width: "90%",
     height: "80%",
     alignItems: "center",
   },
@@ -267,6 +268,7 @@ const styles = StyleSheet.create({
   transactionsContainer: {
     width: '100%',
     alignItems: 'center',
+    height:"90%",
   },
   transactionItem: {
     flexDirection: 'row',
