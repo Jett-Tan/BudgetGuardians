@@ -53,7 +53,7 @@ export default function BudgetInput() {
                 console.log(err)
             })
         })()
-    }, [totalBudgetAmount, categoryBudget])
+    }, [])
 
     const validatBudget = () => {
         let valid = true

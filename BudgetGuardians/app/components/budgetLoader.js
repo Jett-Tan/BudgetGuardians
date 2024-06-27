@@ -10,6 +10,7 @@ import {Dropdown} from 'react-native-element-dropdown'
 import { defaultCategory } from "./expenseInput";
 import FaIcon from "./FaIcon";
 import CustomButton from "./customButton";
+import BudgetEntryBoxed from "./budgetEntryBoxed";
 
 export default function BudgetLoader() {
     
@@ -25,8 +26,12 @@ export default function BudgetLoader() {
         const transactions = data?.financialData?.transactions || [];
         budgets.map((budget) => {
           const totalSpent = transactions
-            .filter((transaction) => budget.budgetCategory === transaction.category)
+            .filter((transaction) => budget.budgetCategory === transaction.category && transaction.amount < 0)
             .reduce((acc, transaction) => acc + transaction.amount, 0);
+          const addedIncome = transactions
+            .filter((transaction) => budget.budgetCategory === transaction.category && transaction.amount > 0)
+            .reduce((acc, transaction) => acc + transaction.amount, 0);
+          budget.addedIncome = addedIncome;
           budget.spent = totalSpent;
           });
         setBudgets(budgets);
@@ -159,11 +164,11 @@ export default function BudgetLoader() {
               <ScrollView style={{width:"95%"}}>
                 <View style={{width:"100%",marginHorizontal:"auto",flexWrap:"wrap",flexDirection:"row"}}>
                   {Array.isArray(budgets) && budgets.map((x, index) => (
-                      <BudgetEntry 
+                      <BudgetEntryBoxed 
                           key={index}
                           deleteBudget={() => deleteBudget(index)} 
                           editBudget={() => editBudget(index)} 
-                          props={{ amount: x?.budgetAmount, category: x?.budgetCategory,amountSpent: x?.spent}} 
+                          props={{ amount: x?.budgetAmount, category: x?.budgetCategory,amountSpent: x?.spent, additionalIncome: x?.addedIncome}} 
                       />
                       ))}
                 </View>
