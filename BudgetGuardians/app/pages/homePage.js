@@ -29,9 +29,23 @@ export default function Page() {
     const [currentUser, setCurrentUser] = useState({});
     const [tab, setTab] = useState("home");
 
+    const check = setInterval(() => {
+        !auth.currentUser && router.replace('./initPage') ;
+    },100)
+
+    setTimeout(() => {clearInterval(check)}, 1000);
     
     liveUpdate((x) => {
         setCurrentUser(x)
+    });
+
+    onAuthStateChanged(auth,(user) => {
+        if (user) {
+            console.log('User is signed in.', user.email);
+        } else {
+            console.log('User not found.');
+            router.replace('../');
+        }
     });
 
     useEffect(() => {
@@ -50,7 +64,8 @@ export default function Page() {
         if (user) {
             console.log('User is signed in.', user.email);
         } else {
-            router.replace('../');
+            console.log('User not found.');
+            router.push('../');
         }
     });
 
@@ -91,6 +106,7 @@ export default function Page() {
     }
 
     const block = false;
+    
     return (
         <>
             {block && 
@@ -118,11 +134,12 @@ export default function Page() {
                         {tab === "home" && <HomeTab/>}
                         {/* {tab === "calendar" && <CalendarTab/>} */}
                         {tab === "calendar" && <Text>Coming soon</Text>}
+                        {tab === "transactions" && <TransactionTab/>}
+                        {tab === "categorise" && <CategoriseTab/>}
+                        {tab === "budget" && <BudgetTab/>}
+                        {tab === "reports" && <Text>Coming soon</Text>}
                         {tab === "profile" && <ProfileTab/>}
                         {tab === "settings" && <Text>Coming soon</Text>}
-                        {tab === "categorise" && <CategoriseTab/>}
-                        {tab === "transactions" && <TransactionTab/>}
-                        {tab === "budget" && <BudgetTab/>}
                         {/* <Button title="Add Expense" onPress={addExpense}/> */}
                         {/* <DropdownComponent/> */}
                     </View>
