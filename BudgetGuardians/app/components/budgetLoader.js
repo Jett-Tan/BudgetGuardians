@@ -21,26 +21,24 @@ export default function BudgetLoader({background = true}) {
     const [toEditBudgetCatergory, setToEditBudgetCatergory] = useState('');
     const [modalVisible, setModalVisible] = useState(false);
 
-    liveUpdate((data) => {
-        const budgets = data?.financialData?.budgetInfo?.budgets || [];
-        const transactions = data?.financialData?.transactions || [];
-        budgets.map((budget) => {
-          const totalSpent = transactions
-            .filter((transaction) => budget.budgetCategory === transaction.category && transaction.amount < 0)
-            .reduce((acc, transaction) => acc + transaction.amount, 0);
-          const addedIncome = transactions
-            .filter((transaction) => budget.budgetCategory === transaction.category && transaction.amount > 0)
-            .reduce((acc, transaction) => acc + transaction.amount, 0);
-          budget.addedIncome = addedIncome;
-          budget.spent = totalSpent;
-          });
-        setBudgets(budgets);
-        // setBudgets(data?.financialData?.budgetInfo?.budgets || []);
-    });
-    console.log(budgets);
     useEffect(() => {
+      liveUpdate((data) => {
+          const budgets = data?.financialData?.budgetInfo?.budgets || [];
+          const transactions = data?.financialData?.transactions || [];
+          budgets.map((budget) => {
+            const totalSpent = transactions
+              .filter((transaction) => budget.budgetCategory === transaction.category && transaction.amount < 0)
+              .reduce((acc, transaction) => acc + transaction.amount, 0);
+            const addedIncome = transactions
+              .filter((transaction) => budget.budgetCategory === transaction.category && transaction.amount > 0)
+              .reduce((acc, transaction) => acc + transaction.amount, 0);
+            budget.addedIncome = addedIncome;
+            budget.spent = totalSpent;
+            });
+          setBudgets(budgets);
+      });
       
-    }, []);
+    }, [budgets]);
 
 
     const reset =() => {
