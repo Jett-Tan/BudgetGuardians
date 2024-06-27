@@ -8,19 +8,26 @@ export default function TransactionEntry({
     deleteTransaction = (e) => {console.log(e);},
     editTransaction = (e) => {console.log(e);},
     showbutton = true,
+    containerStyle={},
+    transactionStyle={},
+    dateStyle={},
+    categoryStyle={},
+    amountStyle={},
 }) {
     return (
         <>
-            <View style={styles.row}>
-                <Pressable style={styles.transaction} onPress={onPress}>
+            <View style={[styles.row,containerStyle]}>
+                <Pressable style={[styles.transaction,transactionStyle]} onPress={onPress}>
                     <View style={styles.box}>
                         <View style={styles.miniBox}>
-                            <Text style={[]}>{props.date}</Text>
+                            <Text style={[dateStyle]}>{props.date}</Text>
                             <View style={styles.title}>
-                                <Text style={styles.right}>{props.category}</Text>
+                                <Text style={[styles.right,categoryStyle]}>{props.category}</Text>
                             </View>
                         </View>
-                        <Text style={styles.right}>${props.amount?.toFixed(2)}</Text>
+                        {props.amount >= 0 && <Text style={[styles.right,amountStyle]}>+${props.amount?.toFixed(2)}</Text> }
+                        {props.amount < 0 && <Text style={[styles.right,amountStyle]}>-${Math.abs(props.amount)?.toFixed(2)}</Text> }
+                        
                     </View>
                     
                 </Pressable>

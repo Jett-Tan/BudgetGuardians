@@ -90,7 +90,7 @@ export default function HomeTab() {
                             {lastestTransaction5 && lastestTransaction5.map((transaction,index) => {
                                 return(
                                     <View key={index} style={{width:'90%',marginVertical:10, borderRadius:10,shadowColor:"black",shadowOpacity:0.5,shadowRadius:5}}>
-                                        <TransactionEntry showbutton={false}props={{date:transaction.date, category:transaction.category, amount:transaction.amount}} />
+                                        <TransactionEntry showbutton={false} props={{date:transaction.date, category:transaction.category, amount:transaction.amount}} transactionStyle={{width:"90%"}}containerStyle={{width:"100%"}}/>
                                     </View>
                                 )
                             })}

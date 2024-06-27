@@ -13,6 +13,7 @@ import CustomInput from "./customInput";
 import CustomButton from "./customButton";
 import FaIcon from "./FaIcon";
 import styleSetting from "../setting/setting";
+import { set } from "firebase/database";
 
 export const defaultCategory = [
   { label: 'Transport', value: 'Transport' },
@@ -33,11 +34,15 @@ export default function BudgetInput() {
     const [categoryBudget, setCategoryBudget] = useState([]);
 
 
-    // liveUpdate((x) => {
-    //     console.log(x)
-    // })
-
+    
     useEffect(() => {
+        
+        liveUpdate((data) => {
+            const budgets = data?.financialData?.budgetInfo?.budgets || [];
+            setTotalBudgetAmount(data?.financialData?.budgetInfo?.totalBudgetAmount || 0);
+            setCategoryBudget(budgets);
+        });
+
         (async()=>{
             await getBudgetAmountFromFirestore()
             .then((data) => {
@@ -52,8 +57,8 @@ export default function BudgetInput() {
             }).catch((err) => {
                 console.log(err)
             })
-        })()
-    }, [])
+        })();
+    }, [categoryBudget, totalBudgetAmount])
 
     const validatBudget = () => {
         let valid = true
@@ -88,7 +93,7 @@ export default function BudgetInput() {
         const numericAmount = Number.parseFloat(totalBudgetAmount);
         await updateBudgetAmountToFirestore(numericAmount)
         .then((data) => {
-            console.log(data);
+            // console.log(data);
         }).catch((err) => {
             console.log(err)
         })
@@ -99,11 +104,11 @@ export default function BudgetInput() {
             console.log("Validation failed");
             return;
         }
-        console.log("add")
+        // console.log("add")
         const numericAmount = Number.parseFloat(amount);
         await addBudgetToFirestore({budgetAmount:numericAmount, budgetCategory:category})
         .then((data) => {
-            console.log(data);
+            // console.log(data);
         }).catch((err) => {
             console.log(err)
         })
@@ -114,11 +119,10 @@ export default function BudgetInput() {
             console.log("Validation failed");
             return;
         }
-        console.log("add")
         const numericAmount = Number.parseFloat(amount);
         await updateBudgetToFirestore({budgetAmount:numericAmount, budgetCategory:category})
         .then((data) => {
-            console.log(data);
+            // console.log(data);
             setCategory("")
             setAmount("")
         }).catch((err) => {
@@ -143,6 +147,7 @@ export default function BudgetInput() {
             return "Add Budget"
         }
     }
+
     return (
         <>
             <View style={{flexDirection:"column",alignItems:"center",width:"90%",height:"50%",flexWrap:"wrap", padding:10,borderRadius:15,shadowRadius:15,shadowColor:"black",shadowOpacity:0.5}}>

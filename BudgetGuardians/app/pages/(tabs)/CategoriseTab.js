@@ -163,8 +163,9 @@ const CategoriseTransaction = () => {
                 </View> 
 
                 <View>
-                  <Text style={styles.underline}>Amount: </Text>
-                  <Text>${transaction.amount}</Text>
+                  <Text style={[styles.underline,{textAlign:"right"}]}>Amount: </Text>
+                  {transaction.amount < 0 && <Text style={{textAlign:"right"}}>-${Math.abs(transaction.amount).toFixed(2)}</Text>}
+                  {transaction.amount > 0 && <Text style={{textAlign:"right"}}>${transaction.amount.toFixed(2)}</Text>}
                 </View> 
               </View>
             ))}

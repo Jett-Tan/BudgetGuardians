@@ -20,7 +20,15 @@ export default function TransactionLoader() {
     const [toEditTransactionAmount, setToEditTransactionAmount] = useState('');
     const [toEditTransactionCatergory, setToEditTransactionCatergory] = useState('');
     const [toEditTransactionDescription, setToEditTransactionDescription] = useState('');
+     
+    const [toViewTransactionID, setToViewTransactionID] = useState();
+    const [toViewTransactionDate, setToViewTransactionDate] = useState();
+    const [toViewTransactionAmount, setToViewTransactionAmount] = useState('');
+    const [toViewTransactionCatergory, setToViewTransactionCatergory] = useState('');
+    const [toViewTransactionDescription, setToViewTransactionDescription] = useState('');
     const [modalVisible, setModalVisible] = useState(false);
+
+    const [modalVisibleView, setModalVisibleView] = useState(false);
 
     const [categoryError, setCategoryError] = useState("");
     const [amountError, setAmountError] = useState("");
@@ -86,6 +94,14 @@ export default function TransactionLoader() {
         setToEditTransactionID(id)
         setModalVisible(true);
     }
+    const viewTransaction = (id) =>{
+        setToViewTransactionAmount(transactions[id].amount)
+        setToViewTransactionCatergory(transactions[id].category)
+        setToViewTransactionDate(transactions[id].date)
+        setToViewTransactionDescription(transactions[id].description)
+        setToViewTransactionID(id)
+        setModalVisibleView(true);
+    }
     /* This fucntion will save the edited details to firestore*/
     const saveTransaction = () => {
         if (!validate()) {
@@ -100,6 +116,37 @@ export default function TransactionLoader() {
     }
     return (
         <>  
+        <Modal visible={modalVisibleView} transparent={true}>
+                <Pressable onPress={() => setModalVisibleView(false)} style={{width:"100%",height:"100%",backgroundColor:"black",opacity:0.5,position:"absolute",left:0,top:0}}></Pressable>
+                <View style={{width:"30%",minWidth:350,height:"80%",backgroundColor:"white",margin:"auto",alignItems:"center",shadowColor:"black",shadowOpacity:0.5,shadowRadius:5,borderRadius:10}}>
+                    <View style={{width:"100%",padding:10}}>
+                        <Pressable onPress={() => setModalVisibleView(false)} style={{marginLeft:"auto",marginRight:5}}>
+                          <FaIcon name={"x"} size={20}/>
+                        </Pressable>
+                    </View>
+                    <View style={{width:"90%",padding:"5%",height:"90%"}}>
+                        <Text style={{fontSize: 20, margin:10,fontWeight: 'bold', textAlign:"center",textDecorationLine:"underline",width:"100%"}}>View Transaction</Text>
+                        <View  style={{margin:10,marginBottom:15}}>
+                          <Text style={{fontSize: 20, fontWeight: 'bold'}}>Transaction Type</Text>
+                          <Text style={{fontSize: 20}}>{toViewTransactionCatergory}</Text>
+                        </View>
+                        <View  style={{margin:10,marginBottom:15}}>
+                          <Text style={{fontSize: 20, fontWeight: 'bold'}}>Transaction Amount</Text>
+                          {toViewTransactionAmount < 0 ? 
+                          <Text style={{fontSize: 20}}>-${Math.abs(toViewTransactionAmount).toFixed(2)}</Text> : 
+                          <Text style={{fontSize: 20}}>+${Math.abs(toViewTransactionAmount).toFixed(2)}</Text>}
+                        </View>
+                        <View  style={{margin:10,marginBottom:15}}>
+                          <Text style={{fontSize: 20, fontWeight: 'bold'}}>Transaction Date</Text>
+                          <Text style={{fontSize: 20}}>{toViewTransactionDate}</Text>
+                        </View>
+                        <View  style={{margin:10,marginBottom:15}}>
+                          <Text style={{fontSize: 20, fontWeight: 'bold'}}>Transaction Description</Text>
+                          <Text style={{fontSize: 20}}>{toViewTransactionDescription}</Text>
+                        </View>
+                    </View>
+                </View>
+            </Modal>
             <Modal visible={modalVisible} transparent={true}>
                 <Pressable onPress={() => setModalVisible(false)} style={{width:"100%",height:"100%",backgroundColor:"black",opacity:0.5,position:"absolute",left:0,top:0}}></Pressable>
                 <View style={{width:"30%",minWidth:350,height:"80%",backgroundColor:"white",margin:"auto",alignItems:"center",shadowColor:"black",shadowOpacity:0.5,shadowRadius:5,borderRadius:10}}>
@@ -109,7 +156,7 @@ export default function TransactionLoader() {
                           <Text style={{fontSize: 13, fontWeight: 'bold', margin: 10}}>Transaction Type</Text>
                           <Dropdown
                               data={defaultCategory}
-                              style={{width: "100%",borderRadius: 10,height:50, borderColor: 'black', borderWidth: 1, padding: 5,marginVertical:5}}
+                              style={{width: "100%",borderRadius: 10,height:50, borderColor: 'black', borderWidth: 1, padding: 5,marginTop:5}}
                               placeholderStyle={{fontSize: 16,marginLeft:10, whiteSpace: 'nowrap'}}
                               selectedTextStyle={{fontSize: 16,marginLeft:10, whiteSpace: 'nowrap'}}
                               inputSearchStyle={{fontSize: 16,justifyContent:"center",height:50, whiteSpace: 'nowrap'}}
@@ -136,6 +183,7 @@ export default function TransactionLoader() {
                               containerStyle={{width: "100%",margin:0,minWidth:100,maxWidth:'100%', justifyContent: 'center', alignItems: 'center'}}
                               inputContainerStyle={{width: "100%",minWidth:100,maxWidth:'100%', height: 50, borderColor: 'black', borderWidth: 1, padding: 5, margin: 5}}
                               inputStyle={{width: "90%",minWidth:90}}
+                              errorExist={false}
                           />  
                           <Text style={{color: 'red', fontSize: 12, marginLeft: 10}}>{amountError}</Text>
                         </View>
@@ -153,6 +201,18 @@ export default function TransactionLoader() {
                               activeUnderlineColor="black"
                           />
                           <Text style={{color: 'red', fontSize: 12, marginLeft: 10}}>{dateError}</Text>
+                      </View>
+                      <View style={{}}>
+                        <Text style={{fontSize: 13, fontWeight: 'bold', margin: 10}}>Amount</Text>
+                        <CustomInput
+                            placeholder="Enter Description"
+                            values={toEditTransactionDescription}
+                            onChange1={(x) => setToEditTransactionDescription(x)}
+                            containerStyle={{width: "100%",margin:0,minWidth:100,maxWidth:'100%', justifyContent: 'center', alignItems: 'center'}}
+                            inputContainerStyle={{width: "100%",minWidth:100,maxWidth:'100%', height: 50, borderColor: 'black', borderWidth: 1, padding: 5, margin: 5}}
+                            inputStyle={{width: "90%",minWidth:90}}
+                            errorExist={false}
+                        />  
                       </View>
                       <View>
                         <CustomButton
@@ -173,7 +233,7 @@ export default function TransactionLoader() {
                         <TransactionEntry 
                             deleteTransaction={() => deleteTransaction(index)} 
                             editTransaction={() => editTransaction(index)} 
-                            
+                            onPress={() => viewTransaction(index)}
                             props={{ amount: x?.amount, date: x?.date, category: x?.category }} 
                         />
                     </View>

@@ -25,7 +25,7 @@ export default function ProfileTab() {
     async function updateUser(){
         await updateUserDataToFirestore({name:{firstName:firstName,lastName:lastName},age:Number.parseInt(age)})
         .then(() => {
-            console.log("User Updated")
+            // console.log("User Updated")
         }).catch((err) => {
             console.log(err)
         })

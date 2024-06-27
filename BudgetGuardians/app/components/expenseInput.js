@@ -65,7 +65,7 @@ export default function ExpenseInput() {
         const formatteddate = new Date(date).toLocaleDateString('en-SG')
         await addTransactionToFirestore({category: category, amount:-numericAmount, date:formatteddate, description:description || null})
         .then((data) => {
-            console.log(data)
+            // console.log(data)
             reset();
         }).catch((err) => {
             console.log(err)
@@ -82,8 +82,8 @@ export default function ExpenseInput() {
         const formatteddate = new Date(date).toLocaleDateString('en-SG')
         await addTransactionToFirestore({category: category, amount:numericAmount, date:formatteddate, description:description || null})
         .then((data) => {
-            console.log(data)
-            console.log(description)
+            // console.log(data)
+            // console.log(description)
             reset();
         }).catch((err) => {
             console.log(err)

@@ -74,7 +74,7 @@ export default function Page() {
     const addExpense = async () => {
         await addTransactionToFirestore({amount:-123.30,date:"adsd",description:"Food",category:"Food"})
         .then((data) => {
-            console.log(data)
+            // console.log(data)
         }).catch((err) => {
             console.log(err)
         })
@@ -83,7 +83,7 @@ export default function Page() {
     const addIncome = async () => {
         await addTransactionToFirestore({amount:-123.30,date:"adsd",description:"Food",category:"Food"})
         .then((data) => {
-            console.log(data)
+            // console.log(data)
         }).catch((err) => {
             console.log(err)
         })
