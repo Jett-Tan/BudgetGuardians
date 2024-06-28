@@ -161,9 +161,8 @@ export default function ExpenseInput() {
                                 containerStyle={{width: "100%",margin:0,marginVertical:5,minWidth:"100%", justifyContent: 'center', alignItems: 'center'}}
                                 inputContainerStyle={{width: "100%",minWidth:"100%", height: 50, borderColor: 'black', borderWidth: 1, padding: 5, margin: 5}}
                                 inputStyle={{width: "100%",minWidth:"100%"}}
-                                errorExist={false}
+                                
                             />  
-                            <Text style={{color: 'red', fontSize: 12, marginLeft: 10}}>{amountError}</Text>
                         </View>
                     </View>
                 </View>

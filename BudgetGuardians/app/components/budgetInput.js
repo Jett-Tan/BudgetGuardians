@@ -91,7 +91,7 @@ export default function BudgetInput() {
         await updateBudgetAmountToFirestore(numericAmount)
         .then((data) => {
             // console.log(data);
-            alert("Budget Sucessfully Set!")
+            alert("Budget of $" + numericAmount + " Sucessfully Set!")
         }).catch((err) => {
             console.log(err)
         })
