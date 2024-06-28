@@ -151,7 +151,7 @@ export default function TransactionLoader() {
                 </View>
           </Modal>
           <Modal visible={modalVisible} transparent={true}>
-              <Pressable onPress={() => setModalVisible(false)} style={{width:"100%",height:"100%",backgroundColor:"black",opacity:0.5,position:"absolute",left:0,top:0}}></Pressable>
+              <Pressable onPress={() => {setModalVisible(false);reset();}} style={{width:"100%",height:"100%",backgroundColor:"black",opacity:0.5,position:"absolute",left:0,top:0}}></Pressable>
               <View style={{width:"30%",minWidth:350,height:"80%",backgroundColor:"white",margin:"auto",alignItems:"center",shadowColor:"black",shadowOpacity:0.5,shadowRadius:5,borderRadius:10}}>
                   <View style={{width:"90%",padding:"5%",height:"90%",justifyContent:"space-evenly"}}>
                       <Text style={{fontSize: 20, fontWeight: 'bold', textAlign:"center",textDecorationLine:"underline",width:"100%"}}>Edit Transaction</Text>
