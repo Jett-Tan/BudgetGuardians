@@ -3,7 +3,7 @@ import { Dropdown } from "react-native-element-dropdown";
 import { useState } from "react";
 import {DatePickerInput} from 'react-native-paper-dates';
 
-import { addTransactionToFirestore } from "../setting/fireStoreFunctions";
+import { addTransactionToFirestore, getUserDataFromFirestore } from "../setting/fireStoreFunctions";
 import CustomInput from "./customInput";
 import CustomButton from "./customButton";
 import FaIcon from "./FaIcon";
@@ -64,8 +64,21 @@ export default function ExpenseInput() {
         const numericAmount = parseFloat(amount);
         const formatteddate = new Date(date).toLocaleDateString('en-SG')
         await addTransactionToFirestore({category: category, amount:-numericAmount, date:formatteddate, description:description || null})
-        .then((data) => {
+        .then(async () => {
             // console.log(data)
+            await getUserDataFromFirestore().then((data) => {
+                const financialData = data.financialData;
+                const transactions = financialData.transactions;
+                const budgetAmt = financialData.budgetInfo.budgets.find((budget) => budget.budgetCategory === category).budgetAmount || 0;
+                const totalExpense = transactions.filter((transaction) => transaction.amount < 0 && transaction.category === category).reduce((acc, transaction) => acc + transaction.amount, 0);
+                const totalIncome = transactions.filter((transaction) => transaction.amount > 0 && transaction.category === category).reduce((acc, transaction) => acc + transaction.amount, 0);
+                const remainingBudget = budgetAmt + totalExpense + totalIncome;
+                if (budgetAmt > 0 && remainingBudget < 0) {
+                    alert(`You have exceeded your budget for ${category}! by $${-remainingBudget}!`);
+                }
+            }).catch((err) => {
+                console.log(err)
+            });
             reset();
         }).catch((err) => {
             console.log(err)
@@ -94,6 +107,7 @@ export default function ExpenseInput() {
     const isValidDate = (date) => {
         return date instanceof Date && !isNaN(date);
     };
+
 
     return (
         <>
