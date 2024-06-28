@@ -147,22 +147,22 @@ const CategoriseTransaction = () => {
             )}
             {filteredTransactions.length !== 0 && filteredTransactions.map((transaction, index) => (
               <View key={index} style={styles.transactionItem}>
-                <View>
+                <View style={{width:"20%"}}>
                   <Text style={styles.underline}>Category: </Text>
                   <Text>{transaction.category}</Text>
                 </View>
 
-                <View>
+                <View style={{width:"20%"}}>
                   <Text style={styles.underline}>Date: </Text>
                   <Text>{transaction.date}</Text>
                 </View> 
 
-                <View>
+                <View style={{width:"20%"}}>
                   <Text style={styles.underline}>Description: </Text>
                   <Text>{transaction.description}</Text>
                 </View> 
 
-                <View>
+                <View style={{width:"20%"}}>
                   <Text style={[styles.underline,{textAlign:"right"}]}>Amount: </Text>
                   {transaction.amount < 0 && <Text style={{textAlign:"right"}}>-${Math.abs(transaction.amount).toFixed(2)}</Text>}
                   {transaction.amount > 0 && <Text style={{textAlign:"right"}}>${transaction.amount.toFixed(2)}</Text>}
@@ -275,6 +275,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     width: '100%',
+    height: 'auto',
     padding: 10,
     marginBottom: 5,
     backgroundColor: '#f0f0f0',
