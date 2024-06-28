@@ -119,6 +119,7 @@ const styles = StyleSheet.create({
         flex:3,
         borderColor: "white",
         borderWidth: 2,
+        borderRadius:styleSetting.size.em10,
     },  
     amount:{
         fontSize:styleSetting.size.em20,
