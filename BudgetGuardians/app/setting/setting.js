@@ -6,7 +6,7 @@ const styleSetting = {
         lightlightblue:'#e0fdf8',
         mildblue: '#84b6e3',
         darkblue: '#3286cf',
-        lightblue: '#a7d8f7',
+        lightblue: '#33CBFF',
         red:"#ff0000",
         green:"#00ff00",
         white:"#ffffff",
@@ -14,6 +14,7 @@ const styleSetting = {
         forestgreen: "#228B22",
         lightgrey:"#d3d3d3",
         cadmiumRed:"#D22B2B",
+        lightblack: "#111111",
     },
     size: {
         em01: 1,

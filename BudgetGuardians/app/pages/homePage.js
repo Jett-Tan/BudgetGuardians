@@ -106,7 +106,7 @@ export default function Page() {
             }
             <Overlay visible={!auth?.currentUser?.emailVerified && auth?.currentUser?.emailVerified === false}/>
             <View style={styles.container}> 
-                <View style={[styles.header,{backgroundColor:styleSetting.color.mildblue,justifyContent:"center",height:70}]}>
+                <View style={[styles.header,{backgroundColor:styleSetting.color.lightblack,justifyContent:"center",height:70}]}>
                         <Text style={styles.welcomeText}>Welcome {currentUser ? currentUser?.userData?.name?.firstName : 'Guest'}</Text>
                 </View>
                 <View style ={{flexDirection:"row",height:"100%"}}>
@@ -140,7 +140,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         // padding: 24,
-        backgroundColor:styleSetting.color.white,
+        backgroundColor:"#111111",
     },
     forexpense:{
         flex: 1,
@@ -180,6 +180,7 @@ const styles = StyleSheet.create({
     },
     welcomeText: {
         fontSize: 18,
+        color:"white",
     },
     header: {
         backgroundColor: "#84B6E3",
