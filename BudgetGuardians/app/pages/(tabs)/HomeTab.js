@@ -5,6 +5,7 @@ import TransactionEntry from "../../components/transactionEntry";
 import CustomButton from "../../components/customButton";
 import BudgetEntryBoxed from "../../components/budgetEntryBoxed";
 import BudgetLoader from "../../components/budgetLoader";
+import styleSetting from "../../setting/setting";
 
 export default function HomeTab() {
     const [currentUser, setCurrentUser] = useState();
@@ -81,16 +82,16 @@ export default function HomeTab() {
     return (
         <>
             <View style={{width:'100%',height:'90%',justifyContent:"space-around",alignItems:"center",flexDirection:"row"}}>
-                <View style={{borderRadius:15,width:"40%",height:"80%", padding:25,alignItems:"center", justifyContent:"flex-start",shadowOpacity:0.5,shadowColor:"black",shadowRadius:15, borderColor:"white",borderWidth:2}}> 
-                    <Text style={{fontWeight:"bold", textDecorationLine: 'underline', color: "white"}}>Recent Transactions</Text>
+                <View style={{borderRadius:15,width:"40%",height:"80%", paddingVertical:10,alignItems:"center", justifyContent:"flex-start",shadowOpacity:0.5,shadowColor:styleSetting.color.blue,shadowRadius:15, borderColor:"white",borderWidth:3}}> 
+                    <Text style={{fontSize:20,paddingBottom:10,fontWeight:"bold", textDecorationLine: 'underline', color: "white"}}>Recent Transactions</Text>
                     {Array.isArray(lastestTransaction5) && lastestTransaction5.length <= 0 && <Text>No Transaction</Text>}
                     
                     <ScrollView style={{height:"90%",width:"100%"}}>
                          <View style={{width:"100%",height:"100%",justifyContent:"space-around",flexWrap:"wrap",flexDirection:"row"}}>
                             {lastestTransaction5 && lastestTransaction5.map((transaction,index) => {
                                 return(
-                                    <View key={index} style={{width:'90%',marginVertical:10, borderRadius:10,shadowColor:"black",shadowOpacity:0.5,shadowRadius:5}}>
-                                        <TransactionEntry showbutton={false} props={{date:transaction.date, category:transaction.category, amount:transaction.amount}} transactionStyle={{width:"90%"}}containerStyle={{width:"100%"}}/>
+                                    <View key={index} style={{width:'90%',marginVertical:10, borderRadius:10,shadowColor:styleSetting.color.blue,shadowOpacity:0.5,shadowRadius:10}}>
+                                        <TransactionEntry showbutton={false}dateStyle={{color:"white"}} categoryStyle={{color:"white"}} amountStyle={{color:"white"}}props={{date:transaction.date, category:transaction.category, amount:transaction.amount}} transactionStyle={{width:"90%"}}containerStyle={{width:"100%"}}/>
                                     </View>
                                 )
                             })}
@@ -99,12 +100,12 @@ export default function HomeTab() {
                     </ScrollView>
                 </View>
 
-                <View style={{borderRadius:15,width:"40%",height:"80%", padding:25,alignItems:"center", justifyContent:"flex-start",shadowOpacity:0.5,shadowColor:"black",shadowRadius:15,borderColor:"white",borderWidth:2}}> 
-                    <Text style={{fontWeight:"bold", textDecorationLine: 'underline', color: "white"}}>Current Budget</Text>
+                <View style={{borderRadius:15,width:"40%",height:"80%", paddingVertical:10,alignItems:"center", justifyContent:"flex-start",shadowOpacity:0.5,shadowColor:styleSetting.color.blue,shadowRadius:15,borderColor:"white",borderWidth:2}}> 
+                    <Text style={{fontSize:20,paddingBottom:10,fontWeight:"bold", textDecorationLine: 'underline', color: "white"}}>Current Budget</Text>
                     {Array.isArray(budgetInfo?.budgets) && budgetInfo?.budgets.length <= 0  && (
                         <Text>No Budget</Text>
                     )}
-                    <ScrollView style={{height:"90%",width:"100%"}}>
+                    <ScrollView style={{height:"80%",width:"100%"}}>
                         <View style={{width:"100%",height:"100%",justifyContent:"space-around",flexWrap:"wrap",flexDirection:"row"}}>
                             <BudgetLoader background={false}/>
                                 {/* {budgetInfo && budgetInfo?.budgets.map((x,index) => {

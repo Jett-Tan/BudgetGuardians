@@ -91,7 +91,6 @@ const CategoriseTransaction = () => {
 
   return (
     <View style={[styles.container, {backgroundColor: "#111111"}]}>
-      
         <View style={[styles.container, {backgroundColor: "#111111"}]}>
           <MultiSelect
             style={[styles.dropdown,{shadowColor:"black",shadowRadius:15,padding:10, borderRadius:15,shadowOpacity:0.5,marginVertical:10, borderWidth: 2, // Add this line
@@ -146,7 +145,7 @@ const CategoriseTransaction = () => {
               <Text style={[styles.sortButton, sortOrder === 'desc' && styles.activeSort,{shadowOffset:{height:2,width:2},shadowColor:"black",shadowOpacity:0.2}]}>Descending</Text>
             </TouchableOpacity>
           </View>
-          <View style={[styles.transactionsContainer,{shadowColor:"black",shadowRadius:15,padding:10, borderRadius:15,shadowOpacity:0.5,marginVertical:10, color:"#111111"}]}>
+          <View style={[styles.transactionsContainer]}>
           <ScrollView style={[styles.scrollView,{padding:5}]}>
             {filteredTransactions.length === 0 && (
               <Text style={{margin:"auto", color: 'white'}}>No transactions found for the selected category.</Text>

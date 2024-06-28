@@ -22,7 +22,11 @@ export default function SideBar({ value,  setValue}){
     }, [])
     const styleSelected = {
         selected:{
-            backgroundColor:styleSetting.color.lightblack,
+            shadowColor:styleSetting.color.neonGreen,
+            shadowOpacity:0.5,
+            shadowRadius:10,
+            borderColor:styleSetting.color.neonGreen,
+            
         },
     }
     let home = selected === "home" ? styleSelected.selected : {};        
@@ -33,8 +37,8 @@ export default function SideBar({ value,  setValue}){
     let reports = selected === "reports" ? styleSelected.selected : {};        
     let profile = selected === "profile" ? styleSelected.selected : {};        
     let settings = selected === "settings" ? styleSelected.selected : {};        
-    let sideBar = minimized ? {width:60} : {};
-    let sideBarContent = minimized ? {justifyContent:"center"} : {};
+    let sideBar = minimized ? {width:68} : {};
+    let sideBarContent = minimized ? {justifyContent:"center",alignItems:"center"} : {};
 
     const [modalVisible, setModalVisible] = useState(false);
     const [modalContent, setModalContent] = useState("");
@@ -106,7 +110,7 @@ export default function SideBar({ value,  setValue}){
                 </TouchableOpacity>
                 <TouchableOpacity style={[{alignItems:"flex-end",width:'90%',marginRight:15,marginBottom:15,height:50,right:0,bottom:0,position:"absolute"}]} onPress={() => setMinimized(!minimized)}>
                     {!minimized && <FaIcon name="arrow-left-long" size={styleSetting.size.em24} color={styleSetting.color.lightblue}/> }
-                    {minimized && <FaIcon name="arrow-right-long" size={styleSetting.size.em24} color={styleSetting.color.white}/>}
+                    {minimized && <FaIcon name="arrow-right-long" size={styleSetting.size.em24} color={styleSetting.color.lightblue}/>}
                 </TouchableOpacity>
             </View>
     </>
@@ -117,21 +121,23 @@ const styles = StyleSheet.create({
     sideBar: {
         height:"95%",
         width:200,
+        zIndex:10,
+        paddingTop:10,
+        paddingHorizontal:8,
         backgroundColor: styleSetting.color.lightblack,
-        shadowColor: styleSetting.color.black,
-        shadowOpacity:0.25,
-        shadowOffset:{width:3,height:0},     
+        borderRightWidth:3,
+        borderColor:"white",
     },
     sideBarContent: {
-        marginVertical:5,
-        shadowColor: styleSetting.color.black,
-        shadowOpacity:0.25,
+        marginVertical:8,
+        shadowColor: styleSetting.color.blue,
+        shadowOpacity:0.75,
+        shadowRadius:10,
         height:50,
         justifyContent:"flex-start",
         backgroundColor:styleSetting.color.lightblack,
         borderColor:"white",
-        borderWidth: 2,
-        shadowOffset:{width:0,height:3},
+        borderWidth: 3,
         paddingHorizontal:20,
         flexDirection:"row",
         alignItems:"center",
