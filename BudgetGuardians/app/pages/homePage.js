@@ -106,7 +106,7 @@ export default function Page() {
             }
             <Overlay visible={!auth?.currentUser?.emailVerified && auth?.currentUser?.emailVerified === false}/>
             <View style={styles.container}> 
-                <View style={[styles.header,{backgroundColor:styleSetting.color.lightblack,justifyContent:"center",height:70}]}>
+                <View style={[styles.header,{backgroundColor:styleSetting.color.lightblack,justifyContent:"center",height:70,borderColor:"white",borderBottomWidth:3}]}>
                         <Text style={styles.welcomeText}>Welcome {currentUser ? currentUser?.userData?.name?.firstName : 'Guest'}</Text>
                 </View>
                 <View style ={{flexDirection:"row",height:"100%"}}>
@@ -191,7 +191,7 @@ const styles = StyleSheet.create({
         shadowColor: styleSetting.color.neonGreen,
         shadowOpacity:0.5,
         shadowOffset:{width:0,height:3},
-        shadowRadius:5,
+        // shadowRadius:5,
     },
     modalHeader: {
         backgroundColor: "white",
