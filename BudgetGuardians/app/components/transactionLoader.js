@@ -151,46 +151,49 @@ export default function TransactionLoader() {
           </Modal>
           <Modal visible={modalVisible} transparent={true}>
               <Pressable onPress={() => {setModalVisible(false);reset();}} style={{width:"100%",height:"100%",backgroundColor:"black",opacity:0.5,position:"absolute",left:0,top:0}}></Pressable>
-              <View style={{width:"30%",minWidth:350,height:"80%",backgroundColor:"white",margin:"auto",alignItems:"center",shadowColor:"black",shadowOpacity:0.5,shadowRadius:5,borderRadius:10}}>
+              <View style={{width:"30%",minWidth:350,height:"80%",backgroundColor:"#111111",margin:"auto",alignItems:"center",shadowColor:"black",shadowOpacity:0.5,shadowRadius:5,borderRadius:10}}>
                   <View style={{width:"90%",padding:"5%",height:"90%",justifyContent:"space-evenly"}}>
-                      <Text style={{fontSize: 20, fontWeight: 'bold', textAlign:"center",textDecorationLine:"underline",width:"100%"}}>Edit Transaction</Text>
+                      <Text style={{fontSize: 20, fontWeight: 'bold', textAlign:"center",textDecorationLine:"underline",width:"100%", color:"white"}}>Edit Transaction</Text>
                       <View  style={{}}>
-                        <Text style={{fontSize: 13, fontWeight: 'bold', margin: 10}}>Transaction Type</Text>
+                        <Text style={{fontSize: 13, fontWeight: 'bold', margin: 10, color:"white"}}>Transaction Type</Text>
                         <Dropdown
                             data={defaultCategory}
-                            style={{width: "100%",borderRadius: 10,height:50, borderColor: 'black', borderWidth: 1, padding: 5,marginTop:5}}
-                            placeholderStyle={{fontSize: 16,marginLeft:10, whiteSpace: 'nowrap'}}
-                            selectedTextStyle={{fontSize: 16,marginLeft:10, whiteSpace: 'nowrap'}}
-                            inputSearchStyle={{fontSize: 16,justifyContent:"center",height:50, whiteSpace: 'nowrap'}}
+                            style={{width: "100%",borderRadius: 10,height:50, borderColor: 'white', borderWidth: 1, padding: 5,marginTop:5}}
+                            placeholderStyle={{fontSize: 16,marginLeft:10, whiteSpace: 'nowrap', color:"white"}}
+                            selectedTextStyle={{fontSize: 16,marginLeft:10, whiteSpace: 'nowrap', color:"white"}}
+                            inputSearchStyle={{fontSize: 16,justifyContent:"center",height:50, whiteSpace: 'nowrap', backgroundColor: "#111111", color:"white"}}
+                            itemTextStyle={{color:"white"}}
+                            itemContainerStyle={{backgroundColor: "#111111"}}
                             labelField="label"
                             valueField="value"
                             maxHeight={300}
+                            activeColor='#2596be'
                             search
                             searchPlaceholder="Search..."
                             placeholder="Select Category"
                             value={toEditTransactionCatergory}
                             onChange={(item) => setToEditTransactionCatergory(item.value)}
                             renderLeftIcon={() => (
-                                <FaIcon name="money-bill" size={20}/>
+                                <FaIcon name="money-bill" size={20} color={"#7b9a6d"}/>
                             )}
                         />
                         <Text style={{color: 'red', fontSize: 12, marginLeft: 10}}>{categoryError}</Text>
                       </View>
                       <View style={{}}>
-                        <Text style={{fontSize: 13, fontWeight: 'bold', margin: 10}}>Amount</Text>
+                        <Text style={{fontSize: 13, fontWeight: 'bold', margin: 10, color:"white"}}>Amount</Text>
                         <CustomInput
                             placeholder="Enter Amount"
                             values={toEditTransactionAmount}
                             onChange1={(x) => setToEditTransactionAmount(x)}
-                            containerStyle={{width: "100%",margin:0,minWidth:100,maxWidth:'100%', justifyContent: 'center', alignItems: 'center'}}
-                            inputContainerStyle={{width: "100%",minWidth:100,maxWidth:'100%', height: 50, borderColor: 'black', borderWidth: 1, padding: 5, margin: 5}}
-                            inputStyle={{width: "90%",minWidth:90}}
+                            containerStyle={{width: "100%",margin:0,minWidth:100,maxWidth:'100%', justifyContent: 'center', alignItems: 'center', borderColor:"white", borderWidth:2, borderRadius: 10 }}
+                            inputContainerStyle={{width: "100%",minWidth:100,maxWidth:'100%', height: 50, borderColor: 'white', borderWidth: 1, padding: 5, margin: 5, backgroundColor:"#111111"}}
+                            inputStyle={{width: "90%",minWidth:90, color:"white"}}
                             errorExist={false}
                         />  
                         <Text style={{color: 'red', fontSize: 12, marginLeft: 10}}>{amountError}</Text>
                       </View>
                     <View style={{}}>
-                        <Text style={{fontSize: 13, fontWeight: 'bold', margin: 10}}>Transaction Date</Text>
+                        <Text style={{fontSize: 13, fontWeight: 'bold', margin: 10, color:"white"}}>Transaction Date</Text>
                         <DatePickerInput 
                             style={{width:270,fontSize:13,maxHeight:50,height:50, backgroundColor:"white",borderRadius:10,borderTopRightRadius:10,borderTopLeftRadius:10,borderWidth:1,borderColor:"black"}}
                             locale="en-SG"
@@ -206,13 +209,13 @@ export default function TransactionLoader() {
                         <Text style={{color: 'red', fontSize: 12, marginLeft: 10}}>{dateError}</Text>
                     </View>
                     <View style={{}}>
-                      <Text style={{fontSize: 13, fontWeight: 'bold', margin: 10}}>Amount</Text>
+                      <Text style={{fontSize: 13, fontWeight: 'bold', margin: 10, color:"white"}}>Description</Text>
                       <CustomInput
                           placeholder="Enter Description"
                           values={toEditTransactionDescription}
                           onChange1={(x) => setToEditTransactionDescription(x)}
                           containerStyle={{width: "100%",margin:0,minWidth:100,maxWidth:'100%', justifyContent: 'center', alignItems: 'center'}}
-                          inputContainerStyle={{width: "100%",minWidth:100,maxWidth:'100%', height: 50, borderColor: 'black', borderWidth: 1, padding: 5, margin: 5}}
+                          inputContainerStyle={{width: "100%",minWidth:100,maxWidth:'100%', height: 50, borderColor: 'white', borderWidth: 1, padding: 5, margin: 5}}
                           inputStyle={{width: "90%",minWidth:90}}
                           errorExist={false}
                       />  
@@ -221,7 +224,7 @@ export default function TransactionLoader() {
                       <CustomButton
                         onPress={() => {saveTransaction()}}
                         text={"Save"}
-                        containerStyle={{width:"100%",maxWidth:"100%",marginHorizontal:0}}
+                        containerStyle={{width:"100%",maxWidth:"100%",marginHorizontal:0, backgroundColor:"#33CBFF"}}
                         type={"primary"}
                       />
                     </View>
