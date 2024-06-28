@@ -107,7 +107,6 @@ export default function TransactionLoader() {
         if (!validate()) {
             return;
         }
-        alert(toEditTransactionDate)
         let newTransactions = transactions;        
         const numericAmount = Number.parseFloat(toEditTransactionAmount);
         const formatteddate = new Date(toEditTransactionDate).toLocaleDateString('en-SG')
