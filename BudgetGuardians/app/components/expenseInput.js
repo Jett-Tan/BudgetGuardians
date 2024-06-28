@@ -119,44 +119,48 @@ export default function ExpenseInput() {
                 <View style={{width:"80%",maxWidth:"100%",paddingHorizontal:10}}>
                     <View style={{flexDirection:"row", justifyContent:"space-between",flexWrap:"wrap"}}>
                         <View  style={{}}>
-                            <Text style={{fontSize: 13, fontWeight: 'bold', margin: 10}}>Transaction Type</Text>
+                            <Text style={{fontSize: 13, fontWeight: 'bold', margin: 10, color: "white"}}>Transaction Type</Text>
                             <Dropdown
                                 data={defaultCategory}
-                                style={{width: 220,borderRadius: 10,height:50, borderColor: 'black', borderWidth: 1, padding: 5,marginVertical:5}}
-                                placeholderStyle={{fontSize: 16,marginLeft:10, whiteSpace: 'nowrap'}}
-                                selectedTextStyle={{fontSize: 16,marginLeft:10, whiteSpace: 'nowrap'}}
-                                inputSearchStyle={{fontSize: 16,justifyContent:"center",height:50, whiteSpace: 'nowrap'}}
+                                style={{width: 220,borderRadius: 10,height:50, borderColor: 'white', borderWidth: 1, padding: 5,marginVertical:5}}
+                                placeholderStyle={{fontSize: 16,marginLeft:10, whiteSpace: 'nowrap', color:"white"}}
+                                selectedTextStyle={{fontSize: 16,marginLeft:10, whiteSpace: 'nowrap', backgroundColor:'#111111', color:"white"}}
+                                inputSearchStyle={{fontSize: 16,justifyContent:"center",height:50, whiteSpace: 'nowrap', backgroundColor: "#111111", color:"white"}}
+                                itemTextStyle={{color:"white"}}
+                                itemContainerStyle={{backgroundColor: "#111111"}}
                                 labelField="label"
                                 valueField="value"
                                 maxHeight={300}
+                                activeColor='#2596be'
                                 search
                                 searchPlaceholder="Search..."
                                 placeholder="Select Category"
                                 value={category}
                                 onChange={(item) => setCategory(item.value)}
                                 renderLeftIcon={() => (
-                                    <FaIcon name="money-bill" size={20}/>
+                                    <FaIcon name="money-bill" size={20} color={"#7b9a6d"}/>
                                 )}
                             />
                             <Text style={{color: 'red', fontSize: 12, marginLeft: 10}}>{categoryError}</Text>
                         </View>
                         <View style={{}}>
-                            <Text style={{fontSize: 13, fontWeight: 'bold', margin: 10}}>Amount</Text>
+                            <Text style={{fontSize: 13, fontWeight: 'bold', margin: 10, color: "white"}}>Amount</Text>
                             <CustomInput
                                 placeholder="Enter Amount"
+                                
                                 values={amount}
                                 onChange1={(x) => setAmount(x)}
                                 containerStyle={{width: 150,margin:0,marginVertical:5,minWidth:150, justifyContent: 'center', alignItems: 'center'}}
-                                inputContainerStyle={{width: 150,minWidth:150, height: 50, borderColor: 'black', borderWidth: 1, padding: 5, margin: 5}}
-                                inputStyle={{width: 130,minWidth:130}}
+                                inputContainerStyle={{width: 150,minWidth:150, height: 50, borderColor: 'black', borderWidth: 1, padding: 5, margin: 5, borderColor:"white", backgroundColor:"#111111"}}
+                                inputStyle={{width: 130,minWidth:130,backgroundColor:"#111111", color:"white"}}
                                 errorExist={false}
                             />  
                             <Text style={{color: 'red', fontSize: 12, marginLeft: 10}}>{amountError}</Text>
                         </View>
                         <View style={{}}>
-                            <Text style={{fontSize: 13, fontWeight: 'bold', margin: 10}}>Transaction Date</Text>
+                            <Text style={{fontSize: 13, fontWeight: 'bold', margin: 10, color:"white"}}>Transaction Date</Text>
                             <DatePickerInput 
-                                style={{width:270,fontSize:13,maxHeight:50,height:50,minWidth:0, backgroundColor:"white",borderRadius:10,borderTopRightRadius:10,borderTopLeftRadius:10,borderWidth:1,borderColor:"black"}}
+                                style={{width:270,fontSize:13,maxHeight:50,height:50,minWidth:0, backgroundColor:"#111111",borderRadius:10,borderTopRightRadius:10,borderTopLeftRadius:10,borderWidth:1,borderColor:"white"}}
                                 locale="en-SG"
                                 value={date}
                                 onChange={(d) => setDate(d)}
@@ -164,6 +168,7 @@ export default function ExpenseInput() {
                                 label="Transaction Date"
 
                                 display="calendar"
+                                
                                 activeUnderlineColor="black"
                             />
                             <Text style={{color: 'red', fontSize: 12, marginLeft: 10}}>{dateError}</Text>
@@ -171,14 +176,14 @@ export default function ExpenseInput() {
                     </View>
                     <View>
                         <View style={{}}>
-                            <Text style={{fontSize: 13, fontWeight: 'bold', margin: 10}}>Description</Text>
+                            <Text style={{fontSize: 13, fontWeight: 'bold', margin: 10, color:"white"}}>Description</Text>
                             <CustomInput
                                 placeholder="Enter Descriptions (Optional)"
                                 values={description}
                                 onChange1={(x) => setDescription(x)}
                                 containerStyle={{width: "100%",margin:0,marginVertical:5,minWidth:"100%", justifyContent: 'center', alignItems: 'center'}}
-                                inputContainerStyle={{width: "100%",minWidth:"100%", height: 50, borderColor: 'black', borderWidth: 1, padding: 5, margin: 5}}
-                                inputStyle={{width: "100%",minWidth:"100%"}}
+                                inputContainerStyle={{width: "100%",minWidth:"100%", height: 50, borderColor: 'black', borderWidth: 1, padding: 5, margin: 5, borderColor:"white", backgroundColor:"#111111"}}
+                                inputStyle={{width: "100%",minWidth:"100%", borderColor:"white", backgroundColor:"#111111", color:"white"}}
                                 
                             />  
                         </View>
