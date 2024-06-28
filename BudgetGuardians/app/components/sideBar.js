@@ -135,6 +135,7 @@ const styles = StyleSheet.create({
         paddingHorizontal:20,
         flexDirection:"row",
         alignItems:"center",
+        borderRadius: styleSetting.size.em10,
     },
     
     sideBarText: {
