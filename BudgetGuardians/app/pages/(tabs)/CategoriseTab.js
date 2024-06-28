@@ -99,6 +99,10 @@ const CategoriseTransaction = () => {
             selectedTextStyle={{ fontSize: 16, marginLeft: 10 }}
             inputSearchStyle={{ fontSize: 16, justifyContent: "center", height: 50 }}
             iconStyle={styles.iconStyle}
+            itemContainerStyle={{backgroundColor: 'green'}}
+            itemTextStyle={{color: 'white'}}
+            containerStyle={{backgroundColor: 'green'}}
+            selectedStyle={{backgroundColor: 'green'}}
             data={data}
             labelField="label"
             valueField="value"

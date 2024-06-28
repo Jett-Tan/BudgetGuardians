@@ -101,19 +101,20 @@ export default function BudgetEntryBoxed({
                 </View>
             </Modal>
             
-            <Pressable onPress={() => setModalVisible(true)}  style={{width:200,height:"auto",shadowColor:"black",margin:15,borderRadius:15,shadowRadius:15,shadowOpacity:0.5}}>
-                <Text style={{fontWeight:"bold",marginVertical:15,fontSize:20,textAlign:"center"}}>{props.category}</Text>
+            <Pressable onPress={() => setModalVisible(true)}  style={{width:200,height:"auto",shadowColor:styleSetting.color.blue,borderWidth:3,borderColor:"white",margin:15,borderRadius:15,shadowRadius:15,shadowOpacity:0.5}}>
+                <Text style={{fontWeight:"bold",marginVertical:15,fontSize:20,textAlign:"center",color:"white"}}>{props.category}</Text>
                 <View style={{justifyContent:"center",marginBottom:15,alignItems:"center"}}>
                     <View style={{position:"absolute",zIndex:10,margin:"auto",fontWeight:"bold"}}>
-                        <Text style={{fontWeight:"bold"}}>${displayNumber.toFixed(2)}</Text>
+                        <Text style={{fontWeight:"bold",color:"white"}}>${displayNumber.toFixed(2)}</Text>
                     </View>
                     <PieChart
-                        style={{margin:"auto"}}
+                        style={{margin:"auto",shadowColor:styleSetting.color.blue,shadowRadius:11,borderRadius:100,shadowOpacity:0.5}}
                         widthAndHeight={widthAndHeight}
                         series={series}
+                        
                         sliceColor={sliceColor}
                         coverRadius={0.6}
-                        coverFill={'#FFF'}
+                        coverFill={'#000'}
                     />
                 </View>
             </Pressable>
