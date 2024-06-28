@@ -106,8 +106,8 @@ export default function Page() {
             }
             <Overlay visible={!auth?.currentUser?.emailVerified && auth?.currentUser?.emailVerified === false}/>
             <View style={styles.container}> 
-                <View style={[styles.header,{backgroundColor:"#111111",shadowColor:styleSetting.color.blue,shadowRadius:10,shadowOffset:{width:0,height:5},shadowOpacity:0.5,zIndex:1,borderColor:"white",borderBottomWidth:3,justifyContent:"center",height:70}]}>
-                        <Text style={[styles.welcomeText,{fontWeight:"bold",color:"white"}]}>Welcome {currentUser ? currentUser?.userData?.name?.firstName : 'Guest'}</Text>
+                <View style={[styles.header,{backgroundColor:styleSetting.color.lightblack,justifyContent:"center",height:70}]}>
+                        <Text style={styles.welcomeText}>Welcome {currentUser ? currentUser?.userData?.name?.firstName : 'Guest'}</Text>
                 </View>
                 <View style ={{flexDirection:"row",height:"100%"}}>
                     <View style ={{height:"100%"}}>
@@ -117,13 +117,13 @@ export default function Page() {
                         {/* <TransactionEntry props={{date:"01.12.2022",amount:123.3,description:"money"}}/> */}
                         {tab === "home" && <HomeTab/>}
                         {/* {tab === "calendar" && <CalendarTab/>} */}
-                        {tab === "calendar" && <Text>Coming soon</Text>}
+                        {tab === "calendar" && <Text style={{color:"white"}}>Coming soon</Text>}
                         {tab === "transactions" && <TransactionTab/>}
                         {tab === "categorise" && <CategoriseTab/>}
                         {tab === "budget" && <BudgetTab/>}
-                        {tab === "reports" && <Text>Coming soon</Text>}
+                        {tab === "reports" && <Text style={{color:"white"}}>Coming soon</Text>}
                         {tab === "profile" && <ProfileTab/>}
-                        {tab === "settings" && <Text>Coming soon</Text>}
+                        {tab === "settings" && <Text style={{color:"white"}}>Coming soon</Text>}
                         {/* <Button title="Add Expense" onPress={addExpense}/> */}
                         {/* <DropdownComponent/> */}
                     </View>
@@ -140,7 +140,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         // padding: 24,
-        backgroundColor:styleSetting.color.white,
+        backgroundColor:"#111111",
     },
     forexpense:{
         flex: 1,
@@ -180,6 +180,7 @@ const styles = StyleSheet.create({
     },
     welcomeText: {
         fontSize: 18,
+        color:"white",
     },
     header: {
         backgroundColor: "#84B6E3",

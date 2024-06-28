@@ -3,7 +3,7 @@ import { ScrollView, View, TouchableOpacity, Text, StyleSheet } from 'react-nati
 import { MultiSelect } from 'react-native-element-dropdown';
 import AntDesign from '@expo/vector-icons/AntDesign';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
-import { getTransactionsAndCategorize, liveUpdate } from '../../setting/fireStoreFunctions'; // Adjust the path accordingly
+import { getTransactionsAndCategorize, liveUpdate } from '../../setting/fireStoreFunctions'; 
 
 const data = [
   { label: 'Transport', value: 'Transport', icon: 'car' },
@@ -84,20 +84,25 @@ const CategoriseTransaction = () => {
           size={20}
         />
         <Text style={styles.textSelectedStyle}>{item.label}</Text>
-        <AntDesign color="black" name="delete" size={17} />
+        <AntDesign color="white" name="delete" size={17} />
       </View>
     </TouchableOpacity>
   );
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, {backgroundColor: "#111111"}]}>
       
-        <View style={styles.container}>
+        <View style={[styles.container, {backgroundColor: "#111111"}]}>
           <MultiSelect
-            style={[styles.dropdown,{shadowColor:"black",shadowRadius:15,padding:10, borderRadius:15,shadowOpacity:0.5,marginVertical:10}]}
-            placeholderStyle={{ fontSize: 16, marginLeft: 10 }}
-            selectedTextStyle={{ fontSize: 16, marginLeft: 10 }}
-            inputSearchStyle={{ fontSize: 16, justifyContent: "center", height: 50 }}
+            style={[styles.dropdown,{shadowColor:"black",shadowRadius:15,padding:10, borderRadius:15,shadowOpacity:0.5,marginVertical:10, borderWidth: 2, // Add this line
+            borderColor: 'white', backgroundColor:"#111111"}]}
+            containerStyle={{backgroundColor: "#111111"}}
+            itemContainerStyle={{backgroundColor: "#111111"}}
+            placeholderStyle={{ fontSize: 16, marginLeft: 10, backgroundColor: "#111111", color:"white" }}
+            selectedTextStyle={{ fontSize: 16, marginLeft: 10, color: "white", backgroundColor: "#111111", color:"white" }}
+            selectedStyle={{backgroundColor:"#111111"}}
+            inputSearchStyle={{ fontSize: 16, justifyContent: "center", height: 50, color: "white", backgroundColor: "#111111" }}
+            itemTextStyle={{color:"white"}}
             iconStyle={styles.iconStyle}
             itemContainerStyle={{backgroundColor: 'green'}}
             itemTextStyle={{color: 'white'}}
@@ -108,6 +113,7 @@ const CategoriseTransaction = () => {
             valueField="value"
             placeholder="Select Category"
             value={selected}
+            activeColor='#2596be'
             search
             searchPlaceholder="Search..."
             onChange={item => {
@@ -126,7 +132,7 @@ const CategoriseTransaction = () => {
           />
 
           <View style={styles.sortContainer}>
-            <Text>Sort by: </Text>
+            <Text style={{color: 'white'}}>Sort by: </Text>
             <TouchableOpacity onPress={() => setSortCriteria('none')} >
               <Text style={[styles.sortButton, sortCriteria === 'none' && styles.activeSort,{shadowOffset:{height:2,width:2},shadowColor:"black",shadowOpacity:0.2}]}>None</Text>
             </TouchableOpacity>
@@ -136,7 +142,7 @@ const CategoriseTransaction = () => {
             <TouchableOpacity onPress={() => setSortCriteria('date')} >
               <Text style={[styles.sortButton, sortCriteria === 'date' && styles.activeSort,{shadowOffset:{height:2,width:2},shadowColor:"black",shadowOpacity:0.2}]}>Date</Text>
             </TouchableOpacity>
-            <Text>Order: </Text>
+            <Text style={{color: 'white'}}>Order: </Text>
             <TouchableOpacity onPress={() => setSortOrder('asc')} >
               <Text style={[styles.sortButton, sortOrder === 'asc' && styles.activeSort,{shadowOffset:{height:2,width:2},shadowColor:"black",shadowOpacity:0.2}]}>Ascending</Text>
             </TouchableOpacity>
@@ -144,32 +150,32 @@ const CategoriseTransaction = () => {
               <Text style={[styles.sortButton, sortOrder === 'desc' && styles.activeSort,{shadowOffset:{height:2,width:2},shadowColor:"black",shadowOpacity:0.2}]}>Descending</Text>
             </TouchableOpacity>
           </View>
-          <View style={[styles.transactionsContainer,{shadowColor:"black",shadowRadius:15,padding:10, borderRadius:15,shadowOpacity:0.5,marginVertical:10}]}>
+          <View style={[styles.transactionsContainer,{shadowColor:"black",shadowRadius:15,padding:10, borderRadius:15,shadowOpacity:0.5,marginVertical:10, color:"#111111"}]}>
           <ScrollView style={[styles.scrollView,{padding:5}]}>
             {filteredTransactions.length === 0 && (
-              <Text style={{margin:"auto"}}>No transactions found for the selected category.</Text>
+              <Text style={{margin:"auto", color: 'white'}}>No transactions found for the selected category.</Text>
             )}
             {filteredTransactions.length !== 0 && filteredTransactions.map((transaction, index) => (
-              <View key={index} style={styles.transactionItem}>
-                <View style={{width:"20%"}}>
-                  <Text style={styles.underline}>Category: </Text>
-                  <Text>{transaction.category}</Text>
+              <View key={index} style={[styles.transactionItem, {bordercolor:'white'}]}>
+                <View style={{width: "20%"}}>
+                  <Text style={[styles.underline,{color: "white"}]}>Category: </Text>
+                  <Text style={{color:'white'}}>{transaction.category}</Text>
                 </View>
 
-                <View style={{width:"20%"}}>
-                  <Text style={styles.underline}>Date: </Text>
-                  <Text>{transaction.date}</Text>
+                <View style={{width: "20%"}}>
+                  <Text style={[styles.underline,{color: "white"}]}>Date: </Text>
+                  <Text style={{color:'white'}}>{transaction.date}</Text>
                 </View> 
 
-                <View style={{width:"20%"}}>
-                  <Text style={styles.underline}>Description: </Text>
-                  <Text>{transaction.description}</Text>
+                <View style={{width: "20%"}}>
+                  <Text style={[styles.underline,{color: "white"}]}>Description: </Text>
+                  <Text style={{color:'white'}}>{transaction.description}</Text>
                 </View> 
 
-                <View style={{width:"20%"}}>
-                  <Text style={[styles.underline,{textAlign:"right"}]}>Amount: </Text>
-                  {transaction.amount < 0 && <Text style={{textAlign:"right"}}>-${Math.abs(transaction.amount).toFixed(2)}</Text>}
-                  {transaction.amount > 0 && <Text style={{textAlign:"right"}}>${transaction.amount.toFixed(2)}</Text>}
+                <View style={{width: "20%", color: "white"}}>
+                  <Text style={[styles.underline,{textAlign:"right", color: "white"}]}>Amount: </Text>
+                  {transaction.amount < 0 && <Text style={{textAlign:"right", color:"white"}}>-${Math.abs(transaction.amount).toFixed(2)}</Text>}
+                  {transaction.amount > 0 && <Text style={{textAlign:"right", color:"white"}}>${transaction.amount.toFixed(2)}</Text>}
                 </View> 
               </View>
             ))}
@@ -187,6 +193,7 @@ const styles = StyleSheet.create({
   scrollView: {
     flex: 1,
     width: '100%',
+    backgroundColor: "#111111",
   },
   container: {
     width: "90%",
@@ -195,7 +202,7 @@ const styles = StyleSheet.create({
   },
   dropdown: {
     height: 50,
-    backgroundColor: 'white',
+    backgroundColor: '#111111',
     borderRadius: 12,
     padding: 12,
     shadowColor: '#000',
@@ -207,6 +214,7 @@ const styles = StyleSheet.create({
     shadowRadius: 1.41,
     elevation: 2,
     width: "100%",
+    
   },
   placeholderStyle: {
     fontSize: 16,
@@ -214,6 +222,7 @@ const styles = StyleSheet.create({
   selectedTextStyle: {
     fontSize: 14,
     marginLeft: 10, // Add margin to separate text from icon
+    color: "white"
   },
   iconStyle: {
     width: 20,
@@ -222,6 +231,7 @@ const styles = StyleSheet.create({
   inputSearchStyle: {
     height: 40,
     fontSize: 16,
+    color: "white"
   },
   icon: {
     marginRight: 10, // Adjusted margin to separate icon from text
@@ -237,12 +247,14 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 14,
-    backgroundColor: 'white',
+    backgroundColor: '#111111',
     shadowColor: '#000',
     marginTop: 8,
     marginRight: 12,
     paddingHorizontal: 12,
     paddingVertical: 8,
+    borderColor: "white",
+    borderWidth: 2,
     shadowOffset: {
       width: 0,
       height: 1,
@@ -255,6 +267,7 @@ const styles = StyleSheet.create({
     marginRight: 5,
     fontSize: 16,
     marginLeft: 10, // Add margin to separate text from icon
+    color: "white"
   },
   sortContainer: {
     flexDirection: 'row',
@@ -265,7 +278,10 @@ const styles = StyleSheet.create({
     marginHorizontal: 10,
     padding: 5,
     borderRadius: 5,
-    backgroundColor: '#f0f0f0',
+    backgroundColor:'#111111',
+    color: "white",
+    borderColor: "white",
+    borderWidth: 2,
   },
   activeSort: {
     backgroundColor: '#7fd1e6',
@@ -274,6 +290,7 @@ const styles = StyleSheet.create({
     width: '100%',
     alignItems: 'center',
     height:"90%",
+    
   },
   transactionItem: {
     flexDirection: 'row',
@@ -282,8 +299,10 @@ const styles = StyleSheet.create({
     height: 'auto',
     padding: 10,
     marginBottom: 5,
-    backgroundColor: '#f0f0f0',
+    backgroundColor: '#111111',
     borderRadius: 10,
+    borderWidth: 2, // Add this line
+    borderColor: 'white', // Add this line
   },
   underline: {
     textDecorationLine: 'underline',
