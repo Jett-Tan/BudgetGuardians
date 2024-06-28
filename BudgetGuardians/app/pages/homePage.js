@@ -117,13 +117,13 @@ export default function Page() {
                         {/* <TransactionEntry props={{date:"01.12.2022",amount:123.3,description:"money"}}/> */}
                         {tab === "home" && <HomeTab/>}
                         {/* {tab === "calendar" && <CalendarTab/>} */}
-                        {tab === "calendar" && <Text>Coming soon</Text>}
+                        {tab === "calendar" && <Text style={{color:"white"}}>Coming soon</Text>}
                         {tab === "transactions" && <TransactionTab/>}
                         {tab === "categorise" && <CategoriseTab/>}
                         {tab === "budget" && <BudgetTab/>}
-                        {tab === "reports" && <Text>Coming soon</Text>}
+                        {tab === "reports" && <Text style={{color:"white"}}>Coming soon</Text>}
                         {tab === "profile" && <ProfileTab/>}
-                        {tab === "settings" && <Text>Coming soon</Text>}
+                        {tab === "settings" && <Text style={{color:"white"}}>Coming soon</Text>}
                         {/* <Button title="Add Expense" onPress={addExpense}/> */}
                         {/* <DropdownComponent/> */}
                     </View>
