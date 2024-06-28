@@ -16,13 +16,13 @@ export default function TransactionLoader() {
     const [transactions, setTransactions] = useState();
      
     const [toEditTransactionID, setToEditTransactionID] = useState();
-    const [toEditTransactionDate, setToEditTransactionDate] = useState();
+    const [toEditTransactionDate, setToEditTransactionDate] = useState('');
     const [toEditTransactionAmount, setToEditTransactionAmount] = useState('');
     const [toEditTransactionCatergory, setToEditTransactionCatergory] = useState('');
     const [toEditTransactionDescription, setToEditTransactionDescription] = useState('');
      
     const [toViewTransactionID, setToViewTransactionID] = useState();
-    const [toViewTransactionDate, setToViewTransactionDate] = useState();
+    const [toViewTransactionDate, setToViewTransactionDate] = useState('');
     const [toViewTransactionAmount, setToViewTransactionAmount] = useState('');
     const [toViewTransactionCatergory, setToViewTransactionCatergory] = useState('');
     const [toViewTransactionDescription, setToViewTransactionDescription] = useState('');
@@ -107,12 +107,15 @@ export default function TransactionLoader() {
         if (!validate()) {
             return;
         }
+        alert(toEditTransactionDate)
         let newTransactions = transactions;        
         const numericAmount = Number.parseFloat(toEditTransactionAmount);
         const formatteddate = new Date(toEditTransactionDate).toLocaleDateString('en-SG')
         newTransactions[toEditTransactionID] = ({amount: numericAmount, category: toEditTransactionCatergory, date: formatteddate,description: toEditTransactionDescription});
-        updateTransactionToFirestore(newTransactions);
-        reset();
+        updateTransactionToFirestore(newTransactions).then(() => {
+            setModalVisible(false);
+            reset();
+        });
     }
     return (
         <>  
@@ -193,6 +196,7 @@ export default function TransactionLoader() {
                               style={{width:270,fontSize:13,maxHeight:50,height:50, backgroundColor:"white",borderRadius:10,borderTopRightRadius:10,borderTopLeftRadius:10,borderWidth:1,borderColor:"black"}}
                               locale="en-SG"
                               value={toEditTransactionDate}
+                              onChangeText={(d) => {typeof d === Date ? setToEditTransactionDate(d) : setToEditTransactionDate("")}}
                               onChange={(d) => setToEditTransactionDate(d)}
                               inputMode="start"
                               label="Transaction Date"
@@ -216,7 +220,7 @@ export default function TransactionLoader() {
                       </View>
                       <View>
                         <CustomButton
-                          onPress={() => {saveTransaction(); setModalVisible(false)}}
+                          onPress={() => {saveTransaction()}}
                           text={"Save"}
                           containerStyle={{width:"100%",maxWidth:"100%",marginHorizontal:0}}
                           type={"primary"}
