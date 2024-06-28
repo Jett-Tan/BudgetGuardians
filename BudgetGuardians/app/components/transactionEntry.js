@@ -10,7 +10,7 @@ export default function TransactionEntry({
     showbutton = true,
     containerStyle={},
     transactionStyle={},
-    dateStyle={},
+    dateStyle={color:"white"},
     categoryStyle={},
     amountStyle={},
 }) {
@@ -53,25 +53,31 @@ const styles = StyleSheet.create({
         padding: 10,
         width: '60%',
         minWidth: 200,
+        color:"white",
+        
 
     },
     miniBox:{
         flexDirection:"row",
         justifyContent:"space-between",
+        
     },
     box: {
         width:"100%",
         padding:styleSetting.size.em10,
+        
     },
     title:{
         borderRadius:styleSetting.size.em07,
         paddingLeft:styleSetting.size.em05,
         paddingRight:styleSetting.size.em05,
-        backgroundColor:'#89CFF0',    
+        backgroundColor:styleSetting.color.lightblue,
+          
     },
     right:{
         textAlign:"right",
         fontSize:styleSetting.size.em16,
+        color:"white",
     },
     button:{
         backgroundColor: '#89CFF0',
@@ -86,6 +92,8 @@ const styles = StyleSheet.create({
         shadowOffset:{width:2,height:2},
         margin:15,
         height:"60%",
+        
+        
     },
     deletebutton:{
         backgroundColor: "#ff7588",
@@ -100,6 +108,7 @@ const styles = StyleSheet.create({
         height:"60%",
         alignItems: 'center',
         justifyContent: 'center',
+        
     },
     row: {
         flexDirection: 'row',
@@ -107,9 +116,12 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         width: '100%',
         flexWrap: 'wrap',
-        flex:3
+        flex:3,
+        borderColor: "white",
+        borderWidth: 2,
     },  
     amount:{
         fontSize:styleSetting.size.em20,
+        
     },
 })
