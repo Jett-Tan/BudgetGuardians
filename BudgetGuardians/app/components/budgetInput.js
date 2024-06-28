@@ -29,7 +29,7 @@ export default function BudgetInput() {
     const [category, setCategory] = useState("");
     const [amount, setAmount] = useState("");
     
-    const [totalBudgetAmount, setTotalBudgetAmount] = useState();
+    const [totalBudgetAmount, setTotalBudgetAmount] = useState("");
 
     const [categoryBudget, setCategoryBudget] = useState([]);
 
@@ -39,26 +39,23 @@ export default function BudgetInput() {
         
         liveUpdate((data) => {
             const budgets = data?.financialData?.budgetInfo?.budgets || [];
-            setTotalBudgetAmount(data?.financialData?.budgetInfo?.totalBudgetAmount || 0);
+            setTotalBudgetAmount(data?.financialData?.budgetInfo?.totalBudgetAmount?.toString() || "");
             setCategoryBudget(budgets);
         });
 
-        (async()=>{
-            await getBudgetAmountFromFirestore()
-            .then((data) => {
-                setTotalBudgetAmount(data)
-            }).catch((err) => {
-                console.log(err)
-            })
+        
+    (async () => {
+        try {
+            const budgetAmount = await getBudgetAmountFromFirestore();
+            setTotalBudgetAmount(budgetAmount?.toString() || ""); // Convert to string
 
-            await getBudgetsFromFirestore()
-            .then((data) => {
-                setCategoryBudget(data)
-            }).catch((err) => {
-                console.log(err)
-            })
-        })();
-    }, [categoryBudget, totalBudgetAmount])
+            const budgets = await getBudgetsFromFirestore();
+            setCategoryBudget(budgets);
+        } catch (err) {
+            console.log(err);
+        }
+    })();
+}, []);
 
     const validatBudget = () => {
         let valid = true
@@ -94,6 +91,7 @@ export default function BudgetInput() {
         await updateBudgetAmountToFirestore(numericAmount)
         .then((data) => {
             // console.log(data);
+            alert("Budget Sucessfully Set!")
         }).catch((err) => {
             console.log(err)
         })
@@ -159,11 +157,11 @@ export default function BudgetInput() {
                         values={totalBudgetAmount}
                         onChange1={(e) => setTotalBudgetAmount(e)}
                         errorHandle={(e) => {
-                            if (!e || Number.parseFloat(e) === undefined || Number.parseFloat(e) === NaN){
-                                return "Amount is required."
-                            }
-                            return "";
-                        }}
+                if (!e || isNaN(Number.parseFloat(e))) {
+                    return "Amount is required.";
+                }
+                ;
+            }}
                         containerStyle={{width:"100%",marginHorizontal:"auto",minWidth:0,height:50}}
                         inputContainerStyle={{width:"100%",marginHorizontal:"auto",minWidth:0,height:50}}
                         inputStyle={{width:"95%",height:50}}
