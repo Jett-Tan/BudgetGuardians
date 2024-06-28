@@ -81,7 +81,7 @@ export default function HomeTab() {
     return (
         <>
             <View style={{width:'100%',height:'90%',justifyContent:"space-around",alignItems:"center",flexDirection:"row"}}>
-                <View style={{borderRadius:15,width:"40%",height:"80%", padding:25,alignItems:"center", justifyContent:"flex-start",shadowOpacity:0.5,shadowColor:"black",shadowRadius:15}}> 
+                <View style={{borderRadius:15,width:"40%",height:"80%", padding:25,alignItems:"center", justifyContent:"flex-start",shadowOpacity:0.5,shadowColor:"black",shadowRadius:15, borderColor:"white",borderWidth:2}}> 
                     <Text style={{fontWeight:"bold", textDecorationLine: 'underline', color: "white"}}>Recent Transactions</Text>
                     {Array.isArray(lastestTransaction5) && lastestTransaction5.length <= 0 && <Text>No Transaction</Text>}
                     
@@ -99,7 +99,7 @@ export default function HomeTab() {
                     </ScrollView>
                 </View>
 
-                <View style={{borderRadius:15,width:"40%",height:"80%", padding:25,alignItems:"center", justifyContent:"flex-start",shadowOpacity:0.5,shadowColor:"black",shadowRadius:15}}> 
+                <View style={{borderRadius:15,width:"40%",height:"80%", padding:25,alignItems:"center", justifyContent:"flex-start",shadowOpacity:0.5,shadowColor:"black",shadowRadius:15,borderColor:"white",borderWidth:2}}> 
                     <Text style={{fontWeight:"bold", textDecorationLine: 'underline', color: "white"}}>Current Budget</Text>
                     {Array.isArray(budgetInfo?.budgets) && budgetInfo?.budgets.length <= 0  && (
                         <Text>No Budget</Text>
