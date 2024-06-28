@@ -148,7 +148,7 @@ export default function BudgetInput() {
 
     return (
         <>
-            <View style={{flexDirection:"column",alignItems:"center",width:"90%",height:"50%",flexWrap:"wrap", padding:10,borderRadius:15,shadowRadius:15,shadowColor:"black",shadowOpacity:0.5}}>
+            {/* <View style={{flexDirection:"column",alignItems:"center",width:"90%",height:"50%",flexWrap:"wrap", padding:10,borderRadius:15,shadowRadius:15,shadowColor:"black",shadowOpacity:0.5}}>
                 <Text>Total Budget</Text>
                 <View style={{width:"90%",marginTop:20}}>
                     <Text style={{marginLeft:5}}>Set Total Budget Amount</Text>
@@ -174,10 +174,10 @@ export default function BudgetInput() {
                     containerStyle={{width:"65%",height:50,marginHorizontal:"auto"}}
                     textStyle={{fontWeight:"bold",fontSize:"95%"}}
                 />
-            </View>
-            <View style={{flexDirection:"column",alignItems:"center",width:"90%",height:"50%",flexWrap:"wrap", padding:10,marginVertical:20,borderRadius:15,shadowRadius:15,shadowColor:"black",shadowOpacity:0.5}}>
-                <Text style={{fontWeight:"bold"}}>Add / Edit Budget for Category</Text>
-                <View style={{width:"90%",marginTop:20}}>
+            </View> */}
+            <View style={{flexDirection:"column",width:"90%",height:"100%",flexWrap:"wrap", padding:10,borderRadius:15,shadowRadius:15,shadowColor:"black",shadowOpacity:0.5}}>
+                <Text style={{fontWeight:"bold",marginHorizontal:"auto"}}>Add / Edit Budget for Category</Text>
+                <View style={{width:"90%",marginHorizontal:"auto",marginTop:20}}>
                     <Text  style={{marginLeft:5}}>Category</Text>
                     <Dropdown
                         data={defaultCategory}
@@ -198,7 +198,7 @@ export default function BudgetInput() {
                         )}
                     />
                 </View>
-                <View style={{width:"90%",marginTop:20}}>
+                <View style={{width:"90%",marginHorizontal:"auto",marginTop:20}}>
                     <Text  style={{marginLeft:5}}>Amount</Text>
                     <CustomInput
                         placeholder="Amount"
