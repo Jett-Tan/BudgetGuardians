@@ -15,6 +15,7 @@ const styleSetting = {
         lightgrey:"#d3d3d3",
         cadmiumRed:"#D22B2B",
         lightblack: "#111111",
+        neonGreen:"#3af30f",
     },
     size: {
         em01: 1,
