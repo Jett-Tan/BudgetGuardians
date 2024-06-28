@@ -175,64 +175,71 @@ export default function BudgetInput() {
                     textStyle={{fontWeight:"bold",fontSize:"95%"}}
                 />
             </View> */}
-            <View style={{flexDirection:"column",width:"90%",height:"100%",flexWrap:"wrap", padding:10,borderRadius:15,shadowRadius:15,shadowColor:"black",shadowOpacity:0.5}}>
-                <Text style={{fontWeight:"bold",marginHorizontal:"auto"}}>Add / Edit Budget for Category</Text>
-                <View style={{width:"90%",marginHorizontal:"auto",marginTop:20}}>
-                    <Text  style={{marginLeft:5}}>Category</Text>
-                    <Dropdown
-                        data={defaultCategory}
-                        style={{width: "100%",borderRadius: 10,height:50,borderColor: 'black', borderWidth: 1, padding: 5,marginVertical:5}}
-                        placeholderStyle={{fontSize: 16,marginLeft:10, whiteSpace: 'nowrap'}}
-                        selectedTextStyle={{fontSize: 16,marginLeft:10, whiteSpace: 'nowrap'}}
-                        inputSearchStyle={{fontSize: 16,justifyContent:"center",height:50, whiteSpace: 'nowrap'}}
-                        labelField="label"
-                        valueField="value"
-                        maxHeight={300}
-                        search
-                        searchPlaceholder="Search..."
-                        placeholder="Select Category"
-                        value={category}
-                        onChange={(item) => {setCategory(item.value); updateAmount(item.value)}}
-                        renderLeftIcon={() => (
-                            <FaIcon name="money-bill" size={20}/>
-                        )}
-                    />
+            <View style={{flexDirection:"row",minWidth:250,width:"100%",height:"100%",flexWrap:"wrap", padding:10,borderRadius:15,shadowRadius:15,shadowColor:"black",shadowOpacity:0.5}}>
+                <View style={{width:"100%",alignItems:"center"}}>
+                    <Text style={{fontWeight:"bold",textAlign:"center"}}>Add / Edit Budget for Category</Text>
                 </View>
-                <View style={{width:"90%",marginHorizontal:"auto",marginTop:20}}>
-                    <Text  style={{marginLeft:5}}>Amount</Text>
-                    <CustomInput
-                        placeholder="Amount"
-                        values={amount}
-                        onChange1={(e) => setAmount(e)}
-                        errorHandle={(e) => {
-                            if (!e) {
-                                return "Amount is required."
-                            }
-                            return "";
-                        }}
-                        containerStyle={{width:"100%",marginHorizontal:"auto",minWidth:0,height:50}}
-                        inputContainerStyle={{width:"100%",marginHorizontal:"auto",minWidth:0,height:50}}
-                        inputStyle={{width:"95%",height:50}}
-                    />
-                    <CustomButton
-                        type={"signup"}
-                        text={updateText()}
-                        onPress={ (
-                            () => {
-                                if (category) {
-                                    if (categoryBudget.find((x) => x.budgetCategory === category)){
-                                        return  updateCategoryBudget
-                                    }else {
-                                        return  addCategoryBudget
-                                    }
-                                }else{
-                                    return addCategoryBudget
+                <View style={{width:"98%",paddingHorizontal:"1%",flexWrap:"wrap",flexDirection:"row"}}>
+                    <View style={{width:"40%",minWidth:250,marginHorizontal:"auto",marginTop:10}}>
+                        <Text  style={{marginLeft:5}}>Category</Text>
+                        <Dropdown
+                            data={defaultCategory}
+                            style={{width: "auto",borderRadius: 10,height:50,borderColor: 'black', borderWidth: 1, padding: 5,marginVertical:5}}
+                            placeholderStyle={{fontSize: 16,marginLeft:10, whiteSpace: 'nowrap'}}
+                            selectedTextStyle={{fontSize: 16,marginLeft:10, whiteSpace: 'nowrap'}}
+                            inputSearchStyle={{fontSize: 16,justifyContent:"center",height:50, whiteSpace: 'nowrap'}}
+                            labelField="label"
+                            valueField="value"
+                            maxHeight={300}
+                            search
+                            searchPlaceholder="Search..."
+                            placeholder="Select Category"
+                            value={category}
+                            onChange={(item) => {setCategory(item.value); updateAmount(item.value)}}
+                            renderLeftIcon={() => (
+                                <FaIcon name="money-bill" size={20}/>
+                            )}
+                        />
+                    </View>
+                    <View style={{width:"20%",minWidth:250,marginHorizontal:"auto",marginTop:10}}>
+                        <Text  style={{marginLeft:5}}>Amount</Text>
+                        <CustomInput
+                            placeholder="Amount"
+                            values={amount}
+                            onChange1={(e) => setAmount(e)}
+                            errorHandle={(e) => {
+                                if (!e) {
+                                    return "Amount is required."
                                 }
-                            }
-                        )()}
-                        containerStyle={{width:"100%",height:50,marginHorizontal:"auto"}}
-                        textStyle={{fontWeight:"bold",fontSize:"95%"}}
-                    />
+                                return "";
+                            }}
+                            containerStyle={{width:"100%",marginLeft:0,minWidth:0,height:50,marginVertical:5}}
+                            inputContainerStyle={{width:"100%",marginLeft:0,minWidth:0,height:50,marginVertical:0}}
+                            inputStyle={{width:"95%",height:50}}
+                        />
+                    </View>
+                    <View style={{width:"20%",minWidth:250,marginHorizontal:"auto",marginTop:10}}>
+                        <Text  style={{marginLeft:5}}> </Text>
+                        <CustomButton
+                            type={"signup"}
+                            text={updateText()}
+                            onPress={ (
+                                () => {
+                                    if (category) {
+                                        if (categoryBudget.find((x) => x.budgetCategory === category)){
+                                            return  updateCategoryBudget
+                                        }else {
+                                            return  addCategoryBudget
+                                        }
+                                    }else{
+                                        return addCategoryBudget
+                                    }
+                                }
+                            )()}
+                            containerStyle={{width:"100%",maxWidth:"100%",height:50,marginVertical:5,marginHorizontal:0}}
+                            textStyle={{fontWeight:"bold",fontSize:"95%"}}
+                            />
+                    </View>
                 </View>
             </View>
         </>
