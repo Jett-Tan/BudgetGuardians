@@ -20,6 +20,7 @@ export default function Page() {
     const [success, setSuccess] = React.useState('');
     const [confirmPassword, onChangePassword2] = React.useState('');
 
+    const [shadowColor, setShadowColor] = React.useState("white");
     // Function for delaying to check if password matching
     // Usage is just: "await delay(5000);"
     const delay = async (ms) => {
@@ -52,8 +53,10 @@ export default function Page() {
     function handleSignup(e) {
         e.preventDefault;
         setError("")
+        setShadowColor("white")
 
         if(!checkValid()){
+            setShadowColor(styleSetting.color.neonRed)
             return;
         }
 
@@ -67,6 +70,7 @@ export default function Page() {
             .then(async () => {
                 setSuccess("Email verification sent!")
                 alert("Email verification sent! Please check your email to verify your account.")
+                setShadowColor(styleSetting.color.neonGreen)
                 await delay(2000);
                 router.push('./createProfilePage')
             })
@@ -139,8 +143,8 @@ export default function Page() {
                 type="signup"
                 onPress={handleSignup}
                 text="Signup"
-                containerStyle={{width:"80%",marginLeft:0,minWidth:0,height:50,marginVertical:30, borderColor:"white", borderWidth:2, borderRadius:10, backgroundColor:"#33CBFF"}}
-                textStyle={{fontSize:styleSetting.size.em24}}
+                containerStyle={{width:"100%",marginLeft:0,minWidth:0,height:50,padding:5,marginVertical:30, borderColor:"white", borderWidth:2, borderRadius:10, backgroundColor:"#111111",shadowColor:shadowColor,shadowRadius:10}}
+                textStyle={{fontSize:styleSetting.size.em24,color:"white"}}
             />
             {error && <Text style = {styles.error}>Error: {error}</Text>}
             {success && <Text style = {styles.success}>{success}</Text>}
@@ -195,9 +199,11 @@ const styles = StyleSheet.create({
         maxWidth:styleSetting.size.em450,
         borderColor: "white",
         borderWidth: 3,
+        shadowColor: "white",
+        shadowRadius: 10,
     },
     error:{
-        color:styleSetting.color.red,
+        color:styleSetting.color.neonRed,
         textAlign: "center",
         paddingVertical: 4,
     },
