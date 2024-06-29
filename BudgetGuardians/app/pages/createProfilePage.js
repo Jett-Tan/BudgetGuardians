@@ -69,8 +69,8 @@ export default function createProfilePage(){
                             return ''
                         }
                     }}
-                    containerStyle={{width:"90%",marginLeft:15,minWidth:0,height:50,marginVertical:15, borderColor:"white", borderWidth:2, borderRadius:10, backgroundColor:"#111111"}}
-                    inputContainerStyle = {{minWidth:"10%", backgroundColor:"#111111", height:40, borderColor:"transparent", borderWidth:2, borderRadius:10,paddingLeft: 10 }}
+                    containerStyle={{width:"90%",marginLeft:15,minWidth:0,height:50,marginVertical:15, borderColor:"white", borderWidth:3, borderRadius:10, backgroundColor:"#111111"}}
+                    inputContainerStyle = {{minWidth:"10%", backgroundColor:"#111111", height:40, borderColor:"transparent", borderWidth:3, borderRadius:10,paddingLeft: 10 }}
                     inputStyle = {{color:"white"}}
                 />
                 <CustomInput
@@ -86,8 +86,8 @@ export default function createProfilePage(){
                             return ''
                         }
                     }}
-                    containerStyle={{width:"90%",marginLeft:15,minWidth:0,height:50,marginVertical:15, borderColor:"white", borderWidth:2, borderRadius:10, backgroundColor:"#111111"}}
-                    inputContainerStyle = {{minWidth:"10%", backgroundColor:"#111111", height:40, borderColor:"transparent", borderWidth:2, borderRadius:10,paddingLeft: 10 }}
+                    containerStyle={{width:"90%",marginLeft:15,minWidth:0,height:50,marginVertical:15, borderColor:"white", borderWidth:3, borderRadius:10, backgroundColor:"#111111"}}
+                    inputContainerStyle = {{minWidth:"10%", backgroundColor:"#111111", height:40, borderColor:"transparent", borderWidth:3, borderRadius:10,paddingLeft: 10 }}
                     inputStyle = {{color:"white"}}
                 />
                 <CustomInput
@@ -105,15 +105,15 @@ export default function createProfilePage(){
                             return ''
                         }
                     }}
-                    containerStyle={{width:"90%",marginLeft:15,minWidth:0,height:50,marginVertical:15, borderColor:"white", borderWidth:2, borderRadius:10, backgroundColor:"#111111"}}
-                    inputContainerStyle = {{minWidth:"10%", backgroundColor:"#111111", height:40, borderColor:"transparent", borderWidth:2, borderRadius:10,paddingLeft: 10 }}
+                    containerStyle={{width:"90%",marginLeft:15,minWidth:0,height:50,marginVertical:15, borderColor:"white", borderWidth:3, borderRadius:10, backgroundColor:"#111111"}}
+                    inputContainerStyle = {{minWidth:"10%", backgroundColor:"#111111", height:40, borderColor:"transparent", borderWidth:3, borderRadius:10,paddingLeft: 10 }}
                     inputStyle = {{color:"white"}}
                 />
                 <CustomButton
                     type="signup"
                     onPress={async () => await handleUserData()}
                     text="Continue"
-                    containerStyle={{width:"90%",marginLeft:15,minWidth:0,height:50,marginVertical:15, borderColor:"white", borderWidth:2, borderRadius:10, shadowColor:shadowColor,shadowRadius:5,backgroundColor:"#111111"}}
+                    containerStyle={{width:"90%",marginLeft:15,minWidth:0,height:50,marginVertical:15, borderColor:"white", borderWidth:3, borderRadius:10, shadowColor:shadowColor,shadowRadius:10,backgroundColor:"#111111"}}
                     textStyle={{fontSize:styleSetting.size.em24,color:"white"}}
                 />
             </ScrollView>
