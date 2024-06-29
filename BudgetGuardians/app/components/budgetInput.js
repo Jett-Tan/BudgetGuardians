@@ -145,7 +145,17 @@ export default function BudgetInput() {
             return "Add Budget"
         }
     }
-
+    const updateShadowColor = () => {
+        if (category) {
+            if (categoryBudget.find((x) => x.budgetCategory === category)){
+                return "yellow"
+            }else {
+                return "green"
+            }
+        }else{
+            return "white"
+        }
+    }
     return (
         <>
             {/* <View style={{flexDirection:"column",alignItems:"center",width:"90%",height:"50%",flexWrap:"wrap", padding:10,borderRadius:15,shadowRadius:15,shadowColor:"black",shadowOpacity:0.5}}>
@@ -183,32 +193,28 @@ export default function BudgetInput() {
                     <View style={{width:"40%",minWidth:250,marginHorizontal:"auto",marginTop:10}}>
                         <Text  style={{marginLeft:5, color:"white"}}>Category</Text>
                         <Dropdown
-                            data={defaultCategory}
-                            style={{width: "auto",borderRadius: 10,height:50,borderColor: 'black', borderWidth: 1, padding: 5,marginVertical:5, borderColor:"white"}}
-                            
-                            
-                            
-                            containerStyle={{borderWidth: 3, marginTop:4,paddingVertical: 8,borderRadius:15, borderColor:"white", backgroundColor:"#111111"}}
-                            placeholderStyle={{fontSize: 16,marginLeft:10, whiteSpace: 'nowrap', color:"white"}}
-                            selectedTextStyle={{fontSize: 16,marginLeft:10, whiteSpace: 'nowrap',  color:"white"}}
-                            inputSearchStyle={{fontSize: 16,height:50,whiteSpace: 'nowrap',  color:"white"}}
-                            itemContainerStyle={{backgroundColor: "#111111"}}
-                            itemTextStyle={{color:"white"}}
-                            labelField="label"
-                            valueField="value"
-                            maxHeight={300}
-                           
-                            
-                            activeColor='#2596be'
-                            search
-                            searchPlaceholder="Search..."
-                            placeholder="Select Category"
-                            value={category}
-                            onChange={(item) => {setCategory(item.value); updateAmount(item.value)}}
-                            renderLeftIcon={() => (
-                                <FaIcon name="money-bill" size={20} color={"#7b9a6d"}/>
-                            )}
-                        />
+                                data={defaultCategory}
+                                style={{width: "100%",borderRadius: 10,height:60, borderColor: 'white', borderWidth: 3, padding: 5}}
+                                iconColor="white"
+                                containerStyle={{borderWidth: 3, marginTop:4,paddingVertical: 8,borderRadius:15,height:"auto", borderColor:"white", backgroundColor:"#111111"}}
+                                placeholderStyle={{fontSize: 16,marginLeft:10, whiteSpace: 'nowrap', color:"white"}}
+                                selectedTextStyle={{fontSize: 16,marginLeft:10, whiteSpace: 'nowrap',  color:"white"}}
+                                inputSearchStyle={{fontSize: 16,height:50,whiteSpace: 'nowrap',  color:"white"}}
+                                itemContainerStyle={{backgroundColor: "#111111"}}
+                                itemTextStyle={{color:"white"}}
+                                labelField="label"
+                                valueField="value"
+                                maxHeight={300}
+                                activeColor='#2596be'
+                                search
+                                searchPlaceholder="Search..."
+                                placeholder="Select Category"
+                                value={category}
+                                onChange={(item) => {setCategory(item.value); updateAmount(item.value)}}
+                                renderLeftIcon={() => (
+                                    <FaIcon name="money-bill" size={20} color={"#7b9a6d"}/>
+                                )}
+                            />
                     </View>
                     <View style={{width:"20%",minWidth:250,marginHorizontal:"auto",marginTop:10}}>
                         <Text  style={{marginLeft:5, color:"white"}}>Amount</Text>
@@ -222,10 +228,10 @@ export default function BudgetInput() {
                                 }
                                 return "";
                             }}
-                            containerStyle={{width:"100%",marginLeft:0,minWidth:0,height:50,marginVertical:5, borderColor:"white", borderWidth:2, borderRadius:10, backgroundColor:"#111111"}}
-                            inputContainerStyle={{width:"100%",marginLeft:0,minWidth:0,height:50,marginVertical:0, backgroundColor:"transparent",borderColor:"transparent"}}
-                            inputStyle={{width:"95%",height:50, color:"white", paddingHorizontal: 10}}
-                        />
+                            containerStyle={{margin:0, padding:0, height:"auto"}}
+                            inputContainerStyle={{height: 60,margin:0, borderColor: 'white', borderWidth: 3, padding: 5, borderColor:"white", backgroundColor:"#111111"}}
+                            inputStyle={{width: "95%",height:50,backgroundColor:"#111111", color:"white"}}
+                        />  
                     </View>
                     <View style={{width:"20%",minWidth:250,marginHorizontal:"auto",marginTop:10}}>
                         <Text  style={{marginLeft:5}}> </Text>
@@ -245,7 +251,7 @@ export default function BudgetInput() {
                                     }
                                 }
                             )()}
-                            containerStyle={{width:"100%",maxWidth:"100%",height:50,marginVertical:5,marginHorizontal:0, borderColor:"white", borderWidth:2}}
+                            containerStyle={{width:"100%",maxWidth:"100%",height:60,margin:0, borderColor:"white",backgroundColor:"#111111", borderWidth:3,shadowColor:updateShadowColor(),shadowRadius:15,shadowOpacity:0.5}}
                             textStyle={{fontWeight:"bold",fontSize:"95%", color:"white"}}
                             />
                     </View>
