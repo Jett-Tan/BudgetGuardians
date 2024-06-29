@@ -2,7 +2,7 @@ import { ScrollView,View,Modal,Pressable,StyleSheet,Text } from "react-native"
 import { useState,useEffect } from "react"
 import {DatePickerInput, de} from 'react-native-paper-dates';
 import TransactionEntry from "./transactionEntry"
-import { liveUpdate, updateTransactionToFirestore } from "../setting/fireStoreFunctions"
+import { liveUpdate, updateTransactionToFirestore,getUserDataFromFirestore } from "../setting/fireStoreFunctions"
 import styleSetting from "../setting/setting";
 import CustomInput from "./customInput";
 import {Dropdown} from 'react-native-element-dropdown'
@@ -111,7 +111,22 @@ export default function TransactionLoader() {
         const numericAmount = Number.parseFloat(toEditTransactionAmount);
         const formatteddate = new Date(toEditTransactionDate).toLocaleDateString('en-SG')
         newTransactions[toEditTransactionID] = ({amount: numericAmount, category: toEditTransactionCatergory, date: formatteddate,description: toEditTransactionDescription});
-        updateTransactionToFirestore(newTransactions).then(() => {
+        updateTransactionToFirestore(newTransactions).then( async() => {
+            await getUserDataFromFirestore().then((data) => {
+                const financialData = data.financialData;
+                const transactions = financialData.transactions;
+                const budgetAmt = financialData.budgetInfo.budgets.find((budget) => budget.budgetCategory === toEditTransactionCatergory).budgetAmount || 0;
+                const totalExpense = transactions.filter((transaction) => transaction.amount < 0 && transaction.category === toEditTransactionCatergory).reduce((acc, transaction) => acc + transaction.amount, 0);
+                const totalIncome = transactions.filter((transaction) => transaction.amount > 0 && transaction.category === toEditTransactionCatergory).reduce((acc, transaction) => acc + transaction.amount, 0);
+                const remainingBudget = budgetAmt + totalExpense + totalIncome;
+                if (budgetAmt > 0 && remainingBudget < 0) {
+                    alert(`You have exceeded your budget for ${toEditTransactionCatergory}! by $${-remainingBudget}!`);
+                } else if (budgetAmt > 0 && remainingBudget < budgetAmt*0.3) {
+                    alert(`You are close to exceeding your budget for ${toEditTransactionCatergory}! You have $${remainingBudget} left!`);
+                } else if (budgetAmt > 0 && remainingBudget === 0) {
+                    alert(`You have fully utilized your budget for ${toEditTransactionCatergory}!`);
+                }
+            });
             setModalVisible(false);
             reset();
         });
