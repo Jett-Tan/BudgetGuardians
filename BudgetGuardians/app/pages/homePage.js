@@ -27,7 +27,7 @@ import CategoriseTab from "./(tabs)/CategoriseTab"
 export default function Page() {
     const router = useRouter();
     const [currentUser, setCurrentUser] = useState({});
-    const [tab, setTab] = useState("home");
+    const [tab, setTab] = useState("budget");
 
     const check = setInterval(() => {
         !auth.currentUser && router.replace('./initPage') ;
@@ -181,6 +181,7 @@ const styles = StyleSheet.create({
     welcomeText: {
         fontSize: 18,
         color:"white",
+        fontWeight:"bold",
     },
     header: {
         backgroundColor: "#84B6E3",

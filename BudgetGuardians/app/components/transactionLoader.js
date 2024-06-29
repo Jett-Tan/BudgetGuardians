@@ -231,11 +231,10 @@ export default function TransactionLoader() {
                 </View>
               </View>
           </Modal>
-          <View style={{width:"70%",shadowColor:"black",marginVertical:20,shadowOpacity:0.5,shadowRadius:15,borderRadius:15,height:"100%",alignItems:"center"}}>
+          <View style={{width:"100%",marginVertical:20,height:"100%",alignItems:"center"}}>
             <ScrollView style={{width:"95%"}}>
               {Array.isArray(transactions) && transactions.map((x, index) => (
-
-                  <View key={index} style={{shadowColor:"black",shadowRadius:10,shadowOpacity:0.5,borderRadius:15,marginHorizontal:"10%",marginVertical:20}}>
+                  <View key={index} style={{marginHorizontal:10,marginVertical:20}}>
                       <TransactionEntry 
                           deleteTransaction={() => deleteTransaction(index)} 
                           editTransaction={() => editTransaction(index)} 

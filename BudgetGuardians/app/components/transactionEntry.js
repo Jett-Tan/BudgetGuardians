@@ -13,31 +13,32 @@ export default function TransactionEntry({
     dateStyle={color:"white"},
     categoryStyle={},
     amountStyle={},
+    titleBoxStyle={}
 }) {
     return (
         <>
             <View style={[styles.row,containerStyle]}>
                 <Pressable style={[styles.transaction,transactionStyle]} onPress={onPress}>
                     <View style={styles.box}>
+                        <Text style={[dateStyle,{fontSize:"100%",width:"auto",marginVertical:"auto",fontWeight:"bold",marginLeft:20}]}>{props.date}</Text>
                         <View style={styles.miniBox}>
-                            <Text style={[dateStyle]}>{props.date}</Text>
-                            <View style={styles.title}>
-                                <Text style={[styles.right,categoryStyle]}>{props.category}</Text>
+                            <View style={[styles.title,titleBoxStyle]}>
+                                <Text style={[styles.text,categoryStyle]}>{props.category}</Text>
                             </View>
+                                {props.amount >= 0 && <Text style={[styles.text,{textShadowRadius:5,textShadowColor:styleSetting.color.neonGreen},amountStyle]}>+${props.amount?.toFixed(2)}</Text> }
+                                {props.amount < 0 && <Text style={[styles.text,{textShadowRadius:5,textShadowColor:styleSetting.color.red},amountStyle]}>-${Math.abs(props.amount)?.toFixed(2)}</Text> }
                         </View>
-                        {props.amount >= 0 && <Text style={[styles.right,amountStyle]}>+${props.amount?.toFixed(2)}</Text> }
-                        {props.amount < 0 && <Text style={[styles.right,amountStyle]}>-${Math.abs(props.amount)?.toFixed(2)}</Text> }
                         
                     </View>
                     
                 </Pressable>
                 {showbutton && (
-                    <View style={{flexDirection:"row",justifyContent:"center"}}>
-                        <Pressable style={styles.deletebutton} onPress={(e)=>{deleteTransaction(e)}}>
-                            <Text style={{textAlign:"center"}}>Delete Transaction</Text>
+                    <View style={{flexDirection:"row",justifyContent:"space-evenly",width:"40%",padding:10,}}>
+                        <Pressable style={[styles.button,styles.deletebutton]} onPress={(e)=>{deleteTransaction(e)}}>
+                            <Text style={{textAlign:"center",fontWeight:"bold",fontSize:"100%",color:"white"}}>Delete Transaction</Text>
                         </Pressable>
-                        <Pressable style={styles.button} onPress={(e)=>{editTransaction(e)}}>
-                            <Text style={{textAlign:"center"}}>Edit Transaction</Text>
+                        <Pressable style={[styles.button,styles.editButton]} onPress={(e)=>{editTransaction(e)}}>
+                            <Text style={{textAlign:"center",fontWeight:"bold",fontSize:"100%",color:"white"}}>Edit Transaction</Text>
                         </Pressable>
                     </View>
                 )}
@@ -49,80 +50,73 @@ export default function TransactionEntry({
 
 const styles = StyleSheet.create({
     transaction:{
-        margin:styleSetting.size.em10,
-        padding: 10,
-        width: '60%',
-        minWidth: 200,
+        width: 'auto',
+        minWidth: "60%",
+        maxWidth: "100%",
+        alignSelf:"stretch",
         color:"white",
-        
-
     },
     miniBox:{
-        flexDirection:"row",
-        justifyContent:"space-between",
-        
+        marginLeft:"auto",
+        flexDirection:"column",
+        height:"100%",
+        width:"auto",
+        justifyContent:"center",
+        alignItems:"flex-end"
     },
     box: {
         width:"100%",
-        padding:styleSetting.size.em10,
+        height:"100%",
+        padding:styleSetting.size.em05,
+        flexDirection:"row",
         
     },
     title:{
-        borderRadius:styleSetting.size.em07,
-        paddingLeft:styleSetting.size.em05,
-        paddingRight:styleSetting.size.em05,
-        backgroundColor:styleSetting.color.lightblue,
-          
-    },
-    right:{
-        textAlign:"right",
-        fontSize:styleSetting.size.em16,
-        color:"white",
+        borderRadius:styleSetting.size.em10,
+        borderColor:"white",
+        width:150,
+        borderWidth:3,
+        padding:styleSetting.size.em03,
+        paddingHorizontal:styleSetting.size.em10,
+        marginVertical:styleSetting.size.em05,
+        backgroundColor:"#111111",
     },
     button:{
-        backgroundColor: '#89CFF0',
-        alignItems: 'center',
-        justifyContent: 'center',
+        backgroundColor: "#111111",
         minWidth: 80,
         minHeight: 50,
-        width:"20%",
-        borderRadius:5,
-        shadowColor:"black",
-        shadowOpacity:0.5,
-        shadowOffset:{width:2,height:2},
-        margin:15,
-        height:"60%",
-        
-        
+        width:"40%",
+        height:"100%",
+        borderColor:"white",
+        borderWidth:3,
+        borderRadius:10,
+        alignItems: 'center',
+        justifyContent: 'center',
     },
     deletebutton:{
-        backgroundColor: "#ff7588",
-        minWidth: 80,
-        minHeight: 50,
-        width:"20%",
-        borderRadius:5,
-        shadowColor:"black",
+        shadowColor:"red",
         shadowOpacity:0.5,
-        shadowOffset:{width:2,height:2},
-        margin:15,
-        height:"60%",
-        alignItems: 'center',
-        justifyContent: 'center',
-        
+        shadowRadius:10,
+    },
+    editButton:{
+        shadowColor:"yellow",
+        shadowOpacity:0.5,
+        shadowRadius:10,
     },
     row: {
         flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'center',
         width: '100%',
         flexWrap: 'wrap',
-        flex:3,
         borderColor: "white",
-        borderWidth: 2,
+        borderWidth: 3,
         borderRadius:styleSetting.size.em10,
+        shadowColor: "white",
+        shadowRadius: 5,
     },  
-    amount:{
-        fontSize:styleSetting.size.em20,
-        
+    text:{
+        textAlign:"center",
+        fontSize:"100%",
+        fontWeight:"bold",
+        color:"white",
     },
 })

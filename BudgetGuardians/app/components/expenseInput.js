@@ -115,19 +115,21 @@ export default function ExpenseInput() {
 
     return (
         <>
-            <View style={{flexDirection:"row",alignSelf:"center",justifyContent:"space-evenly",width:"70%",flexWrap:"wrap", height:"auto",paddingBottom:10,borderRadius:15,shadowRadius:15,shadowColor:"black",shadowOpacity:0.5}}>
-                <View style={{width:"80%",maxWidth:"100%",paddingHorizontal:10}}>
-                    <View style={{flexDirection:"row", justifyContent:"space-between",flexWrap:"wrap"}}>
-                        <View  style={{}}>
-                            <Text style={{fontSize: 13, fontWeight: 'bold', margin: 10, color: "white"}}>Transaction Type</Text>
+            <View style={{width:"100%",flexDirection:"row",height:"100%"}}>
+                <View style={{padding:10,width:"80%",height:"100%",alignContent:"space-between"}}>
+                    <View style={{minHeight:"50%",height:"auto",width:"100%",flexDirection:"row",justifyContent:"space-between",flexWrap:"wrap"}}>
+                        <View style={{width:"30%",minWidth:300,maxHeight:"100%",height:'auto',paddingBottom:10}}>
+                            <Text style={{fontSize: 13, fontWeight: 'bold',marginBottom:5,marginLeft:10, color: "white"}}>Transaction Type</Text>
                             <Dropdown
                                 data={defaultCategory}
-                                style={{width: 220,borderRadius: 10,height:50, borderColor: 'white', borderWidth: 1, padding: 5,marginVertical:5}}
+                                style={{width: "100%",borderRadius: 10,height:60, borderColor: 'white', borderWidth: 3, padding: 5}}
+                                iconColor="white"
+                                containerStyle={{borderWidth: 3, marginTop:4,paddingVertical: 8,borderRadius:15, borderColor:"white", backgroundColor:"#111111"}}
                                 placeholderStyle={{fontSize: 16,marginLeft:10, whiteSpace: 'nowrap', color:"white"}}
-                                selectedTextStyle={{fontSize: 16,marginLeft:10, whiteSpace: 'nowrap', backgroundColor:'#111111', color:"white"}}
-                                inputSearchStyle={{fontSize: 16,justifyContent:"center",height:50, whiteSpace: 'nowrap', backgroundColor: "#111111", color:"white"}}
-                                itemTextStyle={{color:"white"}}
+                                selectedTextStyle={{fontSize: 16,marginLeft:10, whiteSpace: 'nowrap',  color:"white"}}
+                                inputSearchStyle={{fontSize: 16,height:50,whiteSpace: 'nowrap',  color:"white"}}
                                 itemContainerStyle={{backgroundColor: "#111111"}}
+                                itemTextStyle={{color:"white"}}
                                 labelField="label"
                                 valueField="value"
                                 maxHeight={300}
@@ -141,80 +143,89 @@ export default function ExpenseInput() {
                                     <FaIcon name="money-bill" size={20} color={"#7b9a6d"}/>
                                 )}
                             />
-                            <Text style={{color: 'red', fontSize: 12, marginLeft: 10}}>{categoryError}</Text>
+                            <Text style={styles.errorText}>{categoryError}</Text>
                         </View>
-                        <View style={{}}>
-                            <Text style={{fontSize: 13, fontWeight: 'bold', margin: 10, color: "white"}}>Amount</Text>
+                        <View style={{width:"30%",minWidth:300,maxHeight:"100%",height:"auto",paddingBottom:10}}>
+                            <Text style={{fontSize: 13, fontWeight: 'bold',marginBottom:5,marginLeft:10, color: "white"}}>Amount</Text>
                             <CustomInput
                                 placeholder="Enter Amount"
                                 
                                 values={amount}
                                 onChange1={(x) => setAmount(x)}
-                                containerStyle={{width: 150,margin:0,marginVertical:5,minWidth:150, justifyContent: 'center', alignItems: 'center'}}
-                                inputContainerStyle={{width: 150,minWidth:150, height: 50, borderColor: 'black', borderWidth: 1, padding: 5, margin: 5, borderColor:"white", backgroundColor:"#111111"}}
-                                inputStyle={{width: 130,minWidth:130,backgroundColor:"#111111", color:"white"}}
+                                containerStyle={{margin:0, padding:0, height:"auto"}}
+                                inputContainerStyle={{height: 60,margin:0, borderColor: 'white', borderWidth: 3, padding: 5, borderColor:"white", backgroundColor:"#111111"}}
+                                inputStyle={{width: "95%",height:50,backgroundColor:"#111111", color:"white"}}
                                 errorExist={false}
                             />  
-                            <Text style={{color: 'red', fontSize: 12, marginLeft: 10}}>{amountError}</Text>
+                            <Text style={styles.errorText}>{amountError}</Text>
                         </View>
-                        <View style={{}}>
-                            <Text style={{fontSize: 13, fontWeight: 'bold', margin: 10, color:"white"}}>Transaction Date</Text>
+                        <View style={{width:"30%",minWidth:300,maxHeight:"100%",height:"auto", paddingBottom:10}}>
+                            <Text style={{fontSize: 13, fontWeight: 'bold',marginBottom:5,marginLeft:10, color: "white"}}>Transaction Date</Text>
                             <DatePickerInput 
-                                style={{width:270,fontSize:13,maxHeight:50,height:50,minWidth:0, backgroundColor:"#111111",borderRadius:10,borderTopRightRadius:10,borderTopLeftRadius:10,borderWidth:1,borderColor:"white"}}
+                                style={{backgroundColor:"#111111",color:"white",borderRadius:10,borderTopRightRadius:10,borderTopLeftRadius:10,height:54,alignSelf:"flex-start",padding:0,borderWidth:3,borderColor:"white"}}
+                                underlineStyle={{borderWidth:0}}
+                                underlineColor="white"
+                                outlineStyle={{borderWidth:0}}
+                                selectionColor="white"
+                                iconColor="white"
+                                textColor="white"
+                                activeUnderlineColor="white"
+                                color
+                                placeholderTextColor={"white"}
                                 locale="en-SG"
                                 value={date}
                                 onChange={(d) => setDate(d)}
                                 inputMode="start"
                                 label="Transaction Date"
-
                                 display="calendar"
-                                
-                                activeUnderlineColor="black"
                             />
-                            <Text style={{color: 'red', fontSize: 12, marginLeft: 10}}>{dateError}</Text>
+                            <Text style={styles.errorText}>{dateError}</Text>
                         </View>
                     </View>
-                    <View>
-                        <View style={{}}>
-                            <Text style={{fontSize: 13, fontWeight: 'bold', margin: 10, color:"white"}}>Description</Text>
+                    <View style={{minHeight:"50%",height:"auto",width:"100%",flexDirection:"row",justifyContent:"space-between",flexWrap:"wrap"}}>
+                        <View style={{width:"100%",minWidth:300}}>
+                            <Text style={{fontSize: 13, fontWeight: 'bold', marginLeft:10,marginBottom:5,color:"white"}}>Description</Text>
                             <CustomInput
                                 placeholder="Enter Descriptions (Optional)"
                                 values={description}
                                 onChange1={(x) => setDescription(x)}
-                                containerStyle={{width: "100%",margin:0,marginVertical:5,minWidth:"100%", justifyContent: 'center', alignItems: 'center'}}
-                                inputContainerStyle={{width: "100%",minWidth:"100%", height: 50, borderColor: 'black', borderWidth: 1, padding: 5, margin: 5, borderColor:"white", backgroundColor:"#111111"}}
+                                containerStyle={{width: "100%",minWidth:"100%",marginLeft:0,margin:0}}
+                                inputContainerStyle={{width: "100%",minWidth:"100%",marginLeft:0,margin:0, height: 60, borderColor: 'black', borderWidth: 3, padding: 5,borderColor:"white", backgroundColor:"#111111"}}
                                 inputStyle={{width: "100%",minWidth:"100%", borderColor:"white", backgroundColor:"#111111", color:"white"}}
-                                
-                            />  
+                            /> 
+                            <Text style={styles.errorText}> </Text>
                         </View>
                     </View>
                 </View>
-                <View style={{paddingHorizontal:10,height:"auto",width:"auto",maxHeight:"100%",justifyContent:"space-between",maxWidth:"100%"}}>
-                    <View style={{marginVertical:5,width:"100%"}}>
-                        <Text style={{fontSize: 13, fontWeight: 'bold', margin: 10}}>    </Text>
+                <View style={{padding:10,width:"20%",height:"100%",flexDirection:"column"}}> 
+                    <View style={{width:"100%",alignItems:"center"}}>
+                        <Text style={{fontSize: 13, fontWeight: 'bold', marginLeft:10,marginBottom:5,color:"white"}}> </Text>
                         <CustomButton
                             text={"Add Income"}
                             onPress={() => {addIncome()}}
-                            containerStyle={[styles.button,{width:"100%"}]}
-                            textStyle={{fontSize: 13}}
+                            containerStyle={[{height:60,backgroundColor:"#111111",borderColor:"white",borderWidth:3,width:"90%",margin:0,padding:0},{shadowColor:"green",shadowRadius :15,shadowOpacity: 0.5}]}
+                            textStyle={{fontSize: 20,color:"white",fontWeight:"bold"}}
                         />
+                        <Text style={[styles.errorText,{fontSize:19}]}> </Text>
                     </View>
-                    <View style={{marginVertical:5,width:"100%"}}>
-                        <Text style={{fontSize: 13, fontWeight: 'bold', margin: 10}}>    </Text>
-                        <CustomButton
+                    <View style={{width:"100%",alignItems:"center"}}>
+                        <Text style={{fontSize: 13, fontWeight: 'bold', marginLeft:10,marginBottom:5,color:"white"}}> </Text>
+                        <CustomButton 
                             text={"Add Expense"}
                             onPress={() => {addExpense()}}
-                            containerStyle={styles.button}
-                            textStyle={{fontSize: 13}}
+                            containerStyle={[{height:60,backgroundColor:"#111111",borderColor:"white",borderWidth:3,width:"90%",margin:0,padding:0},{shadowColor:"red",shadowRadius :15,shadowOpacity: 0.5}]}
+                            textStyle={{fontSize: 20,color:"white",fontWeight:"bold"}}
                         />
+                        <Text style={[styles.errorText,{fontSize:19}]}> </Text>
                     </View>
                 </View>
-                
             </View>
         </>
     )
 }
 const styles = StyleSheet.create({
+    errorText:{color: 'red', fontSize: 12, marginLeft: 10},
+
     button:{
         backgroundColor:styleSetting.color.lightblue,
         width: "100%",

@@ -16,6 +16,7 @@ const styleSetting = {
         cadmiumRed:"#D22B2B",
         lightblack: "#111111",
         neonGreen:"#3af30f",
+        neonRed:"#FF3131",
     },
     size: {
         em01: 1,

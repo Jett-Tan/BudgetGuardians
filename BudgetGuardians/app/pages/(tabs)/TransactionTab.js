@@ -8,7 +8,7 @@ export default function TransactionTab() {
     return (
         <>
             <View style = {[{width:"95%",height:"95%", margin: "2.5%", alignItems: "center"}]}>
-                <View style={{height:"auto",width:"100%",marginBottom:10}}>
+                <View style={{height:"auto",minHeight:200,width:"100%",marginBottom:10}}>
                     <ExpenseInput/>
                 </View>
                 <View style={{marginBottom:"auto",height:"auto",maxHeight:"60%", width:"100%",alignItems:"center"}}>

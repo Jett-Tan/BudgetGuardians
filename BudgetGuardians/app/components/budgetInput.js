@@ -175,10 +175,10 @@ export default function BudgetInput() {
                     textStyle={{fontWeight:"bold",fontSize:"95%"}}
                 />
             </View> */}
-            <View style={{flexDirection:"row",minWidth:250,width:"100%",height:"100%",flexWrap:"wrap", padding:10,borderRadius:15,shadowRadius:15,shadowColor:"black",shadowOpacity:0.5}}>
-                <View style={{width:"100%",alignItems:"center"}}>
+            <View style={{flexDirection:"row",minWidth:250,width:"100%",height:"100%",flexWrap:"wrap"}}>
+                {/* <View style={{width:"100%",alignItems:"center"}}>
                     <Text style={{fontWeight:"bold",textAlign:"center", color:"white"}}>Add / Edit Budget for Category</Text>
-                </View>
+                </View> */}
                 <View style={{width:"98%",paddingHorizontal:"1%",flexWrap:"wrap",flexDirection:"row"}}>
                     <View style={{width:"40%",minWidth:250,marginHorizontal:"auto",marginTop:10}}>
                         <Text  style={{marginLeft:5, color:"white"}}>Category</Text>
