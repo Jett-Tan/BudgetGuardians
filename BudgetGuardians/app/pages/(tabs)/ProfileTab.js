@@ -73,7 +73,7 @@ export default function ProfileTab() {
                 type="signup"
                 text="Update"
                     onPress={updateUser}
-                    containerStyle={{width:"100%",marginLeft:5,height:50,marginVertical:30, borderColor:"white", borderWidth:2, borderRadius:10, backgroundColor:"#33CBFF"}}
+                    containerStyle={{width:"100%",marginLeft:5,height:50,marginVertical:30, borderColor:"white", borderWidth:3, borderRadius:10, backgroundColor:"#33CBFF"}}
                     textStyle={{fontSize:styleSetting.size.em24}}
                 />
             </View>
