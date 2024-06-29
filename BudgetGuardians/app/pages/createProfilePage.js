@@ -11,6 +11,7 @@ import CustomInput from "../components/customInput"
 import CustomButton from "../components/customButton"
 import Icon from "../components/icon"
 import styleSetting from "../setting/setting"
+import { set } from "firebase/database";
 
 export default function createProfilePage(){
     // if (auth.currentUser === null){
@@ -24,13 +25,17 @@ export default function createProfilePage(){
     const [lastNameError,setLastNameError] = useState("")
     const [ageError,setAgeError] = useState("")
 
+    const [shadowColor, setShadowColor] = useState("white")
+
     const router = useRouter();
+
     async function handleUserData(){
         console.log("clicked");
         var valid = true;
         await createUserInFirestore()
         await addUserDataToFirestore({name:{firstName:firstName,lastName:lastName},age:Number.parseInt(age)})
         .then(()=>{
+            setShadowColor("green");
             valid = true;
         }).catch((error)=>{ 
             valid = false;
@@ -38,6 +43,7 @@ export default function createProfilePage(){
         });
 
         if(!valid){
+            setShadowColor(styleSetting.color.neonRed);
             console.error("Error adding document");
         }else{
             router.replace('./homePage');
@@ -107,6 +113,8 @@ export default function createProfilePage(){
                     type="signup"
                     onPress={async () => await handleUserData()}
                     text="Continue"
+                    containerStyle={{width:"90%",marginLeft:15,minWidth:0,height:50,marginVertical:15, borderColor:"white", borderWidth:2, borderRadius:10, shadowColor:shadowColor,shadowRadius:5,backgroundColor:"#111111"}}
+                    textStyle={{fontSize:styleSetting.size.em24,color:"white"}}
                 />
             </ScrollView>
             <Text>{'\n'}</Text>
@@ -138,6 +146,8 @@ const styles = StyleSheet.create({
         maxWidth:styleSetting.size.em450,
         borderColor: "white",
         borderWidth: 3,
+        shadowColor: "white",
+        shadowRadius: 10,
 
     },
     header: {
