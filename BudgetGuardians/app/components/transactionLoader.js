@@ -171,7 +171,6 @@ export default function TransactionLoader() {
                       <Text style={{fontSize: 30, fontWeight: 'bold', textAlign:"center",textDecorationLine:"underline",width:"100%", color:"white"}}>Edit Transaction</Text>
                       <View  style={{}}>
                         <Text style={{fontSize: 13, fontWeight: 'bold', margin: 10, color:"white"}}>Transaction Type</Text>
-                        
                         <Dropdown
                                 data={defaultCategory}
                                 style={{width: "100%",borderRadius: 10,height:60, borderColor: 'white', borderWidth: 3, padding: 5}}
@@ -250,7 +249,7 @@ export default function TransactionLoader() {
                       <CustomButton
                         onPress={() => {saveTransaction()}}
                         text={"Save"}
-                        containerStyle={{width:"100%",maxWidth:"100%",marginHorizontal:0, backgroundColor:"#33CBFF"}}
+                        containerStyle={{width:"100%",maxWidth:"100%",marginHorizontal:0, backgroundColor:styleSetting.color.lightblue, borderColor:"white", borderWidth:3, borderRadius:10,}}
                         type={"primary"}
                       />
                     </View>
