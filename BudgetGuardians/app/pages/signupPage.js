@@ -143,8 +143,8 @@ export default function Page() {
                 type="signup"
                 onPress={handleSignup}
                 text="Signup"
-                containerStyle={{width:"85%",marginLeft:0,minWidth:0,maxWidth:"auto",height:50,marginVertical:30, borderColor:"white", borderWidth:3, borderRadius:10, backgroundColor:"#111111",shadowColor:shadowColor,shadowRadius:10}}
-                textStyle={{fontSize:styleSetting.size.em24,color:"white"}}
+                containerStyle={{width:"85%",marginLeft:0,minWidth:0,maxWidth:"auto",height:50,marginVertical:30, borderColor:"white", borderWidth:3, borderRadius:10, backgroundColor:styleSetting.color.lightblue,shadowColor:shadowColor,shadowRadius:5}}
+                textStyle={{fontSize:styleSetting.size.em24,fontWeight:"bold",color:"white"}}
             />
             {error && <Text style = {styles.error}>Error: {error}</Text>}
             {success && <Text style = {styles.success}>{success}</Text>}

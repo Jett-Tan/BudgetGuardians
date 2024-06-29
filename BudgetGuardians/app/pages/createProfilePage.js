@@ -113,8 +113,8 @@ export default function createProfilePage(){
                     type="signup"
                     onPress={async () => await handleUserData()}
                     text="Continue"
-                    containerStyle={{width:"90%",marginLeft:15,minWidth:0,height:50,marginVertical:15, borderColor:"white", borderWidth:3, borderRadius:10, shadowColor:shadowColor,shadowRadius:10,backgroundColor:"#111111"}}
-                    textStyle={{fontSize:styleSetting.size.em24,color:"white"}}
+                    containerStyle={{width:"90%",marginLeft:15,minWidth:0,height:50,marginVertical:15, borderColor:"white", borderWidth:3, borderRadius:10, shadowColor:shadowColor,shadowRadius:5,backgroundColor:styleSetting.color.lightblue}}
+                    textStyle={{fontSize:styleSetting.size.em24,fontWeight:"bold",color:"white"}}
                 />
             </ScrollView>
             <Text>{'\n'}</Text>
