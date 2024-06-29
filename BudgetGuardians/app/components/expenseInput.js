@@ -175,6 +175,7 @@ export default function ExpenseInput() {
                                 locale="en-SG"
                                 value={date}
                                 onChange={(d) => setDate(d)}
+                                onChangeText={(d) => {typeof d === Date ? setDate(d) : setDate("")}}
                                 inputMode="start"
                                 label="Transaction Date"
                                 display="calendar"
