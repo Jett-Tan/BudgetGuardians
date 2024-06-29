@@ -27,7 +27,7 @@ import CategoriseTab from "./(tabs)/CategoriseTab"
 export default function Page() {
     const router = useRouter();
     const [currentUser, setCurrentUser] = useState({});
-    const [tab, setTab] = useState("budget");
+    const [tab, setTab] = useState("home");
 
     const check = setInterval(() => {
         !auth.currentUser && router.replace('./initPage') ;

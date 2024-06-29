@@ -8,7 +8,7 @@
     "userInterfaceStyle": "light",
     "scheme": "BudgetGuardians",
     "splash": {
-      "image": "./app/assets/favicon.png",
+      "image": "./app/assets/icon.png",
       "resizeMode": "contain",
       "backgroundColor": "#e0fdf8"
     },
@@ -23,7 +23,7 @@
       "package": "com.jettpy.BudgetGuardians"
     },
     "web": {
-      "favicon": "./app/assets/favicon.png"
+      "favicon": "./app/assets/icon.png"
     },
     "plugins": [
       "expo-router",

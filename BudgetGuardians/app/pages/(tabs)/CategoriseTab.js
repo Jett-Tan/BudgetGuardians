@@ -93,7 +93,7 @@ const CategoriseTransaction = () => {
     <View style={[styles.container, {backgroundColor: "#111111"}]}>
         <View style={[styles.container, {backgroundColor: "#111111"}]}>
           <MultiSelect
-            style={[styles.dropdown,{shadowColor:"black",shadowRadius:15,padding:10, borderRadius:15,shadowOpacity:0.5,marginVertical:10, borderWidth: 2, // Add this line
+            style={[styles.dropdown,{shadowColor:"black",shadowRadius:15,padding:10, borderRadius:15,shadowOpacity:0.5,marginVertical:10, borderWidth: 3, // Add this line
             borderColor: 'white', backgroundColor:"#111111"}]}
             
             
@@ -251,7 +251,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 12,
     paddingVertical: 8,
     borderColor: "white",
-    borderWidth: 2,
+    borderWidth: 3,
     shadowOffset: {
       width: 0,
       height: 1,
@@ -278,7 +278,7 @@ const styles = StyleSheet.create({
     backgroundColor:'#111111',
     color: "white",
     borderColor: "white",
-    borderWidth: 2,
+    borderWidth: 3,
   },
   activeSort: {
     backgroundColor: '#7fd1e6',
@@ -298,7 +298,7 @@ const styles = StyleSheet.create({
     marginBottom: 5,
     backgroundColor: '#111111',
     borderRadius: 10,
-    borderWidth: 2, // Add this line
+    borderWidth: 3, // Add this line
     borderColor: 'white', // Add this line
   },
   underline: {
