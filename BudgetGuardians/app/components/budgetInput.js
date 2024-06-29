@@ -185,14 +185,20 @@ export default function BudgetInput() {
                         <Dropdown
                             data={defaultCategory}
                             style={{width: "auto",borderRadius: 10,height:50,borderColor: 'black', borderWidth: 1, padding: 5,marginVertical:5, borderColor:"white"}}
+                            
+                            
+                            
+                            containerStyle={{borderWidth: 3, marginTop:4,paddingVertical: 8,borderRadius:15, borderColor:"white", backgroundColor:"#111111"}}
                             placeholderStyle={{fontSize: 16,marginLeft:10, whiteSpace: 'nowrap', color:"white"}}
-                            selectedTextStyle={{fontSize: 16,marginLeft:10, whiteSpace: 'nowrap', backgroundColor:"#111111", color:"white"}}
-                            inputSearchStyle={{fontSize: 16,justifyContent:"center",height:50, whiteSpace: 'nowrap',backgroundColor: "#111111", color:"white"}}
+                            selectedTextStyle={{fontSize: 16,marginLeft:10, whiteSpace: 'nowrap',  color:"white"}}
+                            inputSearchStyle={{fontSize: 16,height:50,whiteSpace: 'nowrap',  color:"white"}}
+                            itemContainerStyle={{backgroundColor: "#111111"}}
+                            itemTextStyle={{color:"white"}}
                             labelField="label"
                             valueField="value"
                             maxHeight={300}
-                            itemContainerStyle={{backgroundColor: "#111111"}}
-                            itemTextStyle={{color:"white"}}
+                           
+                            
                             activeColor='#2596be'
                             search
                             searchPlaceholder="Search..."
