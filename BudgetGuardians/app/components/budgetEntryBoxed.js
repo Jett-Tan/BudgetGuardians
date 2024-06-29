@@ -74,22 +74,22 @@ export default function BudgetEntryBoxed({
             <Modal visible={modalVisible} transparent={true}>
                 <Pressable onPress={()=>setModalVisible(false)} style={{width:"100%",height:"100%",zIndex:-1,position:"absolute",backgroundColor:"black",opacity:0.2}}></Pressable>
                 <View style={{margin:"auto"}}>
-                    <View style={{width:300,height:300,backgroundColor:"white",borderRadius:15,shadowColor:"black",shadowRadius:5,shadowOpacity:0.5}}>
+                    <View style={{width:300,height:300,backgroundColor:"#111111",borderRadius:15,shadowColor:"black",shadowRadius:5,shadowOpacity:0.5, borderColor:"white", borderWidth: 3}}>
                         <View style={{flexDirection:"row",justifyContent:"space-between"}}>
-                            <Text style={{fontSize:20,fontWeight:"bold",margin:15}}>{props.category}</Text>
+                            <Text style={{fontSize:20,fontWeight:"bold",margin:15, color:"white"}}>{props.category}</Text>
                             <Pressable onPress={() => setModalVisible(false)}>
-                                <FaIcon name="x" size={20} style={{margin:15}}/>
+                                <FaIcon name="x" size={20} style={{margin:15}} color={"white"}/>
                             </Pressable>
                         </View>
                         <View style={{margin:15}}>
-                            <Text style={{fontSize:20,fontWeight:"bold"}}>Budget: ${absTotalBudget.toFixed(2)}</Text>
-                            <Text style={{fontSize:20,fontWeight:"bold"}}>Spent: ${absTotalSpent.toFixed(2)}</Text>
-                            <Text style={{fontSize:20,fontWeight:"bold"}}>Added Income: ${absAdditionalIncome.toFixed(2)}</Text>
+                            <Text style={{fontSize:20,fontWeight:"bold", color:"white"}}>Budget: ${absTotalBudget.toFixed(2)}</Text>
+                            <Text style={{fontSize:20,fontWeight:"bold", color:"white"}}>Spent: ${absTotalSpent.toFixed(2)}</Text>
+                            <Text style={{fontSize:20,fontWeight:"bold", color:"white"}}>Added Income: ${absAdditionalIncome.toFixed(2)}</Text>
                             {
                                 absRemaining > 0 ? 
-                                <Text style={{fontSize:20,fontWeight:"bold"}}>Remaining: ${displayNumber.toFixed(2)}</Text>
+                                <Text style={{fontSize:20,fontWeight:"bold", color:"white"}}>Remaining: ${displayNumber.toFixed(2)}</Text>
                                 : 
-                                <Text style={{fontSize:20,fontWeight:"bold"}}>Over Spent ${Math.abs(displayNumber).toFixed(2)}</Text>
+                                <Text style={{fontSize:20,fontWeight:"bold", color:"white"}}>Over Spent ${Math.abs(displayNumber).toFixed(2)}</Text>
                             }
                         </View>
                         {/* <View style={{flexDirection:"row",justifyContent:"space-between"}}>
