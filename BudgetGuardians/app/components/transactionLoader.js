@@ -112,6 +112,7 @@ export default function TransactionLoader() {
         const formatteddate = new Date(toEditTransactionDate).toLocaleDateString('en-SG')
         newTransactions[toEditTransactionID] = ({amount: numericAmount, category: toEditTransactionCatergory, date: formatteddate,description: toEditTransactionDescription});
         updateTransactionToFirestore(newTransactions).then( async() => {
+            setModalVisible(false);
             await getUserDataFromFirestore().then((data) => {
                 const financialData = data.financialData;
                 const transactions = financialData.transactions;
@@ -127,7 +128,6 @@ export default function TransactionLoader() {
                     alert(`You have fully utilized your budget for ${toEditTransactionCatergory}!`);
                 }
             });
-            setModalVisible(false);
             reset();
         });
     }
