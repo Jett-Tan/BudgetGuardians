@@ -31,8 +31,14 @@ export default function Page() {
         <View style={styles.container}>
             <View style={styles.main}>
                 <Icon size ={300} iconHref="favicon"/>
-                <CustomButton type="login" text="Login" href ="./loginPage"/>
-                <CustomButton type="signup" text="Signup" href ="./signupPage"/>
+                <CustomButton type="login" text="Login" href ="./loginPage"
+                containerStyle={{width:"100%",marginLeft:0,minWidth:0,height:50,marginVertical:5, borderColor:"white", borderWidth:2, borderRadius:10, backgroundColor:"#33CBFF"}}
+                textStyle={{fontSize:styleSetting.size.em24}}
+                />
+                <CustomButton type="signup" text="Signup" href ="./signupPage"
+                containerStyle={{width:"100%",marginLeft:0,minWidth:0,height:50,marginVertical:5, borderColor:"white", borderWidth:2, borderRadius:10, backgroundColor:"#33CBFF"}}
+                textStyle={{fontSize:styleSetting.size.em24}}
+                />
             </View>
         </View>
     );  
@@ -43,7 +49,7 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     padding: 24,
-    backgroundColor:styleSetting.color.lightlightblue,
+    backgroundColor:styleSetting.color.lightblack,
   },
   main: {
     flex: 1,

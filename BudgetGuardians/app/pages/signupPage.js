@@ -118,6 +118,9 @@ export default function Page() {
                 placeholder="Your Email"
                 onChange1={e => onChangeEmail(e)}
                 values={email}
+                containerStyle={{width:"85%",marginLeft:0,minWidth:0,height:50,marginVertical:5, borderColor:"white", borderWidth:2, borderRadius:10, backgroundColor:"#111111"}}
+                inputContainerStyle = {{minWidth:"10%", backgroundColor:"#111111", height:40, borderColor:"transparent", borderWidth:2, borderRadius:10,paddingLeft: 10 }}
+                inputStyle = {{color:"white"}}
             />
             <CustomInput
                 password = {true}
@@ -128,11 +131,16 @@ export default function Page() {
                 values2={confirmPassword}
                 hiddenEye = {true}
                 type="confirm"
+                containerStyle={{width:"85%",marginLeft:0,minWidth:0,height:50,marginVertical:25, borderColor:"white", borderWidth:2, borderRadius:10, backgroundColor:"#111111"}}
+                inputContainerStyle = {{minWidth:"10%", backgroundColor:"#111111", height:40, borderColor:"transparent", borderWidth:2, borderRadius:10,paddingLeft: 10 }}
+                inputStyle = {{color:"white"}}
             />
             <CustomButton
                 type="signup"
                 onPress={handleSignup}
                 text="Signup"
+                containerStyle={{width:"80%",marginLeft:0,minWidth:0,height:50,marginVertical:30, borderColor:"white", borderWidth:2, borderRadius:10, backgroundColor:"#33CBFF"}}
+                textStyle={{fontSize:styleSetting.size.em24}}
             />
             {error && <Text style = {styles.error}>Error: {error}</Text>}
             {success && <Text style = {styles.success}>{success}</Text>}
@@ -151,13 +159,14 @@ const styles = StyleSheet.create({
     button:{
         width:styleSetting.size.em600,
         padding:styleSetting.size.em10,
-        fontSize:styleSetting.size.em20
+        fontSize:styleSetting.size.em20,
+        backgroundColor:styleSetting.color.lightblack,
     },
     container: {
         flex: 1,
         alignItems: "center",
         padding: styleSetting.size.em24,
-        backgroundColor:styleSetting.color.lightlightblue,
+        backgroundColor:styleSetting.color.lightblack,
     },
     containerForPasswords: {
         position: 'relative',
@@ -170,23 +179,27 @@ const styles = StyleSheet.create({
         alignItems:"center",
         maxWidth: styleSetting.size.em960,
         marginHorizontal: "auto",
+        backgroundColor: "#111111",
     },
     card: {
         marginTop:"auto",
         marginBottom:"auto",
-        backgroundColor:styleSetting.color.white,
-        maxHeight:550,
-        minHeight:styleSetting.size.em400,
+        backgroundColor:styleSetting.color.lightblack,
+        maxHeight:600,
+        minHeight:styleSetting.size.em500,
         borderRadius:styleSetting.size.em24,
         flex:1,
         justifyContent: "center",
         alignItems:"center",
         minWidth:styleSetting.size.em350,
         maxWidth:styleSetting.size.em450,
+        borderColor: "white",
+        borderWidth: 3,
     },
     error:{
         color:styleSetting.color.red,
         textAlign: "center",
+        paddingVertical: 4,
     },
     success:{
         color:styleSetting.color.forestgreen,
@@ -203,6 +216,7 @@ const styles = StyleSheet.create({
         paddingLeft: styleSetting.size.em10,
         paddingRight: styleSetting.size.em10,
         borderRadius:styleSetting.size.em10,
+        
     },
     icon: {
         position: 'absolute',
@@ -214,9 +228,11 @@ const styles = StyleSheet.create({
     },
     navigationbar: {
         alignSelf:"flex-start",
+        backgroundColor: "#111111"
     },
     navigationbarText: {
         fontSize:styleSetting.size.em20,
-        fontWeight:"bold"
+        fontWeight:"bold",
+        color:"white",
     }
 });

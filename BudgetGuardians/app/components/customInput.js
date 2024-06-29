@@ -1,7 +1,7 @@
 import { Text, TextInput, View, StyleSheet, Pressable } from 'react-native';
 import { useState } from 'react';
 import { Entypo } from '@expo/vector-icons';
-
+import FaIcon from "./FaIcon";
 import styleSetting from '../setting/setting';
 import Errors from '../setting/errors';
 
@@ -85,10 +85,10 @@ export default function CustomInput({
                         <Pressable 
                             onPress={() => setShowPassword1(!showPassword1)}
                             style={styles.icon}>
-                            {true ? (
-                                <Entypo name="eye" size={24} color="black" />
+                            {showPassword1 ? (
+                                <Entypo name="eye-with-line" size={24} color="white" />
                             ) : (
-                                <Entypo name="eye-with-line" size={24} color="black" />
+                                <Entypo name="eye" size={24} color={"white"} />
                             )}
                         </Pressable>
                     }
@@ -118,10 +118,10 @@ export default function CustomInput({
                             <Pressable 
                                 onPress={() => setShowPassword2(!showPassword2)}
                                 style={styles.icon}>
-                                {true ? (
-                                    <Entypo name="eye" size={24} color="black" />
+                                {showPassword2 ? (
+                                    <Entypo name="eye-with-line" size={24} color="white" />
                                 ) : (
-                                    <Entypo name="eye-with-line" size={24} color="black" />
+                                    <Entypo name="eye" size={24} color="white"  />
                                 )}
                             </Pressable>
                         }
@@ -162,7 +162,8 @@ const styles = StyleSheet.create({
         marginLeft:"auto",
         marginRight:styleSetting.size.em16,
         height:styleSetting.size.em30,
-        maxWidth:styleSetting.size.em295,        
+        maxWidth:styleSetting.size.em295,
+        paddingVertical:10,        
     },
     input: {
         height: styleSetting.size.em47,
@@ -176,7 +177,6 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         padding: styleSetting.size.em10,
         borderRadius:styleSetting.size.em10,
-
         backgroundColor:styleSetting.color.white,
         flexDirection: 'row',
         alignItems: 'center', 

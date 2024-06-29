@@ -88,11 +88,16 @@ import {
                                               onChange1={(e) => setResetEmail(e)}
                                               values={resetEmail}
                                               placeholder="Your Email"
+                                              containerStyle={{width:"90%",marginLeft:15,minWidth:0,height:50,marginVertical:15, borderColor:"white", borderWidth:2, borderRadius:10, backgroundColor:"#111111"}}
+                                              inputContainerStyle = {{minWidth:"10%", backgroundColor:"#111111", height:40, borderColor:"transparent", borderWidth:2, borderRadius:10,paddingLeft: 10 }}
+                                              inputStyle = {{color:"white"}}
                                           />  
                                       <CustomButton
                                           type="primary"
                                           onPress={e => handlePasswordReset(e)} 
-                                          text="Reset Password"   
+                                          text="Reset Password"
+                                          containerStyle={{width:"80%",marginLeft:0,minWidth:0,height:50,marginVertical:30, borderColor:"white", borderWidth:2, borderRadius:10, backgroundColor:"#33CBFF"}}
+                                          textStyle={{fontSize:styleSetting.size.em24}}   
                                       />
                                       {errorResetEmail && <Text style={styles.error}>Error: {errorResetEmail}</Text>}
                                   <View style={{height:160}}></View>
@@ -107,6 +112,9 @@ import {
                           onChange1={(e) => setEmail(e)} 
                           values={email}
                           placeholder="Your Email" 
+                          containerStyle={{width:"80%",marginLeft:0,minWidth:0,height:50,marginVertical:5, borderColor:"white", borderWidth:2, borderRadius:10, backgroundColor:"#111111"}}
+                          inputContainerStyle = {{minWidth:"10%", backgroundColor:"#111111", height:40, borderColor:"transparent", borderWidth:2, borderRadius:10,paddingLeft: 10 }}
+                          inputStyle = {{color:"white"}}
                       />
                       <CustomInput 
                           type="password"
@@ -115,11 +123,16 @@ import {
                           values={password}
                           placeholder="Your Password" 
                           hiddenEye={true} 
+                          containerStyle={{width:"80%",marginLeft:0,minWidth:0,height:50,marginVertical:40, borderColor:"white", borderWidth:2, borderRadius:10, backgroundColor:"#111111"}}
+                          inputContainerStyle = {{minWidth:"20%", backgroundColor:"#111111", height:40, borderColor:"transparent", borderWidth:2, borderRadius:10,paddingLeft: 10 }}
+                          inputStyle = {{color:"white"}}
                       />
                       <CustomButton 
                           type="login" 
                           text="Login" 
                           onPress={e => handleLogin(e)}
+                          containerStyle={{width:"80%",marginLeft:0,minWidth:0,height:50,marginVertical:30, borderColor:"white", borderWidth:2, borderRadius:10, backgroundColor:"#33CBFF"}}
+                          textStyle={{fontSize:styleSetting.size.em24}}
                       />
                       {error && <Text style={styles.error}>Error: {error}</Text>}
                       <CustomButton 
@@ -151,7 +164,7 @@ import {
           flex: 1,
           alignItems: "center",
           padding: styleSetting.size.em24,
-          backgroundColor: styleSetting.color.lightlightblue,
+          backgroundColor: styleSetting.color.lightblack,
       },
       main: {
           flex: 1,
@@ -163,14 +176,16 @@ import {
       card: {
           marginTop: "auto",
           marginBottom: "auto",
-          backgroundColor: styleSetting.color.white,
-          maxHeight: styleSetting.size.em500,
+          backgroundColor: styleSetting.color.lightblack,
+          maxHeight: styleSetting.size.em600,
           borderRadius: styleSetting.size.em24,
           flex: 1,
           justifyContent: "center",
           alignItems: "center",
           minWidth: styleSetting.size.em350,
           maxWidth: styleSetting.size.em450,
+          borderColor: "white",
+          borderWidth: 3,
       },
       error: {
           color: styleSetting.color.red,
@@ -186,10 +201,12 @@ import {
       },
       navigationbar: {
           alignSelf: "flex-start",
+          backgroundColor: "#111111"
       },
       navigationbarText: {
           fontSize: styleSetting.size.em20,
-          fontWeight: "bold"
+          fontWeight: "bold",
+          color: "white",
       }
   });
   
