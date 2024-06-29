@@ -151,7 +151,7 @@ import {
           flex: 1,
           alignItems: "center",
           padding: styleSetting.size.em24,
-          backgroundColor: styleSetting.color.lightlightblue,
+          backgroundColor: styleSetting.color.lightblack,
       },
       main: {
           flex: 1,
@@ -186,10 +186,12 @@ import {
       },
       navigationbar: {
           alignSelf: "flex-start",
+          backgroundColor: "#111111"
       },
       navigationbarText: {
           fontSize: styleSetting.size.em20,
-          fontWeight: "bold"
+          fontWeight: "bold",
+          color: "white",
       }
   });
   
