@@ -91,7 +91,7 @@ export default function BudgetLoader({background = true}) {
         updateBudgetToFirestore(newBudgets);
         reset();
     }
-    const backgroundExist = background ? {shadowColor:"black",shadowOpacity:0.5,shadowRadius:15,borderRadius:15} : {}; 
+    const backgroundExist = background ? {} : {}; 
     const backgroundExist2 = background ? {} : {justifyContent:"center",alignItems:"center"}; 
     return (
         <>  
