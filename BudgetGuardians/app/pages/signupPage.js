@@ -122,8 +122,8 @@ export default function Page() {
                 placeholder="Your Email"
                 onChange1={e => onChangeEmail(e)}
                 values={email}
-                containerStyle={{width:"85%",marginLeft:0,minWidth:0,height:50,marginVertical:5, borderColor:"white", borderWidth:2, borderRadius:10, backgroundColor:"#111111"}}
-                inputContainerStyle = {{minWidth:"10%", backgroundColor:"#111111", height:40, borderColor:"transparent", borderWidth:2, borderRadius:10,paddingLeft: 10 }}
+                containerStyle={{width:"85%",marginLeft:0,minWidth:0,height:50,marginVertical:5, borderColor:"white", borderWidth:3, borderRadius:10, backgroundColor:"#111111"}}
+                inputContainerStyle = {{minWidth:"10%", backgroundColor:"#111111", height:40, borderColor:"transparent", borderWidth:3, borderRadius:10,paddingLeft: 10 }}
                 inputStyle = {{color:"white"}}
             />
             <CustomInput
@@ -135,15 +135,15 @@ export default function Page() {
                 values2={confirmPassword}
                 hiddenEye = {true}
                 type="confirm"
-                containerStyle={{width:"85%",marginLeft:0,minWidth:0,height:50,marginVertical:25, borderColor:"white", borderWidth:2, borderRadius:10, backgroundColor:"#111111"}}
-                inputContainerStyle = {{minWidth:"10%", backgroundColor:"#111111", height:40, borderColor:"transparent", borderWidth:2, borderRadius:10,paddingLeft: 10 }}
+                containerStyle={{width:"85%",marginLeft:0,minWidth:0,height:50,marginVertical:25, borderColor:"white", borderWidth:3, borderRadius:10, backgroundColor:"#111111"}}
+                inputContainerStyle = {{minWidth:"10%", backgroundColor:"#111111", height:40, borderColor:"transparent", borderWidth:3, borderRadius:10,paddingLeft: 10 }}
                 inputStyle = {{color:"white"}}
             />
             <CustomButton
                 type="signup"
                 onPress={handleSignup}
                 text="Signup"
-                containerStyle={{width:"100%",marginLeft:0,minWidth:0,height:50,padding:5,marginVertical:30, borderColor:"white", borderWidth:2, borderRadius:10, backgroundColor:"#111111",shadowColor:shadowColor,shadowRadius:10}}
+                containerStyle={{width:"85%",marginLeft:0,minWidth:0,maxWidth:"auto",height:50,marginVertical:30, borderColor:"white", borderWidth:3, borderRadius:10, backgroundColor:"#111111",shadowColor:shadowColor,shadowRadius:10}}
                 textStyle={{fontSize:styleSetting.size.em24,color:"white"}}
             />
             {error && <Text style = {styles.error}>Error: {error}</Text>}
