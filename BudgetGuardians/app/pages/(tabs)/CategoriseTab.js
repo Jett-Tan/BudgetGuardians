@@ -95,13 +95,15 @@ const CategoriseTransaction = () => {
           <MultiSelect
             style={[styles.dropdown,{shadowColor:"black",shadowRadius:15,padding:10, borderRadius:15,shadowOpacity:0.5,marginVertical:10, borderWidth: 2, // Add this line
             borderColor: 'white', backgroundColor:"#111111"}]}
-            containerStyle={{backgroundColor: "#111111"}}
+            
+            
+            containerStyle={{borderWidth: 3, marginTop:4,paddingVertical: 8,borderRadius:15, borderColor:"white", backgroundColor:"#111111"}}
+            placeholderStyle={{fontSize: 16,marginLeft:10, whiteSpace: 'nowrap', color:"white"}}
+            selectedTextStyle={{fontSize: 16,marginLeft:10, whiteSpace: 'nowrap',  color:"white"}}
+            inputSearchStyle={{fontSize: 16,height:50,whiteSpace: 'nowrap',  color:"white"}}
             itemContainerStyle={{backgroundColor: "#111111"}}
-            placeholderStyle={{ fontSize: 16, marginLeft: 10, backgroundColor: "#111111", color:"white" }}
-            selectedTextStyle={{ fontSize: 16, marginLeft: 10, color: "white", backgroundColor: "#111111", color:"white" }}
-            selectedStyle={{backgroundColor:"#111111"}}
-            inputSearchStyle={{ fontSize: 16, justifyContent: "center", height: 50, color: "white", backgroundColor: "#111111" }}
             itemTextStyle={{color:"white"}}
+            
             iconStyle={styles.iconStyle}
             data={data}
             labelField="label"
