@@ -119,41 +119,41 @@ export default function TransactionLoader() {
     return (
         <>  
           <Modal visible={modalVisibleView} transparent={true}>
-                <Pressable onPress={() => setModalVisibleView(false)} style={{width:"100%",height:"100%",backgroundColor:"black",opacity:0.5,position:"absolute",left:0,top:0}}></Pressable>
-                <View style={{width:"30%",minWidth:350,height:"80%",backgroundColor:"white",margin:"auto",alignItems:"center",shadowColor:"black",shadowOpacity:0.5,shadowRadius:5,borderRadius:10}}>
+                <Pressable onPress={() => setModalVisibleView(false)} style={{width:"100%",height:"100%",backgroundColor:"black",opacity:0.6,position:"absolute",left:0,top:0}}></Pressable>
+                <View style={{width:"30%",minWidth:350,height:"80%",backgroundColor:"#111111",margin:"auto",alignItems:"center",shadowColor:"white",borderWidth:3,borderColor:"white",shadowOpacity:0.5,shadowRadius:15,borderRadius:15}}>
                     <View style={{width:"100%",padding:10}}>
                         <Pressable onPress={() => setModalVisibleView(false)} style={{marginLeft:"auto",marginRight:5}}>
-                          <FaIcon name={"x"} size={20}/>
+                          <FaIcon name={"x"} size={20} color={'white'}/>
                         </Pressable>
                     </View>
                     <View style={{width:"90%",padding:"5%",height:"90%"}}>
-                        <Text style={{fontSize: 20, margin:10,fontWeight: 'bold', textAlign:"center",textDecorationLine:"underline",width:"100%"}}>View Transaction</Text>
+                        <Text style={{fontSize:30, margin:10,fontWeight: 'bold', textAlign:"center",textDecorationLine:"underline",width:"100%",color:"white"}}>View Transaction</Text>
                         <View  style={{margin:10,marginBottom:15}}>
-                          <Text style={{fontSize: 20, fontWeight: 'bold'}}>Transaction Type</Text>
-                          <Text style={{fontSize: 20}}>{toViewTransactionCatergory}</Text>
+                          <Text style={{fontSize: 20, fontWeight: 'bold',color:"white"}}>Transaction Type</Text>
+                          <Text style={{fontSize: 20,color:"white"}}>{toViewTransactionCatergory}</Text>
                         </View>
                         <View  style={{margin:10,marginBottom:15}}>
-                          <Text style={{fontSize: 20, fontWeight: 'bold'}}>Transaction Amount</Text>
+                          <Text style={{fontSize: 20, fontWeight: 'bold',color:"white"}}>Transaction Amount</Text>
                           {toViewTransactionAmount < 0 ? 
-                          <Text style={{fontSize: 20}}>-${Math.abs(toViewTransactionAmount).toFixed(2)}</Text> : 
-                          <Text style={{fontSize: 20}}>+${Math.abs(toViewTransactionAmount).toFixed(2)}</Text>}
+                          <Text style={{fontSize: 20,color:"white"}}>-${Math.abs(toViewTransactionAmount).toFixed(2)}</Text> : 
+                          <Text style={{fontSize: 20,color:"white"}}>+${Math.abs(toViewTransactionAmount).toFixed(2)}</Text>}
                         </View>
                         <View  style={{margin:10,marginBottom:15}}>
-                          <Text style={{fontSize: 20, fontWeight: 'bold'}}>Transaction Date</Text>
-                          <Text style={{fontSize: 20}}>{toViewTransactionDate}</Text>
+                          <Text style={{fontSize: 20,color:"white", fontWeight: 'bold'}}>Transaction Date</Text>
+                          <Text style={{fontSize: 20,color:"white"}}>{toViewTransactionDate}</Text>
                         </View>
                         <View  style={{margin:10,marginBottom:15}}>
-                          <Text style={{fontSize: 20, fontWeight: 'bold'}}>Transaction Description</Text>
-                          <Text style={{fontSize: 20}}>{toViewTransactionDescription}</Text>
+                          <Text style={{fontSize: 20,color:"white", fontWeight: 'bold'}}>Transaction Description</Text>
+                          <Text style={{fontSize: 20,color:"white"}}>{toViewTransactionDescription}</Text>
                         </View>
                     </View>
                 </View>
           </Modal>
           <Modal visible={modalVisible} transparent={true}>
               <Pressable onPress={() => {setModalVisible(false);reset();}} style={{width:"100%",height:"100%",backgroundColor:"black",opacity:0.5,position:"absolute",left:0,top:0}}></Pressable>
-              <View style={{width:"30%",minWidth:350,height:"80%",backgroundColor:"#111111",margin:"auto",alignItems:"center",shadowColor:"black",shadowOpacity:0.5,shadowRadius:5,borderRadius:10}}>
+              <View style={{width:"30%",minWidth:350,height:"80%",backgroundColor:"#111111",margin:"auto",alignItems:"center",shadowColor:"white",shadowOpacity:0.5,shadowRadius:15,borderRadius:15,borderWidth:3,borderColor:"white"}}>
                   <View style={{width:"90%",padding:"5%",height:"90%",justifyContent:"space-evenly"}}>
-                      <Text style={{fontSize: 20, fontWeight: 'bold', textAlign:"center",textDecorationLine:"underline",width:"100%", color:"white"}}>Edit Transaction</Text>
+                      <Text style={{fontSize: 30, fontWeight: 'bold', textAlign:"center",textDecorationLine:"underline",width:"100%", color:"white"}}>Edit Transaction</Text>
                       <View  style={{}}>
                         <Text style={{fontSize: 13, fontWeight: 'bold', margin: 10, color:"white"}}>Transaction Type</Text>
                         <Dropdown
@@ -187,7 +187,7 @@ export default function TransactionLoader() {
                             onChange1={(x) => setToEditTransactionAmount(x)}
                             containerStyle={{width: "100%",margin:0,minWidth:100,maxWidth:'100%', justifyContent: 'center', alignItems: 'center', borderColor:"white", borderWidth:2, borderRadius: 10 }}
                             inputContainerStyle={{width: "100%",minWidth:100,maxWidth:'100%', height: 50, borderColor: 'white', borderWidth: 1, padding: 5, margin: 5, backgroundColor:"#111111"}}
-                            inputStyle={{width: "90%",minWidth:90, color:"white"}}
+                            inputStyle={{width: "90%",minWidth:90, color:"white",}}
                             errorExist={false}
                         />  
                         <Text style={{color: 'red', fontSize: 12, marginLeft: 10}}>{amountError}</Text>
