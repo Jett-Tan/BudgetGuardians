@@ -156,27 +156,30 @@ export default function TransactionLoader() {
                       <Text style={{fontSize: 30, fontWeight: 'bold', textAlign:"center",textDecorationLine:"underline",width:"100%", color:"white"}}>Edit Transaction</Text>
                       <View  style={{}}>
                         <Text style={{fontSize: 13, fontWeight: 'bold', margin: 10, color:"white"}}>Transaction Type</Text>
+                        
                         <Dropdown
-                            data={defaultCategory}
-                            style={{width: "100%",borderRadius: 10,height:50, borderColor: 'white', borderWidth: 1, padding: 5,marginTop:5}}
-                            placeholderStyle={{fontSize: 16,marginLeft:10, whiteSpace: 'nowrap', color:"white"}}
-                            selectedTextStyle={{fontSize: 16,marginLeft:10, whiteSpace: 'nowrap', color:"white"}}
-                            inputSearchStyle={{fontSize: 16,justifyContent:"center",height:50, whiteSpace: 'nowrap', backgroundColor: "#111111", color:"white"}}
-                            itemTextStyle={{color:"white"}}
-                            itemContainerStyle={{backgroundColor: "#111111"}}
-                            labelField="label"
-                            valueField="value"
-                            maxHeight={300}
-                            activeColor='#2596be'
-                            search
-                            searchPlaceholder="Search..."
-                            placeholder="Select Category"
-                            value={toEditTransactionCatergory}
-                            onChange={(item) => setToEditTransactionCatergory(item.value)}
-                            renderLeftIcon={() => (
-                                <FaIcon name="money-bill" size={20} color={"#7b9a6d"}/>
-                            )}
-                        />
+                                data={defaultCategory}
+                                style={{width: "100%",borderRadius: 10,height:60, borderColor: 'white', borderWidth: 3, padding: 5}}
+                                iconColor="white"
+                                containerStyle={{borderWidth: 3, marginTop:4,paddingVertical: 8,borderRadius:15, borderColor:"white", backgroundColor:"#111111"}}
+                                placeholderStyle={{fontSize: 16,marginLeft:10, whiteSpace: 'nowrap', color:"white"}}
+                                selectedTextStyle={{fontSize: 16,marginLeft:10, whiteSpace: 'nowrap',  color:"white"}}
+                                inputSearchStyle={{fontSize: 16,height:50,whiteSpace: 'nowrap',  color:"white"}}
+                                itemContainerStyle={{backgroundColor: "#111111"}}
+                                itemTextStyle={{color:"white"}}
+                                labelField="label"
+                                valueField="value"
+                                maxHeight={300}
+                                activeColor='#2596be'
+                                search
+                                searchPlaceholder="Search..."
+                                placeholder="Select Category" 
+                                value={toEditTransactionCatergory}
+                                onChange={(item) => setToEditTransactionCatergory(item.value)}
+                                renderLeftIcon={() => (
+                                    <FaIcon name="money-bill" size={20} color={"#7b9a6d"}/>
+                                )}
+                            />
                         <Text style={{color: 'red', fontSize: 12, marginLeft: 10}}>{categoryError}</Text>
                       </View>
                       <View style={{}}>
@@ -185,40 +188,48 @@ export default function TransactionLoader() {
                             placeholder="Enter Amount"
                             values={toEditTransactionAmount}
                             onChange1={(x) => setToEditTransactionAmount(x)}
-                            containerStyle={{width: "100%",margin:0,minWidth:100,maxWidth:'100%', justifyContent: 'center', alignItems: 'center', borderColor:"white", borderWidth:2, borderRadius: 10 }}
-                            inputContainerStyle={{width: "100%",minWidth:100,maxWidth:'100%', height: 50, borderColor: 'white', borderWidth: 1, padding: 5, margin: 5, backgroundColor:"#111111"}}
-                            inputStyle={{width: "90%",minWidth:90, color:"white",}}
+                            containerStyle={{margin:0, padding:0,width:"100%",maxWidth:"auto", height:"auto"}}
+                            inputContainerStyle={{height: 60,margin:0, borderColor: 'white',maxWidth:"auto", borderWidth: 3, padding: 5, borderColor:"white", backgroundColor:"#111111"}}
+                            inputStyle={{width: "95%",height:50,backgroundColor:"#111111", color:"white"}}
                             errorExist={false}
-                        />  
+                        />
                         <Text style={{color: 'red', fontSize: 12, marginLeft: 10}}>{amountError}</Text>
                       </View>
                     <View style={{}}>
                         <Text style={{fontSize: 13, fontWeight: 'bold', margin: 10, color:"white"}}>Transaction Date</Text>
+                        
                         <DatePickerInput 
-                            style={{width:270,fontSize:13,maxHeight:50,height:50, backgroundColor:"white",borderRadius:10,borderTopRightRadius:10,borderTopLeftRadius:10,borderWidth:1,borderColor:"black"}}
-                            locale="en-SG"
-                            value={toEditTransactionDate}
-                            onChangeText={(d) => {typeof d === Date ? setToEditTransactionDate(d) : setToEditTransactionDate("")}}
-                            onChange={(d) => setToEditTransactionDate(d)}
-                            inputMode="start"
-                            label="Transaction Date"
-
-                            display="calendar"
-                            activeUnderlineColor="black"
-                        />
+                                style={{backgroundColor:"#111111",color:"white",borderRadius:10,borderTopRightRadius:10,borderTopLeftRadius:10,height:54,alignSelf:"flex-start",padding:0,borderWidth:3,borderColor:"white"}}
+                                underlineStyle={{borderWidth:0}}
+                                underlineColor="white"
+                                outlineStyle={{borderWidth:0}}
+                                selectionColor="white"
+                                iconColor="white"
+                                textColor="white"
+                                activeUnderlineColor="white"
+                                color
+                                placeholderTextColor={"white"}
+                                locale="en-SG"
+                                value={toEditTransactionDate}
+                                onChangeText={(d) => {typeof d === Date ? setToEditTransactionDate(d) : setToEditTransactionDate("")}}
+                                onChange={(d) => setToEditTransactionDate(d)}
+                                inputMode="start"
+                                label="Transaction Date"
+                                display="calendar"
+                            />
                         <Text style={{color: 'red', fontSize: 12, marginLeft: 10}}>{dateError}</Text>
                     </View>
                     <View style={{}}>
                       <Text style={{fontSize: 13, fontWeight: 'bold', margin: 10, color:"white"}}>Description</Text>
+                      
                       <CustomInput
-                          placeholder="Enter Description"
+                          placeholder="Enter Descriptions (Optional)"
                           values={toEditTransactionDescription}
                           onChange1={(x) => setToEditTransactionDescription(x)}
-                          containerStyle={{width: "100%",margin:0,minWidth:100,maxWidth:'100%', justifyContent: 'center', alignItems: 'center'}}
-                          inputContainerStyle={{width: "100%",minWidth:100,maxWidth:'100%', height: 50, borderColor: 'white', borderWidth: 1, padding: 5, margin: 5}}
-                          inputStyle={{width: "90%",minWidth:90}}
-                          errorExist={false}
-                      />  
+                          containerStyle={{width: "100%",minWidth:"100%",maxWidth:"auto",marginLeft:0,margin:0}}
+                          inputContainerStyle={{width: "100%",minWidth:"100%",maxWidth:"auto",marginLeft:0,margin:0, height: 60, borderColor: 'black', borderWidth: 3, padding: 5,borderColor:"white", backgroundColor:"#111111"}}
+                          inputStyle={{width: "100%",minWidth:"100%", borderColor:"white", backgroundColor:"#111111", color:"white"}}
+                      /> 
                     </View>
                     <View>
                       <CustomButton
