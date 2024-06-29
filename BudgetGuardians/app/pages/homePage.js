@@ -47,7 +47,8 @@ export default function Page() {
                 setCurrentUser(data);
             })
             .catch((err) => {
-                alert(err);
+                router.replace('./createProfilePage') ;
+                
             });
         })();
     }, []);
@@ -59,7 +60,7 @@ export default function Page() {
             setCurrentUser(data);
         })
         .catch((err) => {
-            alert(err);
+             router.replace('./createProfilePage') ;
         });
     }, 100);
     setTimeout(()=>{clearInterval(loadData)} ,300);
