@@ -141,7 +141,7 @@ import {
                           onPress={() => setModalVisible(true)}
                           
                       /> 
-                      {error && <Text style={styles.error}>Error: {error}</Text>}
+                      
                       <CustomButton 
                           type="link" 
                           text="Don't have an account ? Sign Up Now!" 
