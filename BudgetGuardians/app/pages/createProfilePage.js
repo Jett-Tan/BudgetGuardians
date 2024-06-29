@@ -63,6 +63,9 @@ export default function createProfilePage(){
                             return ''
                         }
                     }}
+                    containerStyle={{width:"90%",marginLeft:15,minWidth:0,height:50,marginVertical:15, borderColor:"white", borderWidth:2, borderRadius:10, backgroundColor:"#111111"}}
+                    inputContainerStyle = {{minWidth:"10%", backgroundColor:"#111111", height:40, borderColor:"transparent", borderWidth:2, borderRadius:10,paddingLeft: 10 }}
+                    inputStyle = {{color:"white"}}
                 />
                 <CustomInput
                     type="default"
@@ -77,6 +80,9 @@ export default function createProfilePage(){
                             return ''
                         }
                     }}
+                    containerStyle={{width:"90%",marginLeft:15,minWidth:0,height:50,marginVertical:15, borderColor:"white", borderWidth:2, borderRadius:10, backgroundColor:"#111111"}}
+                    inputContainerStyle = {{minWidth:"10%", backgroundColor:"#111111", height:40, borderColor:"transparent", borderWidth:2, borderRadius:10,paddingLeft: 10 }}
+                    inputStyle = {{color:"white"}}
                 />
                 <CustomInput
                     type="default"
@@ -93,6 +99,9 @@ export default function createProfilePage(){
                             return ''
                         }
                     }}
+                    containerStyle={{width:"90%",marginLeft:15,minWidth:0,height:50,marginVertical:15, borderColor:"white", borderWidth:2, borderRadius:10, backgroundColor:"#111111"}}
+                    inputContainerStyle = {{minWidth:"10%", backgroundColor:"#111111", height:40, borderColor:"transparent", borderWidth:2, borderRadius:10,paddingLeft: 10 }}
+                    inputStyle = {{color:"white"}}
                 />
                 <CustomButton
                     type="signup"
@@ -113,20 +122,23 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         padding: styleSetting.size.em24,
-        backgroundColor:styleSetting.color.lightlightblue,
+        backgroundColor:styleSetting.color.lightblack,
     },
     card: {
         marginTop:"auto",
         marginBottom:"auto",
-        backgroundColor:styleSetting.color.white,
-        maxHeight:styleSetting.size.em500,
-        minHeight:styleSetting.size.em400,
+        backgroundColor:styleSetting.color.lightblack,
+        maxHeight:styleSetting.size.em600,
+        minHeight:styleSetting.size.em500,
         borderRadius:styleSetting.size.em24,
         flex:1,
         justifyContent: "center",
         alignItems:"center",
         minWidth:styleSetting.size.em350,
         maxWidth:styleSetting.size.em450,
+        borderColor: "white",
+        borderWidth: 3,
+
     },
     header: {
         width: "100%",
