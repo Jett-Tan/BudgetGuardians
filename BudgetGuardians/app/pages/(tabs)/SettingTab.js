@@ -8,6 +8,7 @@ import CategoryInput from "../../components/CategoryInput";
 import styleSetting from "../../setting/setting";
 import CustomButton from "../../components/customButton";
 import FaIcon from "../../components/FaIcon";
+import {defaultCategory} from "../../components/defaultCategory";
 
 export default function SettingTab() {
     const [userCategory, setUserCategories] = useState([]);
@@ -29,6 +30,7 @@ export default function SettingTab() {
     }
 
     const onClickSave = () => {
+        // update the list of categories colors
         setModalVisibleEdit(false);
     }
 
@@ -37,8 +39,10 @@ export default function SettingTab() {
     }
 
     const onClickAddCategory = () => {
+        // update the list of categories colors
         setModalVisibleAdd(false);
     }
+
     return (
         <>
             <Modal visible={modalVisibleEdit} transparent={true} >
