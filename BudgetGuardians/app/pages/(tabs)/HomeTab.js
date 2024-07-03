@@ -6,16 +6,19 @@ import CustomButton from "../../components/customButton";
 import BudgetEntryBoxed from "../../components/budgetEntryBoxed";
 import BudgetLoader from "../../components/budgetLoader";
 import styleSetting from "../../setting/setting";
+import { defaultCategory, getUserCategory } from "../../components/defaultCategory";
 
 export default function HomeTab() {
     const [currentUser, setCurrentUser] = useState();
     const [lastestTransaction5, setLastestTransaction5] = useState();
     const [budgetInfo, setBudgetInfo] = useState();
-    
+    const [userCategory, setUserCategory] = useState([]);
+
     liveUpdate((x) => {
         setCurrentUser(x)
         findBudgets(x);
         findTransactions(x);
+        setUserCategory(x?.financialData?.categories || defaultCategory);
     });
 
     const findTransactions = (x) => {
@@ -50,19 +53,6 @@ export default function HomeTab() {
         setBudgetInfo(temp);
     }
 
-    // useEffect(() => {
-    //     (async () => {
-    //         await getUserDataFromFirestore()
-    //         .then((data) => {
-    //             setCurrentUser(data);
-    //             findGoals(data);
-    //             findTransactions(data);
-    //         })
-    //         .catch((err) => {
-    //             alert(err);
-    //         });
-    //     })();
-    // },[])
 
     // const loadData = setInterval(async () => {
     //     await getUserDataFromFirestore()
@@ -77,8 +67,14 @@ export default function HomeTab() {
     // }, 100);
     // setTimeout(()=>{clearInterval(loadData)} ,1000);
     
-
-
+    
+    const getCategoryColor =  (x) => {
+        const color = userCategory.filter((y) => y.label === x).map((y) => y.color);
+        if (color.length > 0) {
+            return color[0];
+        }
+        return "white" ;
+    }
     return (
         <>
             <View style={{width:'100%',height:'90%',justifyContent:"space-around",alignItems:"center",flexDirection:"row"}}>
@@ -91,7 +87,16 @@ export default function HomeTab() {
                             {lastestTransaction5 && lastestTransaction5.map((transaction,index) => {
                                 return(
                                     <View key={index} style={{width:'90%',marginVertical:10, borderRadius:10,shadowColor:styleSetting.color.blue,shadowOpacity:0.5,shadowRadius:10}}>
-                                        <TransactionEntry showbutton={false} dateStyle={{color:"white"}} categoryStyle={{color:"white"}} amountStyle={{color:"white"}} props={{date:transaction.date, category:transaction.category, amount:transaction.amount}} transactionStyle={{width:"100%"}}containerStyle={{width:"100%"}}/>
+                                        <TransactionEntry 
+                                            showbutton={false} 
+                                            dateStyle={{color:"white"}} 
+                                            categoryStyle={{color:"white"}}
+                                            amountStyle={{color:"white"}} 
+                                            titleBoxStyle={{shadowRadius:10,shadowOpacity:0.9,shadowColor:getCategoryColor(transaction.category)}}
+                                            props={{date:transaction.date, category:transaction.category, amount:transaction.amount}} 
+                                            transactionStyle={{width:"100%"}}
+                                            containerStyle={{width:"100%"}}
+                                        />
                                     </View>
                                 )
                             })}

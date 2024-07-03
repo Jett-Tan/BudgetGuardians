@@ -6,7 +6,7 @@ import { liveUpdate, updateTransactionToFirestore,getUserDataFromFirestore } fro
 import styleSetting from "../setting/setting";
 import CustomInput from "./customInput";
 import {Dropdown} from 'react-native-element-dropdown'
-import { defaultCategory } from "./expenseInput";
+import { getUserCategory,defaultCategory } from "./defaultCategory";
 import FaIcon from "./FaIcon";
 import CustomButton from "./customButton";
 import { set } from "firebase/database";
@@ -34,11 +34,14 @@ export default function TransactionLoader() {
     const [amountError, setAmountError] = useState("");
     const [dateError, setDateError] = useState("");
 
+    const [userCategory, setUserCategory] = useState([]);
+
     useEffect(() => {
         liveUpdate((data) => {
             setTransactions(data?.financialData?.transactions || []);
+            setUserCategory(data?.financialData?.categories || defaultCategory);
         });
-    }, []);
+      }, []);
 
 
     const reset =() => {
@@ -131,6 +134,8 @@ export default function TransactionLoader() {
             reset();
         });
     }
+
+    
     return (
         <>  
           <Modal visible={modalVisibleView} transparent={true}>
@@ -172,7 +177,7 @@ export default function TransactionLoader() {
                       <View  style={{}}>
                         <Text style={{fontSize: 13, fontWeight: 'bold', margin: 10, color:"white"}}>Transaction Type</Text>
                         <Dropdown
-                                data={defaultCategory}
+                                data={userCategory}
                                 style={{width: "100%",borderRadius: 10,height:60, borderColor: 'white', borderWidth: 3, padding: 5}}
                                 iconColor="white"
                                 containerStyle={{borderWidth: 3, marginTop:4,paddingVertical: 8,borderRadius:15, borderColor:"white", backgroundColor:"#111111"}}
@@ -263,6 +268,7 @@ export default function TransactionLoader() {
                       <TransactionEntry 
                           deleteTransaction={() => deleteTransaction(index)} 
                           editTransaction={() => editTransaction(index)} 
+                          titleBoxStyle={{shadowRadius:10,shadowOpacity:0.9,shadowColor:userCategory.filter((y) => y.value === x.category).map((y) => y.color)[0]}}
                           onPress={() => viewTransaction(index)}
                           props={{ amount: x?.amount, date: x?.date, category: x?.category }} 
                       />

@@ -8,16 +8,7 @@ import CustomInput from "./customInput";
 import CustomButton from "./customButton";
 import FaIcon from "./FaIcon";
 import styleSetting from "../setting/setting";
-
-export const defaultCategory = [
-  { label: 'Transport', value: 'Transport' },
-  { label: 'Food', value: 'Food' },
-  { label: 'Groceries', value: 'Groceries' },
-  { label: 'Utilities', value: 'Utilities' },
-  { label: 'Rent', value: 'Rent' },
-  { label: 'Allowance', value: 'Allowance' },
-  { label: 'Others', value: 'Others' },
-];
+import { defaultCategory } from "./defaultCategory"
 
 export default function ExpenseInput() {
     const [category, setCategory] = useState("");

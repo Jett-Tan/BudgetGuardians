@@ -7,7 +7,7 @@ import { liveUpdate, updateBudgetToFirestore } from "../setting/fireStoreFunctio
 import styleSetting from "../setting/setting";
 import CustomInput from "./customInput";
 import {Dropdown} from 'react-native-element-dropdown'
-import { defaultCategory } from "./expenseInput";
+import { defaultCategory } from "./defaultCategory";
 import FaIcon from "./FaIcon";
 import CustomButton from "./customButton";
 import BudgetEntryBoxed from "./budgetEntryBoxed";

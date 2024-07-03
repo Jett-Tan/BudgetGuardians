@@ -13,17 +13,7 @@ import CustomInput from "./customInput";
 import CustomButton from "./customButton";
 import FaIcon from "./FaIcon";
 import styleSetting from "../setting/setting";
-import { set } from "firebase/database";
-
-export const defaultCategory = [
-  { label: 'Transport', value: 'Transport' },
-  { label: 'Food', value: 'Food' },
-  { label: 'Groceries', value: 'Groceries' },
-  { label: 'Utilities', value: 'Utilities' },
-  { label: 'Rent', value: 'Rent' },
-  { label: 'Allowance', value: 'Allowance' },
-  { label: 'Others', value: 'Others' },
-];
+import { defaultCategory } from "./defaultCategory";
 
 export default function BudgetInput() {
     const [category, setCategory] = useState("");
@@ -33,7 +23,7 @@ export default function BudgetInput() {
 
     const [categoryBudget, setCategoryBudget] = useState([]);
 
-
+    const [userCategory, setUserCategory] = useState([]);
     
     useEffect(() => {
         
@@ -41,6 +31,7 @@ export default function BudgetInput() {
             const budgets = data?.financialData?.budgetInfo?.budgets || [];
             setTotalBudgetAmount(data?.financialData?.budgetInfo?.totalBudgetAmount?.toString() || "");
             setCategoryBudget(budgets);
+            setUserCategory(data?.financialData?.categories || defaultCategory);
         });
 
         
@@ -158,42 +149,12 @@ export default function BudgetInput() {
     }
     return (
         <>
-            {/* <View style={{flexDirection:"column",alignItems:"center",width:"90%",height:"50%",flexWrap:"wrap", padding:10,borderRadius:15,shadowRadius:15,shadowColor:"black",shadowOpacity:0.5}}>
-                <Text>Total Budget</Text>
-                <View style={{width:"90%",marginTop:20}}>
-                    <Text style={{marginLeft:5}}>Set Total Budget Amount</Text>
-                    <CustomInput
-                        placeholder="Amount"
-                        values={totalBudgetAmount}
-                        onChange1={(e) => setTotalBudgetAmount(e)}
-                        errorHandle={(e) => {
-                if (!e || isNaN(Number.parseFloat(e))) {
-                    return "Amount is required.";
-                }
-                ;
-            }}
-                        containerStyle={{width:"100%",marginHorizontal:"auto",minWidth:0,height:50}}
-                        inputContainerStyle={{width:"100%",marginHorizontal:"auto",minWidth:0,height:50}}
-                        inputStyle={{width:"95%",height:50}}
-                    />
-                </View>
-                <CustomButton
-                    type={"signup"}
-                    text={"Set Budget"}
-                    onPress={() => addBudgetAmount()}
-                    containerStyle={{width:"65%",height:50,marginHorizontal:"auto"}}
-                    textStyle={{fontWeight:"bold",fontSize:"95%"}}
-                />
-            </View> */}
             <View style={{flexDirection:"row",minWidth:250,width:"100%",height:"100%",flexWrap:"wrap"}}>
-                {/* <View style={{width:"100%",alignItems:"center"}}>
-                    <Text style={{fontWeight:"bold",textAlign:"center", color:"white"}}>Add / Edit Budget for Category</Text>
-                </View> */}
                 <View style={{width:"98%",paddingHorizontal:"1%",flexWrap:"wrap",flexDirection:"row"}}>
                     <View style={{width:"40%",minWidth:250,marginHorizontal:"auto",marginTop:10}}>
-                        <Text  style={{marginLeft:5, color:"white"}}>Category</Text>
+                        <Text  style={{marginLeft:5,marginBottom:5, color:"white"}}>Category</Text>
                         <Dropdown
-                                data={defaultCategory}
+                                data={userCategory}
                                 style={{width: "100%",borderRadius: 10,height:60, borderColor: 'white', borderWidth: 3, padding: 5}}
                                 iconColor="white"
                                 containerStyle={{borderWidth: 3, marginTop:4,paddingVertical: 8,borderRadius:15,height:"auto", borderColor:"white", backgroundColor:"#111111"}}
@@ -217,7 +178,7 @@ export default function BudgetInput() {
                             />
                     </View>
                     <View style={{width:"20%",minWidth:250,marginHorizontal:"auto",marginTop:10}}>
-                        <Text  style={{marginLeft:5, color:"white"}}>Amount</Text>
+                        <Text  style={{marginLeft:5,marginBottom:5, color:"white"}}>Amount</Text>
                         <CustomInput
                             placeholder="Amount"
                             values={amount}
@@ -234,7 +195,7 @@ export default function BudgetInput() {
                         />  
                     </View>
                     <View style={{width:"20%",minWidth:250,marginHorizontal:"auto",marginTop:10}}>
-                        <Text  style={{marginLeft:5}}> </Text>
+                        <Text  style={{marginLeft:5,marginBottom:5}}> </Text>
                         <CustomButton
                             type={"signup"}
                             text={updateText()}

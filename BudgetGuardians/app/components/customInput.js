@@ -76,7 +76,7 @@ export default function CustomInput({
                         value={values}
                         placeholder={placeholder}
                         secureTextEntry={password && !showPassword1}
-                        style={[styles.input,inputStyle]}
+                        style={[styles.input,{},inputStyle]}
                         autoCapitalize="none"
                         
                         onChangeText={(value) => handleValueChange(value, 1)}

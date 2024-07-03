@@ -1,12 +1,13 @@
 import { getFirestore, doc, setDoc, updateDoc, addDoc, getDoc, collection ,onSnapshot, deleteField } from "firebase/firestore";
 import { auth } from "../auth/firebaseConfig";
+import { defaultCategory } from "../components/defaultCategory";
 
 // Structure Check Functions
 const financialDataCheck = (financialData) => {
     var valid = true;
     valid = valid && financialData?.transactions 
     valid = valid && financialData?.budgetInfo
-    // valid = valid && financialData?.categories 
+    valid = valid && financialData?.categories 
     return valid
 }
 
@@ -52,7 +53,27 @@ const transactionsDataCheck = (transactionsData) => {
     .map((transactionsData) => transactionDataCheck(transactionsData))
     .reduce((a,b) => a && b, true)
 }
-// User Functions
+
+const categoriesDataCheck = (categoriesData) => {
+    return categoriesData
+    .map((categoriesData) => categoryDataCheck(categoriesData))
+    .reduce((a,b) => a && b, true)
+}
+
+const categoryDataCheck = (categoryData) => {
+    var valid = true;
+    valid = valid && categoryData?.color && categoryData?.color 
+    valid = valid && categoryData?.label && categoryData?.label 
+    valid = valid && categoryData?.value && categoryData?.value 
+    return valid
+}
+/*
+ *
+ *
+ * User Functions
+ *
+ *
+ */ 
 export async function addFinancialDataToFirestore(financialData){
     if(!financialDataCheck(financialData)){
         console.error("Invalid financialData")
@@ -87,12 +108,18 @@ export async function createUserInFirestore(){
                 budgetAmount: 0,
                 budgets:[]
             },
+            categories: defaultCategory
         }
     }
     await setDoc(docRef, userData);
 }
-
-// Budget Functions
+/*
+ *
+ *
+ * Budget Functions 
+ * 
+ * 
+*/
 export async function addBudgetToFirestore(budgetData){
     if(!budgetDataCheck(budgetData)){
         console.error("Invalid budgetData")
@@ -187,7 +214,13 @@ export async function getBudgetAmountFromFirestore(){
         }
     });
 }
-// UserData Functions
+/*
+ *
+ *
+ * UserData Functions
+ *
+ *
+*/ 
 export async function addUserDataToFirestore(userData) {
     if(!userDataCheck(userData)){
         console.error("Invalid userData")
@@ -237,8 +270,35 @@ export async function getUserDataFromFirestore(){
         }
     });
 }
-
-// Transactions Functions
+/*
+ *
+ *
+ * Category Functions
+ *
+ *
+*/ 
+export async function updateCategoriesToFirestore(categoriesData){
+    if(!categoriesDataCheck(categoriesData)){
+        console.error("Invalid categoriesData")
+        throw new Error("Invalid categoriesData")
+    }
+    const db = getFirestore();
+    const docRef = doc(db, "users",auth.currentUser.uid);
+    const user = await getUserDataFromFirestore();
+    user.financialData.categories = (categoriesData);
+    await updateDoc(docRef, {financialData:user.financialData});
+    return new Promise((resolve, reject) => {
+        resolve("Document written");
+        reject("Error adding document: ", "Invalid userData");
+    });
+}
+/*
+ *
+ *
+ * Transactions Functions
+ *
+ *
+*/
 export async function addTransactionToFirestore(transactionData){
     if(!transactionDataCheck(transactionData)){
         console.error("Invalid userData")
@@ -305,7 +365,13 @@ export async function getTransactionsAndCategorize() {
     }
 }
 
-// Live Update
+/*
+ *
+ *
+ * Live Update
+ *
+ *
+*/ 
 export const liveUpdate = (callback) => {
     const db = getFirestore();
     if (auth.currentUser === null) {

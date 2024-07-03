@@ -23,11 +23,12 @@ import CalendarTab from "./(tabs)/CalendarTab";
 import ProfileTab from "./(tabs)/ProfileTab";
 import BudgetTab from "./(tabs)/BudgetTab";
 import CategoriseTab from "./(tabs)/CategoriseTab"
+import SettingTab from "./(tabs)/SettingTab";
 
 export default function Page() {
     const router = useRouter();
     const [currentUser, setCurrentUser] = useState({});
-    const [tab, setTab] = useState("home");
+    const [tab, setTab] = useState("settings");
 
     const check = setInterval(() => {
         !auth.currentUser && router.replace('./initPage') ;
@@ -124,7 +125,7 @@ export default function Page() {
                         {tab === "budget" && <BudgetTab/>}
                         {tab === "reports" && <Text style={{color:"white"}}>Coming soon</Text>}
                         {tab === "profile" && <ProfileTab/>}
-                        {tab === "settings" && <Text style={{color:"white"}}>Coming soon</Text>}
+                        {tab === "settings" && <SettingTab/>}
                         {/* <Button title="Add Expense" onPress={addExpense}/> */}
                         {/* <DropdownComponent/> */}
                     </View>
