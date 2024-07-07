@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { View, Text, StyleSheet, ScrollView, Pressable, Modal } from "react-native";
 import { auth } from "../../auth/firebaseConfig";
 import CustomInput from "../../components/customInput";
-import { getUserDataFromFirestore, liveUpdate } from "../../setting/fireStoreFunctions";
+import { getUserDataFromFirestore, liveUpdate, updateCategoriesToFirestore } from "../../setting/fireStoreFunctions";
 import { Dropdown } from "react-native-element-dropdown";
 import CategoryInput from "../../components/CategoryInput";
 import styleSetting from "../../setting/setting";
@@ -14,6 +14,7 @@ export default function SettingTab() {
     const [userCategory, setUserCategories] = useState([]);
     const [modalVisibleEdit, setModalVisibleEdit] = useState(false);
     const [modalVisibleAdd, setModalVisibleAdd] = useState(false);
+    const [toEditCategoryIndex, setToEditCategoryIndex] = useState(0);
     const [toEditCategoryName, setToEditCategoryName] = useState("");
     const [toEditCategoryColor, setToEditCategoryColor] = useState(colorsPalette[0]);
     const [toAddCategoryName, setToAddCategoryName] = useState("");
@@ -24,22 +25,36 @@ export default function SettingTab() {
     });
 
     const onClickEditTab = (category) => {
+        setToEditCategoryIndex(userCategory.indexOf(category));
         setToEditCategoryName(category.label);
         setToEditCategoryColor(colorsPalette.filter(x => x.hex == category.color)[0]);
         setModalVisibleEdit(true);
     }
 
     const onClickSave = () => {
+        updateCategoriesToFirestore(userCategory.map((x,index) => index == toEditCategoryIndex ? {label:toEditCategoryName,value:toEditCategoryName,color:toEditCategoryColor.hex} : x)).then(() => {
+            console.log("Updated");
+        });
         // update the list of categories colors
         setModalVisibleEdit(false);
     }
-
+    
+    const onClickDelete = () => {
+        const ans = prompt(`Are you sure you want to delete this category ${toEditCategoryName}? (Y/N)`)
+        if(ans == "Y" || ans == "y"){
+            updateCategoriesToFirestore(userCategory.filter((x,index) => index != toEditCategoryIndex)).then(() => {})
+        }
+        setModalVisibleEdit(false);
+    }
     const onClickAddTab = () => {
         setModalVisibleAdd(true);
     }
 
     const onClickAddCategory = () => {
         // update the list of categories colors
+        updateCategoriesToFirestore([...userCategory,{label:toAddCategoryName,value:toAddCategoryName,color:toAddCategoryColor.hex}]).then(() => {
+            console.log("Updated");
+        });
         setModalVisibleAdd(false);
     }
 
@@ -79,7 +94,47 @@ export default function SettingTab() {
                             })}
                         </View>
                     </View>
-                    <CustomButton text="Save" textStyle={{color:"white",padding:5}} containerStyle={{backgroundColor:"#111111",width:"100%",borderColor:"white",borderWidth:3}} onPress={() => onClickSave()} />
+                    <View style={{width:"100%",flexDirection:"row",justifyContent:"space-between"}}>
+                        <CustomButton text="Save" textStyle={{color:"green",padding:5}} containerStyle={{backgroundColor:"#111111",width:"40%",borderColor:"green",borderWidth:3,shadowColor:"green",shadowRadius:15,shadowOpacity:0.5}} onPress={() => onClickSave()} />
+                        <CustomButton text="Delete" textStyle={{color:"red",padding:5}} containerStyle={{backgroundColor:"#111111",width:"40%",borderColor:"red",borderWidth:3,shadowColor:"red",shadowRadius:15,shadowOpacity:0.5}} onPress={() => onClickDelete()} />
+                    </View>
+                </View>
+            </Modal>
+            <Modal visible={modalVisibleAdd} transparent={true} >
+                <Pressable onPress={()=>setModalVisibleAdd(false)} style={{position:"absolute",width:"100%",height:"100%",backgroundColor:"#000",opacity:0.5}}/>
+                <View style={{width:"auto",height:"auto",padding:30,margin:"auto",backgroundColor:styleSetting.color.lightblack,borderColor:"white",borderWidth:3,shadowColor:"white",shadowRadius:15,shadowOpacity:0.5,borderRadius:15,alignItems:"center",justifyContent:"center"}}>
+                    <Text style={{fontSize:24,margin:10,color:"white"}}>Edit Category</Text>
+                    <CustomInput 
+                        values={toAddCategoryName} 
+                        onChange1={(text) => setToAddCategoryName(text)} 
+                        placeholder="Category Name" 
+                        inputStyle={{color:"white",height:50}} 
+                        inputContainerStyle={{background:"#111111",borderColor:"white",borderWidth:3,height:60,width:300}} 
+                    />
+                    <View style={{width:300,height:"auto",justifyContent:"center",borderColor:"white",marginVertical:30,borderRadius:15,borderWidth:3,padding:5}}>
+                        <View style={{flexDirection:"row",justifyContent:"flex-start",alignItems:"center",flexWrap:"wrap",width:280,height:"auto",marginVertical:5,marginHorizontal:"auto"}}>
+                            {colorsPalette.map((color,index) => {
+                                return (
+                                    <Pressable
+                                        key={index} 
+                                        style={{
+                                            width:30,
+                                            height:30,
+                                            backgroundColor:color.hex,
+                                            borderWidth:3,
+                                            borderColor:(color?.hex == toAddCategoryColor?.hex) ? "white": "black",
+                                            shadowColor:color.hex,
+                                            shadowOpacity:0.5,
+                                            shadowRadius:8,
+                                            borderRadius:25,
+                                            margin:5}} 
+                                        onPress={() => {setToAddCategoryColor(color)}}
+                                    />
+                                )
+                            })}
+                        </View>
+                    </View>
+                    <CustomButton text="Add" textStyle={{color:"white",padding:5}} containerStyle={{backgroundColor:"#111111",width:"100%",borderColor:"white",borderWidth:3}} onPress={() => onClickAddCategory()} />
                 </View>
             </Modal>
             <View style = {[{width:"95%",height:"90%",flexDirection:"row", margin: "2.5%", alignItems: "flex-start",justifyContent:"flex-start",flexWrap:"wrap",minWidth:250}]}>
@@ -88,7 +143,7 @@ export default function SettingTab() {
                         <CategoryBox key={index} category={category} onPress={() => onClickEditTab(category)}/>
                     )
                 })}
-                <CategoryBoxAdd onPress={()=>{}} />
+                <CategoryBoxAdd onPress={()=>onClickAddTab()} />
             </View>
         </>
     );
@@ -127,7 +182,7 @@ const CategoryBoxAdd = ({onPress}) => {
 const CategoryBox = ({category, onPress}) => {
     return (
         <Pressable style={[styles.categoryBox,{shadowRadius:15,shadowOpacity:0.5,shadowColor:category.color}]} onPress={()=> onPress()}>
-            <Text style={{fontSize:24,color:"white",}}>
+            <Text style={{width:"100%",fontSize:24,color:"white",flexWrap: 'wrap',textAlign:"center"}}>
                 {category.value}
             </Text>
         </Pressable>
