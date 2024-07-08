@@ -36,8 +36,12 @@ export default function ExpenseInput() {
             valid = valid && false;
         }
         const numericAmount = Number.parseFloat(amount);
-        if (!numericAmount || numericAmount === NaN || numericAmount === 0) {
+        if (!numericAmount || numericAmount === NaN || numericAmount === 0 ) {
             setAmountError("Amount is required.");
+            valid = valid && false;
+        }
+        if (numericAmount < 0) {
+            setAmountError("Positive amount only.");
             valid = valid && false;
         }
         if (!isValidDate(date)) {
@@ -140,7 +144,6 @@ export default function ExpenseInput() {
                             <Text style={{fontSize: 13, fontWeight: 'bold',marginBottom:5,marginLeft:10, color: "white"}}>Amount</Text>
                             <CustomInput
                                 placeholder="Enter Amount"
-                                
                                 values={amount}
                                 onChange1={(x) => setAmount(x)}
                                 containerStyle={{margin:0, padding:0, height:"auto"}}
