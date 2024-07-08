@@ -9,7 +9,7 @@ import {Dropdown} from 'react-native-element-dropdown'
 import { getUserCategory,defaultCategory } from "./defaultCategory";
 import FaIcon from "./FaIcon";
 import CustomButton from "./customButton";
-import { set } from "firebase/database";
+import Switch from "./switch";
 
 export default function TransactionLoader() {
     
@@ -20,7 +20,8 @@ export default function TransactionLoader() {
     const [toEditTransactionAmount, setToEditTransactionAmount] = useState('');
     const [toEditTransactionCatergory, setToEditTransactionCatergory] = useState('');
     const [toEditTransactionDescription, setToEditTransactionDescription] = useState('');
-     
+    const [toEditTransactionType, setToEditTransactionType] = useState('');
+
     const [toViewTransactionID, setToViewTransactionID] = useState();
     const [toViewTransactionDate, setToViewTransactionDate] = useState('');
     const [toViewTransactionAmount, setToViewTransactionAmount] = useState('');
@@ -66,6 +67,10 @@ export default function TransactionLoader() {
             setAmountError("Amount is required.");
             valid = valid && false;
         }
+        if (numericAmount < 0) {
+            setAmountError("Positive amount only.");
+            valid = valid && false;
+        }
         if (!isValidDate(toEditTransactionDate)) {
             setDateError("Invalid date. Please select a valid date.");
             valid = valid && false;
@@ -89,8 +94,9 @@ export default function TransactionLoader() {
 
     /* This fuction will enable the popup for edit*/ 
     const editTransaction = (id) =>{
-        setToEditTransactionAmount(transactions[id].amount)
+        setToEditTransactionAmount(Math.abs(transactions[id].amount))
         setToEditTransactionCatergory(transactions[id].category)
+        setToEditTransactionType(transactions[id].amount < 0 ? "Expense" : "Income")
         let newDate = transactions[id].date.split("/").reverse().join("-")
         setToEditTransactionDate(new Date(newDate))
         setToEditTransactionDescription(transactions[id].description)
@@ -110,8 +116,9 @@ export default function TransactionLoader() {
         if (!validate()) {
             return;
         }
-        let newTransactions = transactions;        
-        const numericAmount = Number.parseFloat(toEditTransactionAmount);
+        let newTransactions = transactions;
+        const expType = toEditTransactionType === "Expense" ? -1 : 1;
+        const numericAmount = Number.parseFloat(toEditTransactionAmount) * expType;
         const formatteddate = new Date(toEditTransactionDate).toLocaleDateString('en-SG')
         newTransactions[toEditTransactionID] = ({amount: numericAmount, category: toEditTransactionCatergory, date: formatteddate,description: toEditTransactionDescription});
         updateTransactionToFirestore(newTransactions).then( async() => {
@@ -119,7 +126,7 @@ export default function TransactionLoader() {
             await getUserDataFromFirestore().then((data) => {
                 const financialData = data.financialData;
                 const transactions = financialData.transactions;
-                const budgetAmt = financialData.budgetInfo.budgets.find((budget) => budget.budgetCategory === toEditTransactionCatergory).budgetAmount || 0;
+                const budgetAmt = financialData.budgetInfo.budgets.find((budget) => budget.budgetCategory === toEditTransactionCatergory)?.budgetAmount || 0;
                 const totalExpense = transactions.filter((transaction) => transaction.amount < 0 && transaction.category === toEditTransactionCatergory).reduce((acc, transaction) => acc + transaction.amount, 0);
                 const totalIncome = transactions.filter((transaction) => transaction.amount > 0 && transaction.category === toEditTransactionCatergory).reduce((acc, transaction) => acc + transaction.amount, 0);
                 const remainingBudget = budgetAmt + totalExpense + totalIncome;
@@ -135,6 +142,9 @@ export default function TransactionLoader() {
         });
     }
 
+    const toogleToEditTransactionType = () => {
+        setToEditTransactionType(toEditTransactionType === "Expense" ? "Income" : "Expense");
+    }
     
     return (
         <>  
@@ -149,7 +159,7 @@ export default function TransactionLoader() {
                     <View style={{width:"90%",padding:"5%",height:"90%"}}>
                         <Text style={{fontSize:30, margin:10,fontWeight: 'bold', textAlign:"center",textDecorationLine:"underline",width:"100%",color:"white"}}>View Transaction</Text>
                         <View  style={{margin:10,marginBottom:15}}>
-                          <Text style={{fontSize: 20, fontWeight: 'bold',color:"white"}}>Transaction Type</Text>
+                          <Text style={{fontSize: 20, fontWeight: 'bold',color:"white"}}>Transaction Category</Text>
                           <Text style={{fontSize: 20,color:"white"}}>{toViewTransactionCatergory}</Text>
                         </View>
                         <View  style={{margin:10,marginBottom:15}}>
@@ -164,7 +174,8 @@ export default function TransactionLoader() {
                         </View>
                         <View  style={{margin:10,marginBottom:15}}>
                           <Text style={{fontSize: 20,color:"white", fontWeight: 'bold'}}>Transaction Description</Text>
-                          <Text style={{fontSize: 20,color:"white"}}>{toViewTransactionDescription}</Text>
+                          {!toViewTransactionDescription ? <Text style={{fontSize: 20,color:"white"}}>No Description</Text> : <Text style={{fontSize: 20,color:"white"}}>{toViewTransactionDescription}</Text>}
+                          
                         </View>
                     </View>
                 </View>
@@ -175,7 +186,7 @@ export default function TransactionLoader() {
                   <View style={{width:"90%",padding:"5%",height:"90%",justifyContent:"space-evenly"}}>
                       <Text style={{fontSize: 30, fontWeight: 'bold', textAlign:"center",textDecorationLine:"underline",width:"100%", color:"white"}}>Edit Transaction</Text>
                       <View  style={{}}>
-                        <Text style={{fontSize: 13, fontWeight: 'bold', margin: 10, color:"white"}}>Transaction Type</Text>
+                        <Text style={{fontSize: 13, fontWeight: 'bold', margin: 10, color:"white"}}>Transaction Category</Text>
                         <Dropdown
                                 data={userCategory}
                                 style={{width: "100%",borderRadius: 10,height:60, borderColor: 'white', borderWidth: 3, padding: 5}}
@@ -249,6 +260,18 @@ export default function TransactionLoader() {
                           inputContainerStyle={{width: "100%",minWidth:"100%",maxWidth:"auto",marginLeft:0,margin:0, height: 60, borderColor: 'black', borderWidth: 3, padding: 5,borderColor:"white", backgroundColor:"#111111"}}
                           inputStyle={{width: "100%",minWidth:"100%", borderColor:"white", backgroundColor:"#111111", color:"white"}}
                       /> 
+                    </View>
+                    <View style={{}}>
+                      <Switch 
+                        toggle={toogleToEditTransactionType} 
+                        state={
+                          toEditTransactionType === "Expense"
+                          ? {x:true,y:false} : {x:false,y:true}
+                        }
+                        text={{x:"Expense",y:"Income"}}
+                        color={{x:styleSetting.color.red,y:styleSetting.color.green}} 
+                        style={{container:{marginTop:10},button:{},text:{}}}
+                      />
                     </View>
                     <View>
                       <CustomButton

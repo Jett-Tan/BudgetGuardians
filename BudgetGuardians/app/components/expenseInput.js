@@ -114,7 +114,7 @@ export default function ExpenseInput() {
                 <View style={{padding:10,width:"80%",height:"100%",alignContent:"space-between"}}>
                     <View style={{minHeight:"50%",height:"auto",width:"100%",flexDirection:"row",justifyContent:"space-between",flexWrap:"wrap"}}>
                         <View style={{width:"30%",minWidth:300,maxHeight:"100%",height:'auto',paddingBottom:10}}>
-                            <Text style={{fontSize: 13, fontWeight: 'bold',marginBottom:5,marginLeft:10, color: "white"}}>Transaction Type</Text>
+                            <Text style={{fontSize: 13, fontWeight: 'bold',marginBottom:5,marginLeft:10, color: "white"}}>Transaction Category</Text>
                             <Dropdown
                                 data={defaultCategory}
                                 style={{width: "100%",borderRadius: 10,height:60, borderColor: 'white', borderWidth: 3, padding: 5}}
