@@ -6,7 +6,7 @@ import styleSetting from "../../setting/setting";
 
 export default function CalendarTab() {
     const [currentUser, setCurrentUser] = useState();
-
+    return (<Text style={{color:"white"}}>Coming soon</Text>)
     useEffect(() => {
         (async () =>{
             await getUserDataFromFirestore()
