@@ -97,13 +97,13 @@ export default function SideBar({ value,  setValue}){
                     <FaIcon name="circle-user" size={styleSetting.size.em24} color={styleSetting.color.lightblue}/>
                     {!minimized && <Text style={styles.sideBarText}>Profile</Text>}
                 </TouchableOpacity>
-                <TouchableOpacity style={[styles.sideBarContent,settings,sideBarContent]} onPress={() => {
+                {/* <TouchableOpacity style={[styles.sideBarContent,settings,sideBarContent]} onPress={() => {
                     setValue("settings")
                     setSelected("settings")
                 }}>
                     <FaIcon name="gears" size={styleSetting.size.em24} color={styleSetting.color.lightblue}/>
                     {!minimized && <Text style={styles.sideBarText}>Settings</Text>}
-                </TouchableOpacity>
+                </TouchableOpacity> */}
                 <TouchableOpacity style={[styles.sideBarContent,sideBarContent]} onPress={() => {auth.signOut()}}>
                     <FaIcon name="right-from-bracket" size={styleSetting.size.em24} color={styleSetting.color.lightblue}/>
                     {!minimized && <Text style={styles.sideBarText}>Logout</Text>}
