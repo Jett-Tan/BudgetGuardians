@@ -11,6 +11,9 @@ import FaIcon from "../../components/FaIcon";
 import {defaultCategory} from "../../components/defaultCategory";
 
 export default function SettingTab() {
+    return (
+        <Text style={{color:"white"}}> Coming Soon </Text>
+    )
     const [userCategory, setUserCategories] = useState([]);
     const [modalVisibleEdit, setModalVisibleEdit] = useState(false);
     const [modalVisibleAdd, setModalVisibleAdd] = useState(false);
@@ -21,7 +24,8 @@ export default function SettingTab() {
     const [toAddCategoryColor, setToAddCategoryColor] = useState(colorsPalette[0]);
 
     liveUpdate((x) => {
-        setUserCategories(x?.financialData?.categories || defaultCategory);
+        console.log(x?.financialData?.categories);
+        x?.financialData?.categories && x?.financialData?.categories?.length > 0 ? setUserCategories(x?.financialData?.categories) : setUserCategories(defaultCategory);
     });
 
     const onClickEditTab = (category) => {
