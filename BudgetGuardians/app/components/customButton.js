@@ -1,5 +1,5 @@
 import { Link, Redirect } from "expo-router";
-import { View, Text, StyleSheet, Pressable} from "react-native";
+import { View, Text, StyleSheet, Pressable, TouchableOpacity} from "react-native";
 
 import styleSetting from "../setting/setting.js";
 
@@ -71,7 +71,7 @@ export default function CustomButton({
 }) {
     return (
         <>
-            <Pressable style = {[props.getStyle(type).pressable,containerStyle]} onPress={e => onPress(e)}>
+            <TouchableOpacity style = {[props.getStyle(type).pressable,containerStyle]} onPress={e => onPress(e)}>
                 {href != null ? 
                     <Link href={href} style = {[props.getStyle(type).text,textStyle]}>
                         <Text>{text}</Text>
@@ -81,7 +81,7 @@ export default function CustomButton({
                         <Text style = {[props.getStyle(type).text,textStyle]} >{text}</Text>
                     </View>
                 }
-            </Pressable>
+            </TouchableOpacity>
         </>
     )
 }

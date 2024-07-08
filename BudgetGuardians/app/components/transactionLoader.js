@@ -94,7 +94,7 @@ export default function TransactionLoader() {
 
     /* This fuction will enable the popup for edit*/ 
     const editTransaction = (id) =>{
-        setToEditTransactionAmount(Math.abs(transactions[id].amount))
+        setToEditTransactionAmount(Math.abs(transactions[id].amount).toFixed(2))
         setToEditTransactionCatergory(transactions[id].category)
         setToEditTransactionType(transactions[id].amount < 0 ? "Expense" : "Income")
         let newDate = transactions[id].date.split("/").reverse().join("-")
