@@ -24,7 +24,10 @@ export default function BudgetInput() {
     const [categoryBudget, setCategoryBudget] = useState([]);
 
     const [userCategory, setUserCategory] = useState([]);
-    
+
+    const [categoryError, setCategoryError] = useState("");
+    const [amountError, setAmountError] = useState("");
+
     useEffect(() => {
         
         liveUpdate((data) => {
@@ -49,17 +52,25 @@ export default function BudgetInput() {
 }, []);
 
     const validatBudget = () => {
+        resetErrors()
         let valid = true
         if (!category){
+            setCategoryError("Category is required.");
             valid = valid && false;
         }
         const numericAmount = Number.parseFloat(amount);
         if (!numericAmount || numericAmount === NaN || numericAmount === 0) {
+            setAmountError("Amount is required.");
+            valid = valid && false;
+        }
+        if (numericAmount < 0) {
+            setAmountError("Positive amount only.");
             valid = valid && false;
         }
         return valid;
     }
     const validateTotalBudgetAmount = () => {
+        resetErrors()
         let valid = true
         // if (!category) {
         //     setCategoryError("Category is required.");
@@ -67,11 +78,19 @@ export default function BudgetInput() {
         // }
         const numericAmount = Number.parseFloat(totalBudgetAmount);
         if (!numericAmount || numericAmount === NaN || numericAmount === 0) {
+            setAmountError("Amount is required.");
+            valid = valid && false;
+        }
+        if (numericAmount < 0) {
+            setAmountError("Positive amount only.");
             valid = valid && false;
         }
         return valid;
     }
-
+    const resetErrors = () => {
+        setCategoryError("");
+        setAmountError("");
+    }
     const addBudgetAmount = async() => {
         if(validateTotalBudgetAmount() === false) {
             console.log("Validation failed");
@@ -176,6 +195,7 @@ export default function BudgetInput() {
                                     <FaIcon name="money-bill" size={20} color={"#7b9a6d"}/>
                                 )}
                             />
+                        <Text style={{color:"red",marginLeft:5,marginBottom:5}}>{categoryError}</Text>
                     </View>
                     <View style={{width:"20%",minWidth:250,marginHorizontal:"auto",marginTop:10}}>
                         <Text  style={{marginLeft:5,marginBottom:5, color:"white"}}>Amount</Text>
@@ -183,16 +203,12 @@ export default function BudgetInput() {
                             placeholder="Amount"
                             values={amount}
                             onChange1={(e) => setAmount(e)}
-                            errorHandle={(e) => {
-                                if (!e) {
-                                    return "Amount is required."
-                                }
-                                return "";
-                            }}
-                            containerStyle={{margin:0, padding:0, height:"auto"}}
+                            errorExist={false}
+                            containerStyle={{margin:0, marginBottom:0,padding:0, height:"auto"}}
                             inputContainerStyle={{height: 60,margin:0, borderColor: 'white', borderWidth: 3, padding: 5, borderColor:"white", backgroundColor:"#111111"}}
                             inputStyle={{width: "95%",height:50,backgroundColor:"#111111", color:"white"}}
                         />  
+                        <Text style={{color:"red",marginLeft:5,marginBottom:5}}>{amountError}</Text>
                     </View>
                     <View style={{width:"20%",minWidth:250,marginHorizontal:"auto",marginTop:10}}>
                         <Text  style={{marginLeft:5,marginBottom:5}}> </Text>

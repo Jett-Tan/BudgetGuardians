@@ -11,6 +11,7 @@ export default function BudgetEntryBoxed({
         amount: 0,
         amountSpent: 0,
         additionalIncome: 0,
+        color: "white",
     },
     deleteBudget = (e) => {console.log(e);},
     editBudget = (e) => {console.log(e);},
@@ -101,7 +102,7 @@ export default function BudgetEntryBoxed({
                 </View>
             </Modal>
             
-            <Pressable onPress={() => setModalVisible(true)}  style={{width:200,height:"auto",shadowColor:styleSetting.color.white,borderWidth:3,borderColor:"white",margin:15,borderRadius:15,shadowRadius:15,shadowOpacity:0.5}}>
+            <Pressable onPress={() => setModalVisible(true)}  style={{width:200,height:"auto",shadowColor:props.color,borderWidth:3,borderColor:"white",margin:15,borderRadius:15,shadowRadius:15,shadowOpacity:0.5}}>
                 <Text style={{fontWeight:"bold",marginVertical:15,fontSize:20,textAlign:"center",color:"white"}}>{props.category}</Text>
                 <View style={{justifyContent:"center",marginBottom:15,alignItems:"center"}}>
                     <View style={{position:"absolute",zIndex:10,margin:"auto",fontWeight:"bold"}}>

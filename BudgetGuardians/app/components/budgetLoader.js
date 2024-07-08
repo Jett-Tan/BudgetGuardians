@@ -20,12 +20,13 @@ export default function BudgetLoader({background = true}) {
     const [toEditBudgetAmount, setToEditBudgetAmount] = useState('');
     const [toEditBudgetCatergory, setToEditBudgetCatergory] = useState('');
     const [modalVisible, setModalVisible] = useState(false);
+    const [userCategory, setUserCategory] = useState([]);
 
-    useEffect(() => {
-      liveUpdate((data) => {
-          const budgets = data?.financialData?.budgetInfo?.budgets || [];
-          const transactions = data?.financialData?.transactions || [];
-          budgets.map((budget) => {
+    liveUpdate((data) => {
+        setUserCategory(data?.financialData?.userCategory || defaultCategory);
+        const budgets = data?.financialData?.budgetInfo?.budgets || [];
+        const transactions = data?.financialData?.transactions || [];
+        budgets.map((budget) => {
             const totalSpent = transactions
               .filter((transaction) => budget.budgetCategory === transaction.category && transaction.amount < 0)
               .reduce((acc, transaction) => acc + transaction.amount, 0);
@@ -34,9 +35,11 @@ export default function BudgetLoader({background = true}) {
               .reduce((acc, transaction) => acc + transaction.amount, 0);
             budget.addedIncome = addedIncome;
             budget.spent = totalSpent;
-            });
-          setBudgets(budgets);
-      });
+            budget.color = userCategory.find((category) => category.value === budget.budgetCategory)?.color || "white";
+          })
+        setBudgets(budgets);
+    });
+    useEffect(() => {
       
     }, [budgets]);
 
@@ -103,7 +106,7 @@ export default function BudgetLoader({background = true}) {
                           key={index}
                           deleteBudget={() => deleteBudget(index)} 
                           editBudget={() => editBudget(index)} 
-                          props={{ amount: x?.budgetAmount, category: x?.budgetCategory,amountSpent: x?.spent, additionalIncome: x?.addedIncome}} 
+                          props={{ amount: x?.budgetAmount, category: x?.budgetCategory,amountSpent: x?.spent, additionalIncome: x?.addedIncome, color: x?.color}} 
                       />
                       ))}
                 </View>
