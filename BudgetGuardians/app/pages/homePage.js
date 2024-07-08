@@ -119,7 +119,7 @@ export default function Page() {
                         {/* <TransactionEntry props={{date:"01.12.2022",amount:123.3,description:"money"}}/> */}
                         {tab === "home" && <HomeTab/>}
                         {/* {tab === "calendar" && <CalendarTab/>} */}
-                        {tab === "calendar" && <Text style={{color:"white"}}>Coming soon</Text>}
+                        {tab === "calendar" && <CalendarTab/>}
                         {tab === "transactions" && <TransactionTab/>}
                         {tab === "categorise" && <CategoriseTab/>}
                         {tab === "budget" && <BudgetTab/>}
