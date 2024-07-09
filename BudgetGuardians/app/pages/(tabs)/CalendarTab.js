@@ -1,113 +1,174 @@
-import { View,StyleSheet,Text,FlatList } from "react-native"
+import { View,StyleSheet,Text, TouchableOpacity, FlatList } from "react-native"
 import { useState, useEffect } from "react"
 
-import { getUserDataFromFirestore } from "../../setting/fireStoreFunctions"
+import { getUserDataFromFirestore, liveUpdate } from "../../setting/fireStoreFunctions"
 import styleSetting from "../../setting/setting";
+import FaIcon from "../../components/FaIcon";
+
+class Day {
+    constructor(day , current = true) {
+        this.day = day;
+        this.transactions = [];
+        this.total = 0;
+        this.current = current
+    }
+    addTransaction(transaction) {
+        this.transactions.push(transaction);
+        this.total += transaction?.amount;
+    }
+    
+}
 
 export default function CalendarTab() {
-    const [currentUser, setCurrentUser] = useState();
-    return (<Text style={{color:"white"}}>Coming soon</Text>)
-    useEffect(() => {
-        (async () =>{
-            await getUserDataFromFirestore()
-            .then((data) => {
-                setCurrentUser(data);
-            }).catch((err) => {
-                console.log(err)
-            })
-        })()
-    }, [])
-    Array(currentUser).map((data) => console.log(data))
-    Array.isArray(currentUser?.financialData?.transactions) && console.log(currentUser.financialData.transactions)
+    const [userTransactions, setUserTransactions] = useState([]);
+    const [currentMonth, setCurrentMonth] = useState(new Date().getMonth());
+    const [currentYear, setCurrentYear] = useState(new Date().getFullYear());
+    const [currentCalendar, setCurrentCalendar] = useState([]);
 
+    useEffect(() => {
+        liveUpdate((x) => {
+            // console.log(x?.financialData?.transactions);
+            setUserTransactions(x?.financialData?.transactions?.map((x) => {
+                return {
+                    ...x,
+                    day:Number.parseInt(x?.date?.split("/")[0]),
+                    month:Number.parseInt(x?.date?.split("/")[1])-1,
+                    year:Number.parseInt(x?.date?.split("/")[2]) 
+                }
+            }) || [])
+            getTransactionsInThisMonth();
+        })
+    }, [currentMonth, currentYear, userTransactions, currentCalendar])
+
+    const shiftMonth = (month) => {
+        if (month < 0) {
+            setCurrentMonth(11);
+            setCurrentYear(currentYear - 1);
+        } else if (month > 11) {
+            setCurrentMonth(0);
+            setCurrentYear(currentYear + 1);
+        } else {
+            setCurrentMonth(month);
+        }
+    }
+
+    const getTransactionsInThisMonth = () => {
+        let transactions = userTransactions.filter((transaction) => {
+            return currentMonth == transaction?.month && currentYear == transaction?.year;
+        })
+        let calendar = generateCalendar()
+        calendar.forEach((day) => {
+            transactions.forEach((transaction) => {
+                if (day.day == transaction?.day) {
+                    day.addTransaction(transaction);
+                }
+            })
+        })
+        setCurrentCalendar(calendar);
+    }
+
+    const generateCalendar = () => {
+        let numberOfDaysInThisMonth = daysInThisMonth(currentYear,currentMonth);
+        let startDateDay = new Date(currentYear, currentMonth, 1).getDay();
+        let endDateDay = new Date(currentYear, currentMonth, numberOfDaysInThisMonth).getDay();
+
+        let addDaystoFront = Math.abs(0 - startDateDay);
+        let addDaystoEnd = Math.abs(6 - endDateDay);
+        
+        let calendar = [];
+
+        let previousMonth = currentMonth - 1 < 0 ? 11 : currentMonth - 1;
+        let previousYear = currentMonth - 1 < 0 ? currentYear - 1 : currentYear;
+        let numberOfDaysInPreviousMonth = daysInThisMonth(previousYear,previousMonth);
+        for (let i = numberOfDaysInPreviousMonth - addDaystoFront + 1; i <= numberOfDaysInPreviousMonth; i++) {
+            calendar.push(new Day(i, false));
+        }
+        for (let i = 1; i <= numberOfDaysInThisMonth; i++) {
+            calendar.push(new Day(i));
+        }
+        for (let i = 1; i <= addDaystoEnd; i++) {
+            calendar.push(new Day(i, false));
+        }
+        return calendar;
+    }
+
+    function daysInThisMonth(currentYear,currentMonth) {
+        return new Date(currentYear, currentMonth+1, 0).getDate();
+    }
     return (
-        <>
-            <View style={{width:"90%",height:"95%",justifyContent:"flex-start"}}>
-                <View style={{width:"100%",height:"10%",marginBottom:20,borderRadius:100, backgroundColor:styleSetting.color.lightblue,borderWidth:1,borderColor:"black", justifyContent:"center"}}>
-                    <Text style={{textAlign:"center",fontSize:styleSetting.size.em20}}>Month</Text>
-                </View>
-                <View style={{width:"100%",height:"70%",marginBottom:20,padding:30,borderRadius:50, backgroundColor:styleSetting.color.lightblue,borderWidth:1,borderColor:"black", justifyContent:"center"}}>
-                    {/* <FlatList 
-                        // data={[{text:"Sun",id:0},{text:"Mon",id:1},{text:"Tue",id:2},{text:"Wed",id:3},{text:"Thu",id:4},{text:"Fri",id:5},{text:"Sat",id:6}]}
-                        data={[{text:"S",id:0},{text:"M",id:1},{text:"T",id:2},{text:"W",id:3},{text:"T",id:4},{text:"F",id:5},{text:"S",id:6}]}
-                        renderItem={({item, index}) => (
-                            <View style={{marginHorizontal:"auto"}}>
-                                <DateText text={item.text}/>
-                            </View>
-                        )}
-                        keyExtractor={item => item.id}
-                        numColumns={7}
-                        style={{width:"100%"}}
-                        />
-                    <FlatList 
-                        data={[
-                            {number:1,id:0},
-                            {number:2,id:1},
-                            {number:3,id:2},
-                            {number:4,id:3},
-                            {number:5,id:4},
-                            {number:6,id:5},
-                            {number:7,id:6},
-                            {number:8,id:7},
-                            {number:9,id:8},
-                            {number:10,id:9},
-                            {number:11,id:10},
-                            {number:12,id:11},
-                            {number:13,id:12},
-                            {number:14,id:13},
-                            {number:15,id:14},
-                            {number:16,id:15},
-                            {number:17,id:16},
-                            {number:18,id:17},
-                            {number:19,id:18},
-                            {number:20,id:19},
-                            {number:21,id:20},
-                            {number:22,id:21},
-                            {number:23,id:22},
-                            {number:24,id:23},
-                            {number:25,id:24},
-                            {number:26,id:25},
-                            {number:27,id:26},
-                            {number:28,id:27},
-                            {number:29,id:28},
-                            {number:30,id:29},
-                            {number:31,id:30},
-                            {number:32,id:31},
-                            {number:33,id:32},
-                            {number:34,id:33},
-                            {number:35,id:34},
-                            {number:36,id:35},
-                        ]}
-                        renderItem={({item, index}) => (
-                            <View style={{marginHorizontal:"auto"}}>
-                                <DateCircle number={item.number}/>
-                            </View>
-                        )}
-                        
-                        style={{width:"100%"}}
-                        
-                        keyExtractor={item => item.id}
-                        numColumns={7}
-                        columnWrapperStyle={{justifyContent:"space-evenly"}}
-                        /> */}
-                </View>
+        <View style={{width:"95%",height:"95%",margin:"2.5%"}}>
+            <View style={{borderColor:"white",borderWidth:3,height:50,borderRadius:10,flexDirection:"row",justifyContent:"space-between",alignItems:"center"}}>
+                <TouchableOpacity style={{marginLeft:15}} onPress={() => shiftMonth(currentMonth - 1)}>
+                    <FaIcon name="chevron-left" size={styleSetting.size.em20} color="white"/>
+                </TouchableOpacity>
+                <Text style={{fontSize:20,fontWeight:"bold",color:"white"}}>
+                    {monthMap[currentMonth]} {currentYear}
+                </Text>
+                <TouchableOpacity style={{marginRight:15}} onPress={() => shiftMonth(currentMonth + 1)}>
+                    <FaIcon name="chevron-right" size={styleSetting.size.em20} color="white"/>
+                </TouchableOpacity>
             </View>
-        </>
-    )
-}
-const DateText =  ({text}) => {
-    return (
-        <Text style={{fontSize:styleSetting.size.em40, fontWeight:"bold"}}>{text}</Text>
-    )
-}
-const DateCircle = ({number, color}) => {
-    return (
-        <View style={{width:40,height:40,backgroundColor:"red",borderRadius:50,alignContent:"center",justifyContent:"center",shadowColor:"black",shadowRadius:5}}>
-            <Text style={{textAlign:"center",fontSize:styleSetting.size.em20,fontWeight:"bold"}}>{number}</Text>
+            <View style={{borderColor:"white",borderWidth:3,height:"80%",marginTop:30,borderRadius:10,flexDirection:"column",alignItems:"center"}}>
+                <FlatList
+                    data={weekDayMap}
+                    renderItem={({item}) => (
+                        <Text style={{color:"white",marginHorizontal:"auto",fontSize:45,paddingTop:15,width:80,textAlign:"center"}}>{item}</Text>
+                    )}
+                    
+                    style={{width:"100%",height:70}}
+                    contentContainerStyle={{justifyContent:"space-between",width:"100%",height:70,paddingHorizontal:30,}}
+                    keyExtractor={item => item}
+                    numColumns={7}
+                    scrollEnabled={false}
+                />
+                <FlatList
+                    data={currentCalendar}
+                    renderItem={({item}) => (
+                        <Item item={item} onPress={()=>alert(item.total)} textColor={"white"} />
+                    )}
+                    keyExtractor={item => item.day}
+                    numColumns={7}
+                    style={{width:"100%",height:"100%"}}
+                    contentContainerStyle={{justifyContent:"space-between",width:"100%",height:"100%",padding:30}}
+                    scrollEnabled={true}
+                />
+            </View>
         </View>
     )
 }
+const Item = ({item, onPress,  textColor}) => {
+    const previous = !item.current ? "gray" : "white";
+    const shadowColor = !item.current ? "gray" : Number.parseInt(item.total) > 0 ? "green" : 
+        Number.parseInt(item.total) < 0 ? "red" : "white";
+    const onClick = item.current ? onPress : () => {};
+    return (
+        <TouchableOpacity onPress={onClick} style={[{margin:"auto",height:80,width:80,shadowColor:shadowColor,shadowOpacity:0.5,shadowRadius:15,borderColor:shadowColor,borderWidth:3,borderRadius:50,justifyContent:"center",alignItems:"center"}]}>
+            <Text style={[{color: textColor,fontSize:30}]}>{item.day}</Text>
+        </TouchableOpacity>
+    )
+}
 
-const styles = StyleSheet.create({
+const weekDayMap = [
+    "S",
+    "M",
+    "T",
+    "W",
+    "T",
+    "F",
+    "S"
+]
 
-})
+const monthMap = [
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December"
+]

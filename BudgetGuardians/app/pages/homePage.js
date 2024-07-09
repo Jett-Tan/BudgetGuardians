@@ -28,7 +28,7 @@ import SettingTab from "./(tabs)/SettingTab";
 export default function Page() {
     const router = useRouter();
     const [currentUser, setCurrentUser] = useState({});
-    const [tab, setTab] = useState("home");
+    const [tab, setTab] = useState("calendar");
 
     const check = setInterval(() => {
         !auth.currentUser && router.replace('./initPage') ;
@@ -152,8 +152,8 @@ const styles = StyleSheet.create({
     },
     content: {
         flex: 1,
-        alignItems: 'center',
-        justifyContent:'center'
+        // alignItems: 'center',
+        // justifyContent:'center'
         
         // Adjust this value to control the spacing between the navigation bar and the content
     },

@@ -90,7 +90,7 @@ const CategoriseTransaction = () => {
   );
 
   return (
-    <View style={[styles.container, {backgroundColor: "#111111"}]}>
+    <View style={[styles.container, {margin:"2.5%",width:"95%",height:"95%",backgroundColor: "#111111"}]}>
         <View style={[styles.container, {backgroundColor: "#111111"}]}>
           <MultiSelect
             style={[styles.dropdown,{shadowColor:"black",shadowRadius:15,padding:10, borderRadius:10,shadowOpacity:0.5,marginVertical:10, borderWidth: 3, // Add this line
