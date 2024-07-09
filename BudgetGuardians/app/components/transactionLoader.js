@@ -127,15 +127,24 @@ export default function TransactionLoader() {
                 const financialData = data.financialData;
                 const transactions = financialData.transactions;
                 const budgetAmt = financialData.budgetInfo.budgets.find((budget) => budget.budgetCategory === toEditTransactionCatergory)?.budgetAmount || 0;
-                const totalExpense = transactions.filter((transaction) => transaction.amount < 0 && transaction.category === toEditTransactionCatergory).reduce((acc, transaction) => acc + transaction.amount, 0);
-                const totalIncome = transactions.filter((transaction) => transaction.amount > 0 && transaction.category === toEditTransactionCatergory).reduce((acc, transaction) => acc + transaction.amount, 0);
+                const currentMonth = new Date().getMonth() + 1;
+                const totalExpense = transactions
+                  .filter((transaction) => transaction.amount < 0 && transaction.category === toEditTransactionCatergory)
+                  .filter((transaction) => {return Number.parseInt(transaction.date.split('/')[1]) == currentMonth})
+                  .reduce((acc, transaction) => acc + transaction.amount, 0);
+                const totalIncome = transactions
+                  .filter((transaction) => transaction.amount > 0 && transaction.category === toEditTransactionCatergory)
+                  .filter((transaction) => {return Number.parseInt(transaction.date.split('/')[1]) == currentMonth})
+                  .reduce((acc, transaction) => acc + transaction.amount, 0);
                 const remainingBudget = budgetAmt + totalExpense + totalIncome;
-                if (budgetAmt > 0 && remainingBudget < 0) {
-                    alert(`You have exceeded your budget for ${toEditTransactionCatergory}! by $${-remainingBudget}!`);
-                } else if (budgetAmt > 0 && remainingBudget < budgetAmt*0.3) {
-                    alert(`You are close to exceeding your budget for ${toEditTransactionCatergory}! You have $${remainingBudget} left!`);
-                } else if (budgetAmt > 0 && remainingBudget === 0) {
-                    alert(`You have fully utilized your budget for ${toEditTransactionCatergory}!`);
+                if (formatteddate.split('/')[1] == currentMonth) {
+                  if (budgetAmt > 0 && remainingBudget < 0) {
+                      alert(`You have exceeded your budget for ${toEditTransactionCatergory}! by $${-remainingBudget}!`);
+                  } else if (budgetAmt > 0 && remainingBudget < budgetAmt*0.3) {
+                      alert(`You are close to exceeding your budget for ${toEditTransactionCatergory}! You have $${remainingBudget} left!`);
+                  } else if (budgetAmt > 0 && remainingBudget === 0) {
+                      alert(`You have fully utilized your budget for ${toEditTransactionCatergory}!`);
+                  }
                 }
             });
             reset();
