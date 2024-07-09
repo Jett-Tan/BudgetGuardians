@@ -28,7 +28,7 @@ import SettingTab from "./(tabs)/SettingTab";
 export default function Page() {
     const router = useRouter();
     const [currentUser, setCurrentUser] = useState({});
-    const [tab, setTab] = useState("calendar");
+    const [tab, setTab] = useState("home");
 
     const check = setInterval(() => {
         !auth.currentUser && router.replace('./initPage') ;
