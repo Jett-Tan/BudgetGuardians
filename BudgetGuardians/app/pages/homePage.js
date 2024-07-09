@@ -1,20 +1,13 @@
-import { StyleSheet, Text, View, Button,Pressable,Modal,Image } from "react-native";
-import { Redirect, useRouter } from "expo-router";
-import { getAuth ,onAuthStateChanged} from "firebase/auth";
+import { StyleSheet, Text, View } from "react-native";
+import { useRouter } from "expo-router";
 
 import styleSetting from "../setting/setting"
 import { useState, useEffect } from "react";
 import { auth } from "../auth/firebaseConfig";
-import CustomIconButton from "../components/customIconButton";
-import TransactionEntry from "../components/transactionEntry";
 import SideBar from "../components/sideBar";
 import Overlay from "../components/overlay";
-import Tasks from "../components/expense"
-import DropdownComponent from "../components/expense";
-import CustomButton from "../components/customButton";
 
-import { addExpenseToFirestore, 
-    addUserDataToFirestore, 
+import {
     getUserDataFromFirestore, 
     liveUpdate} from "../setting/fireStoreFunctions";
 import HomeTab from "./(tabs)/HomeTab";
@@ -24,6 +17,7 @@ import ProfileTab from "./(tabs)/ProfileTab";
 import BudgetTab from "./(tabs)/BudgetTab";
 import CategoriseTab from "./(tabs)/CategoriseTab"
 import SettingTab from "./(tabs)/SettingTab";
+import ReportTab from "./(tabs)/ReportTab";
 
 export default function Page() {
     const router = useRouter();
@@ -123,7 +117,7 @@ export default function Page() {
                         {tab === "transactions" && <TransactionTab/>}
                         {tab === "categorise" && <CategoriseTab/>}
                         {tab === "budget" && <BudgetTab/>}
-                        {tab === "reports" && <Text style={{color:"white"}}>Coming soon</Text>}
+                        {tab === "reports" && <ReportTab/>}
                         {tab === "profile" && <ProfileTab/>}
                         {tab === "settings" && <SettingTab/>}
                         {/* <Button title="Add Expense" onPress={addExpense}/> */}
