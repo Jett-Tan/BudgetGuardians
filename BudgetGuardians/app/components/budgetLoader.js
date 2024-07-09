@@ -27,12 +27,22 @@ export default function BudgetLoader({background = true}) {
         const budgets = data?.financialData?.budgetInfo?.budgets || [];
         const transactions = data?.financialData?.transactions || [];
         budgets.map((budget) => {
+            const currentMonth = new Date().getMonth() + 1;
             const totalSpent = transactions
               .filter((transaction) => budget.budgetCategory === transaction.category && transaction.amount < 0)
+              .filter((transaction) => {
+                // console.log(Number.parseInt(transaction.date.split('/')[1]) == currentMonth);
+                return Number.parseInt(transaction.date.split('/')[1]) == currentMonth
+              })
               .reduce((acc, transaction) => acc + transaction.amount, 0);
             const addedIncome = transactions
               .filter((transaction) => budget.budgetCategory === transaction.category && transaction.amount > 0)
+              .filter((transaction) => {
+                // console.log(Number.parseInt(transaction.date.split('/')[1]) == currentMonth);
+                return Number.parseInt(transaction.date.split('/')[1]) == currentMonth
+              })
               .reduce((acc, transaction) => acc + transaction.amount, 0);
+            
             budget.addedIncome = addedIncome;
             budget.spent = totalSpent;
             budget.color = userCategory.find((category) => category.value === budget.budgetCategory)?.color || "white";
