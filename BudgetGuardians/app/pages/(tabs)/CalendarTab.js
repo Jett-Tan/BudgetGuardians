@@ -1,9 +1,12 @@
-import { View,StyleSheet,Text, TouchableOpacity, FlatList } from "react-native"
+import { View,StyleSheet,Text, TouchableOpacity, FlatList, Modal } from "react-native"
 import { useState, useEffect } from "react"
 
 import { getUserDataFromFirestore, liveUpdate } from "../../setting/fireStoreFunctions"
 import styleSetting from "../../setting/setting";
 import FaIcon from "../../components/FaIcon";
+import TransactionEntry from "../../components/transactionEntry";
+import { set } from "firebase/database";
+import { defaultCategory } from "../../components/defaultCategory";
 
 class Day {
     constructor(day , current = true) {
@@ -24,6 +27,7 @@ export default function CalendarTab() {
     const [currentMonth, setCurrentMonth] = useState(new Date().getMonth());
     const [currentYear, setCurrentYear] = useState(new Date().getFullYear());
     const [currentCalendar, setCurrentCalendar] = useState([]);
+    const [userCategory, setUserCategory] = useState([]);
 
     useEffect(() => {
         liveUpdate((x) => {
@@ -37,6 +41,7 @@ export default function CalendarTab() {
                 }
             }) || [])
             getTransactionsInThisMonth();
+            setUserCategory(x?.financialData?.category || defaultCategory)
         })
     }, [currentMonth, currentYear, userTransactions, currentCalendar])
 
@@ -95,45 +100,80 @@ export default function CalendarTab() {
     function daysInThisMonth(currentYear,currentMonth) {
         return new Date(currentYear, currentMonth+1, 0).getDate();
     }
+    const [modalVisible, setModalVisible] = useState(false);
+    const [selectedDay, setSelectedDay] = useState(null);
+
+    const onClick = (day) => {
+        setModalVisible(true);
+        setSelectedDay(day);
+    } 
     return (
-        <View style={{width:"95%",height:"95%",margin:"2.5%"}}>
-            <View style={{borderColor:"white",borderWidth:3,height:50,borderRadius:10,flexDirection:"row",justifyContent:"space-between",alignItems:"center"}}>
-                <TouchableOpacity style={{marginLeft:15}} onPress={() => shiftMonth(currentMonth - 1)}>
-                    <FaIcon name="chevron-left" size={styleSetting.size.em20} color="white"/>
+        <>
+            <Modal transparent={true} visible={modalVisible}>
+                <TouchableOpacity onPress={() => setModalVisible(false)} style={{width:"100%",height:"100%",backgroundColor:"rgba(0,0,0,0.5)",justifyContent:"center",alignItems:"center"}}>
+                    <View style={{minWidth:"50%",width:"auto",height:"80%",padding:10,backgroundColor:"#111111",borderWidth:3,shadowColor:"white",shadowRadius:10,borderColor:"white",borderRadius:10}}>
+                        <Text style={{color:"white",textAlign:"center",fontSize:30,paddingVertical:30}} > {new Date(currentYear,currentMonth,selectedDay?.day).toDateString()}</Text>
+                        {selectedDay?.total > 0 && <Text style={{color:"white",textAlign:"center",fontSize:20,paddingVertical:10}}>Total: +${Math.abs(selectedDay?.total).toFixed(2)}</Text>}
+                        {selectedDay?.total < 0 && <Text style={{color:"white",textAlign:"center",fontSize:20,paddingVertical:10}}>Total: -${Math.abs(selectedDay?.total).toFixed(2)}</Text>}
+                        {selectedDay?.transactions.length == 0 && <Text style={{color:"white",textAlign:"center",fontSize:20,paddingVertical:10}}>No transactions</Text>}
+                        <FlatList
+                            contentContainerStyle={{padding:10,width:"100%",height:"100%"}}
+                            data={selectedDay?.transactions}
+                            renderItem={({item}) => (
+                                <TransactionEntry 
+                                    props={{amount:item.amount,category:item.category,date:item.date}} 
+                                    titleBoxStyle={{shadowRadius:10,shadowOpacity:0.9,shadowColor:userCategory.filter((y) => y.value === item.category).map((y) => y.color)[0]}}
+                                    containerStyle={{width:"100%",height:100,marginVertical:10}}
+                                    transactionStyle={{color:"white",width:"100%"}}
+                                    showbutton={false}
+                                    onPress={() => {}}
+                                />
+                            )}
+                            scrollEnabled={true}
+                            keyExtractor={(item,index) => index}
+                        />
+                    </View>
                 </TouchableOpacity>
-                <Text style={{fontSize:20,fontWeight:"bold",color:"white"}}>
-                    {monthMap[currentMonth]} {currentYear}
-                </Text>
-                <TouchableOpacity style={{marginRight:15}} onPress={() => shiftMonth(currentMonth + 1)}>
-                    <FaIcon name="chevron-right" size={styleSetting.size.em20} color="white"/>
-                </TouchableOpacity>
+            </Modal>
+            <View style={{width:"95%",height:"95%",margin:"2.5%"}}>
+                <View style={{borderColor:"white",borderWidth:3,height:50,borderRadius:10,flexDirection:"row",justifyContent:"space-between",alignItems:"center"}}>
+                    <TouchableOpacity style={{marginLeft:15}} onPress={() => shiftMonth(currentMonth - 1)}>
+                        <FaIcon name="chevron-left" size={styleSetting.size.em20} color="white"/>
+                    </TouchableOpacity>
+                    <Text style={{fontSize:20,fontWeight:"bold",color:"white"}}>
+                        {monthMap[currentMonth]} {currentYear}
+                    </Text>
+                    <TouchableOpacity style={{marginRight:15}} onPress={() => shiftMonth(currentMonth + 1)}>
+                        <FaIcon name="chevron-right" size={styleSetting.size.em20} color="white"/>
+                    </TouchableOpacity>
+                </View>
+                <View style={{borderColor:"white",borderWidth:3,height:"80%",marginTop:30,borderRadius:10,flexDirection:"column",alignItems:"center"}}>
+                    <FlatList
+                        data={weekDayMap}
+                        renderItem={({item}) => (
+                            <Text style={{color:"white",marginHorizontal:"auto",fontSize:45,paddingTop:15,width:80,textAlign:"center"}}>{item}</Text>
+                        )}
+                        
+                        style={{width:"100%",height:70}}
+                        contentContainerStyle={{justifyContent:"space-between",width:"100%",height:70,paddingHorizontal:30,}}
+                        keyExtractor={item => item}
+                        numColumns={7}
+                        scrollEnabled={false}
+                    />
+                    <FlatList
+                        data={currentCalendar}
+                        renderItem={({item}) => (
+                            <Item item={item} onPress={()=>onClick(item)} textColor={"white"} />
+                        )}
+                        keyExtractor={item => item.day}
+                        numColumns={7}
+                        style={{width:"100%",height:"100%"}}
+                        contentContainerStyle={{justifyContent:"space-between",width:"100%",height:"100%",padding:30}}
+                        scrollEnabled={true}
+                    />
+                </View>
             </View>
-            <View style={{borderColor:"white",borderWidth:3,height:"80%",marginTop:30,borderRadius:10,flexDirection:"column",alignItems:"center"}}>
-                <FlatList
-                    data={weekDayMap}
-                    renderItem={({item}) => (
-                        <Text style={{color:"white",marginHorizontal:"auto",fontSize:45,paddingTop:15,width:80,textAlign:"center"}}>{item}</Text>
-                    )}
-                    
-                    style={{width:"100%",height:70}}
-                    contentContainerStyle={{justifyContent:"space-between",width:"100%",height:70,paddingHorizontal:30,}}
-                    keyExtractor={item => item}
-                    numColumns={7}
-                    scrollEnabled={false}
-                />
-                <FlatList
-                    data={currentCalendar}
-                    renderItem={({item}) => (
-                        <Item item={item} onPress={()=>alert(item.total)} textColor={"white"} />
-                    )}
-                    keyExtractor={item => item.day}
-                    numColumns={7}
-                    style={{width:"100%",height:"100%"}}
-                    contentContainerStyle={{justifyContent:"space-between",width:"100%",height:"100%",padding:30}}
-                    scrollEnabled={true}
-                />
-            </View>
-        </View>
+        </>
     )
 }
 const Item = ({item, onPress,  textColor}) => {
