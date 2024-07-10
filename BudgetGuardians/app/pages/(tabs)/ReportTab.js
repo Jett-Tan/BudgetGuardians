@@ -40,7 +40,6 @@ export default function ReportTab() {
                 data.push(userBudgets.reduce((acc, budget) => {acc += budget?.budgetAmount; return acc}, 0));
                 continue;
             }else {
-                // console.log(selectedCategory , userBudgets.filter((budget) => selectedCategory.includes(budget?.budgetCategory)));
                 data.push(userBudgets.filter((budget) => {
                     return selectedCategory.includes(budget?.budgetCategory)
                 }).reduce((acc, budget) => {acc += budget?.budgetAmount; return acc}, 0));
@@ -48,7 +47,14 @@ export default function ReportTab() {
         }
         return data.map((x, index) => { 
             let p =  userTransactions.filter((transaction) => {
-                return index+1 == Number.parseInt(transaction?.date?.split("/")[1])  && Number.parseInt(transaction?.date?.split("/")[2]) == year
+                if (selectedCategory.length <= 0) {
+                    return (index+1 == Number.parseInt(transaction?.date?.split("/")[1]) && 
+                    Number.parseInt(transaction?.date?.split("/")[2]) == year)
+                }else {
+                    return (index+1 == Number.parseInt(transaction?.date?.split("/")[1]) && 
+                        Number.parseInt(transaction?.date?.split("/")[2]) == year && 
+                        selectedCategory.includes(transaction?.category))
+                }
             }).reduce((acc, transaction) => acc + transaction?.amount, x);
             return p
         })
