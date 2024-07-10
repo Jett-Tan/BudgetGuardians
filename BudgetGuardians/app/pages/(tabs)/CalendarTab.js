@@ -147,11 +147,11 @@ export default function CalendarTab() {
                         <FaIcon name="chevron-right" size={styleSetting.size.em20} color="white"/>
                     </TouchableOpacity>
                 </View>
-                <View style={{borderColor:"white",borderWidth:3,height:"80%",marginTop:30,borderRadius:10,flexDirection:"column",alignItems:"center"}}>
+                <View style={{borderColor:"white",borderWidth:3,height:"70%",marginTop:30,borderRadius:10,flexDirection:"column",alignItems:"center"}}>
                     <FlatList
                         data={weekDayMap}
                         renderItem={({item}) => (
-                            <Text style={{color:"white",marginHorizontal:"auto",fontSize:45,paddingTop:15,width:80,textAlign:"center"}}>{item}</Text>
+                            <Text style={{color:"white",marginHorizontal:"auto",fontSize:45,paddingTop:5,width:80,textAlign:"center"}}>{item}</Text>
                         )}
                         
                         style={{width:"100%",height:70}}
@@ -163,27 +163,30 @@ export default function CalendarTab() {
                     <FlatList
                         data={currentCalendar}
                         renderItem={({item}) => (
-                            <Item item={item} onPress={()=>onClick(item)} textColor={"white"} />
+                            <Item item={item} onPress={()=>onClick(item)} />
                         )}
                         keyExtractor={item => item.day}
                         numColumns={7}
                         style={{width:"100%",height:"100%"}}
                         contentContainerStyle={{justifyContent:"space-between",width:"100%",height:"100%",padding:30}}
                         scrollEnabled={true}
+                        showsVerticalScrollIndicator={false}
                     />
                 </View>
             </View>
         </>
     )
 }
-const Item = ({item, onPress,  textColor}) => {
-    const previous = !item.current ? "gray" : "white";
-    const shadowColor = !item.current ? "gray" : Number.parseInt(item.total) > 0 ? "green" : 
-        Number.parseInt(item.total) < 0 ? "red" : "white";
+const Item = ({item, onPress}) => {
+    const borderColor = !item.current ? styleSetting.color.grey : Number.parseInt(item.total) > 0 ? styleSetting.color.forestgreen : 
+        Number.parseInt(item.total) < 0 ? styleSetting.color.cadmiumRed : "white";
+    const shadowColor = !item.current ? styleSetting.color.lightgrey : Number.parseInt(item.total) > 0 ? styleSetting.color.neonGreen : 
+        Number.parseInt(item.total) < 0 ? styleSetting.color.neonRed : "white";
+    const textColor = !item.current ? styleSetting.color.lightgrey : "white";
     const onClick = item.current ? onPress : () => {};
     return (
-        <TouchableOpacity onPress={onClick} style={[{margin:"auto",height:80,width:80,shadowColor:shadowColor,shadowOpacity:0.5,shadowRadius:15,borderColor:shadowColor,borderWidth:3,borderRadius:50,justifyContent:"center",alignItems:"center"}]}>
-            <Text style={[{color: textColor,fontSize:30}]}>{item.day}</Text>
+        <TouchableOpacity onPress={onClick} style={[{margin:"auto",marginVertical:5,height:50,width:50,shadowColor:shadowColor,shadowOpacity:0.5,shadowRadius:15,borderColor:borderColor,borderWidth:3,borderRadius:50,justifyContent:"center",alignItems:"center"}]}>
+            <Text style={[{color: textColor,fontSize:20,fontWeight:"bold"}]}>{item.day}</Text>
         </TouchableOpacity>
     )
 }
