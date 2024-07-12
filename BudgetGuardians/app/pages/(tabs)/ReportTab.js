@@ -118,7 +118,7 @@ export default function ReportTab() {
         var diff = new Date(date2.getTime() - date1.getTime());
         // console.log(diff.getUTCFullYear() - 1970)
         // console.log(diff)
-        return diff.getUTCFullYear() - 1970 == 0
+        return diff.getUTCFullYear() - 1970 <= 1
     }
     const renderSelectedItem = (item, unSelect) => (
         <TouchableOpacity onPress={() => {unSelect && unSelect(item)}}>
@@ -134,8 +134,8 @@ export default function ReportTab() {
     const unSelect = (item) => {
         setSelectedCategory(selectedCategory.filter((x) => x !== item));
     }
-    const graphWidth = Dimensions.get('window').width * 0.5;
-    const graphHeight = Dimensions.get('window').height * 0.5;
+    const graphWidth = Dimensions.get('window').width * 0.8;
+    const graphHeight = Dimensions.get('window').height * 0.8;
 
     return (
         <View style={{margin:"2.5%",width:"95%",height:"95%"}}>
@@ -285,7 +285,6 @@ export default function ReportTab() {
                     transparent
                     bezier
                     style={{
-                        paddingTop:30,
                         alignItems:"center",
                         justifyContent:"center",
                         marginVertical: 8,
