@@ -148,7 +148,7 @@ const CategoriseTransaction = () => {
             </TouchableOpacity>
           </View>
           <View style={[styles.transactionsContainer]}>
-          <ScrollView style={[styles.scrollView,{padding:5}]}>
+          <ScrollView style={[styles.scrollView,{padding:5}]} showsVerticalScrollIndicator={false}>
             {filteredTransactions.length === 0 && (
               <Text style={{margin:"auto", color: 'white'}}>No transactions found for the selected category.</Text>
             )}

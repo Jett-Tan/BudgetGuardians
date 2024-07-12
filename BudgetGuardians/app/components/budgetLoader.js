@@ -109,7 +109,7 @@ export default function BudgetLoader({background = true}) {
     return (
         <>  
             <View style={[{width:"100%",height:"100%",alignItems:"center"},backgroundExist ]}>
-              <ScrollView style={{width:"95%"}}>
+              <ScrollView style={{width:"95%"}} showsHorizontalScrollIndicator={false}>
                 <View style={[{width:"100%",marginHorizontal:"auto",flexWrap:"wrap",flexDirection:"row"},backgroundExist2]}>
                   {Array.isArray(budgets) && budgets.map((x, index) => (
                       <BudgetEntryBoxed 

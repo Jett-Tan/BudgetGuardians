@@ -1,4 +1,4 @@
-import { ScrollView,View,Modal,Pressable,StyleSheet,Text } from "react-native"
+import { ScrollView,View,Modal,Pressable,StyleSheet,Text, Dimensions } from "react-native"
 import { useState,useEffect } from "react"
 import {DatePickerInput, de} from 'react-native-paper-dates';
 import TransactionEntry from "./transactionEntry"
@@ -183,7 +183,13 @@ export default function TransactionLoader() {
                         </View>
                         <View  style={{margin:10,marginBottom:15}}>
                           <Text style={{fontSize: 20,color:"white", fontWeight: 'bold'}}>Transaction Description</Text>
-                          {!toViewTransactionDescription ? <Text style={{fontSize: 20,color:"white"}}>No Description</Text> : <Text style={{fontSize: 20,color:"white"}}>{toViewTransactionDescription}</Text>}
+                          {
+                            !toViewTransactionDescription ? 
+                            <Text style={{fontSize: 20,color:"white"}}>No Description</Text> : 
+                            <ScrollView showsVerticalScrollIndicator={false}>
+                              <Text style={{fontSize: 20,maxHeight:Dimensions.get("window").height * 0.3,color:"white"}}>{toViewTransactionDescription}</Text>
+                            </ScrollView>
+                          }
                           
                         </View>
                     </View>
@@ -294,7 +300,7 @@ export default function TransactionLoader() {
               </View>
           </Modal>
           <View style={{width:"100%",marginVertical:20,height:"100%",alignItems:"center"}}>
-            <ScrollView style={{width:"95%"}}>
+            <ScrollView style={{width:"95%"}} showsVerticalScrollIndicator={false}>
               {Array.isArray(transactions) && transactions.map((x, index) => (
                   <View key={index} style={{marginHorizontal:10,marginVertical:20}}>
                       <TransactionEntry 
