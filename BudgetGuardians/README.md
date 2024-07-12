@@ -22,5 +22,5 @@ https://docs.expo.dev/router/installation/
 # To Host on netlify
 
 - netlify deploy --dir dist
-- netlify deploy --prod
+- netlify deploy --prod dist
 - pick dist as dir
