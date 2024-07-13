@@ -59,11 +59,10 @@ export default function BudgetInput() {
             valid = valid && false;
         }
         const numericAmount = Number.parseFloat(amount);
-        if (!numericAmount || numericAmount === NaN || numericAmount === 0) {
-            setAmountError("Amount is required.");
+        if (typeof numericAmount === 'string' || isNaN(numericAmount)) {
+            setAmountError("Only numeric amount is allowed.");
             valid = valid && false;
-        }
-        if (numericAmount < 0) {
+        } else if (numericAmount <= 0) {
             setAmountError("Positive amount only.");
             valid = valid && false;
         }
@@ -77,11 +76,10 @@ export default function BudgetInput() {
         //     valid = valid && false;
         // }
         const numericAmount = Number.parseFloat(totalBudgetAmount);
-        if (!numericAmount || numericAmount === NaN || numericAmount === 0) {
-            setAmountError("Amount is required.");
+        if (typeof numericAmount === 'string' || isNaN(numericAmount)) {
+            setAmountError("Only numeric amount is allowed.");
             valid = valid && false;
-        }
-        if (numericAmount < 0) {
+        } else if (numericAmount <= 0) {
             setAmountError("Positive amount only.");
             valid = valid && false;
         }

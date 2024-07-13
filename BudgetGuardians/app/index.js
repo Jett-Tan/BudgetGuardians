@@ -31,7 +31,7 @@ const Blink = () => {
   });
   if (!reloaded) {
     return <Loader isLoading={true} withText={true} />;
-    // return <Text>asd</Text>
+    
   }
   if (hasToken) {
     return <Redirect href="/pages/homePage" />;
