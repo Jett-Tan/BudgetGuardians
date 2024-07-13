@@ -21,25 +21,35 @@ export default function BudgetLoader({background = true}) {
     const [toEditBudgetCatergory, setToEditBudgetCatergory] = useState('');
     const [modalVisible, setModalVisible] = useState(false);
     const [userCategory, setUserCategory] = useState([]);
+    const [currentMonth, setCurrentMonth] = useState('');
+
+    useEffect(() => {
+      const monthNames = [
+          "January", "February", "March", "April", "May", "June",
+          "July", "August", "September", "October", "November", "December"
+      ];
+      const monthIndex = new Date().getMonth();
+      setCurrentMonth(monthNames[monthIndex]);
+  }, []);
 
     liveUpdate((data) => {
         setUserCategory(data?.financialData?.userCategory || defaultCategory);
         const budgets = data?.financialData?.budgetInfo?.budgets || [];
         const transactions = data?.financialData?.transactions || [];
         budgets.map((budget) => {
-            const currentMonth = new Date().getMonth() + 1;
+            const currentMonthIndex = new Date().getMonth() + 1;
             const totalSpent = transactions
               .filter((transaction) => budget.budgetCategory === transaction.category && transaction.amount < 0)
               .filter((transaction) => {
                 // console.log(Number.parseInt(transaction.date.split('/')[1]) == currentMonth);
-                return Number.parseInt(transaction.date.split('/')[1]) == currentMonth
+                return Number.parseInt(transaction.date.split('/')[1]) == currentMonthIndex
               })
               .reduce((acc, transaction) => acc + transaction.amount, 0);
             const addedIncome = transactions
               .filter((transaction) => budget.budgetCategory === transaction.category && transaction.amount > 0)
               .filter((transaction) => {
                 // console.log(Number.parseInt(transaction.date.split('/')[1]) == currentMonth);
-                return Number.parseInt(transaction.date.split('/')[1]) == currentMonth
+                return Number.parseInt(transaction.date.split('/')[1]) == currentMonthIndex
               })
               .reduce((acc, transaction) => acc + transaction.amount, 0);
             
@@ -82,7 +92,7 @@ export default function BudgetLoader({background = true}) {
         updateBudgetToFirestore(newBudgets);
     }
 
-    /* This fuction will enable the popup for edit*/ 
+    /* This function will enable the popup for edit*/ 
     const editBudget = (id) =>{
         setToEditBudgetAmount(budgets[id].amount)
         setToEditBudgetCatergory(budgets[id].category)
@@ -92,7 +102,7 @@ export default function BudgetLoader({background = true}) {
         setToEditBudgetID(id)
         setModalVisible(true);
     }
-    /* This fucntion will save the edited details to firestore*/
+    /* This function will save the edited details to firestore*/
     const saveBudget = () => {
         if (!validate()) {
             return;
@@ -109,6 +119,7 @@ export default function BudgetLoader({background = true}) {
     return (
         <>  
             <View style={[{width:"100%",height:"100%",alignItems:"center"},backgroundExist ]}>
+              <View style={[{color:"white"}]}>Budget for the month of: {currentMonth}</View>
               <ScrollView style={{width:"95%"}} showsHorizontalScrollIndicator={false}>
                 <View style={[{width:"100%",marginHorizontal:"auto",flexWrap:"wrap",flexDirection:"row"},backgroundExist2]}>
                   {Array.isArray(budgets) && budgets.map((x, index) => (
