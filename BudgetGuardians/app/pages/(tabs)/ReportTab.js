@@ -34,7 +34,7 @@ export default function ReportTab() {
                     category: t?.category,
                     date: t?.date,
                     day: t?.date?.split("/")[0],
-                    month: t?.date?.split("/")[1],
+                    month: t?.date?.split("/")[1] - 1,
                     year: t?.date?.split("/")[2],
                     formatedDate: new Date(t?.date.split("/")[2], t?.date.split("/")[1], t?.date.split("/")[0])
                 }
