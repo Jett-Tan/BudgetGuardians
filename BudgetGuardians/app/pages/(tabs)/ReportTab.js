@@ -22,7 +22,8 @@ export default function ReportTab() {
     
     const [selectedCategory, setSelectedCategory] = useState([]);
     const [selectedDateRange, setSelectedDateRange] = useState([new Date(new Date().getFullYear(), 0, 1), new Date(new Date().getFullYear(), 11, 31)]);
-    
+    const [startDateError,setStartDateError] = useState("")
+    const [endDateError,setEndDateError] = useState("")
     const [data, setData] = useState([]);
     const [labels, setLabels] = useState([]);
     
@@ -47,66 +48,122 @@ export default function ReportTab() {
 
     const generateDataByMonth = () => {
         let data = generateLabels();
-        return data.map((x, index) => {
-            const isFiltered = selectedCategory?.length > 0;
-            if (isFiltered) {
+        if (withinAYear(selectedDateRange[0],selectedDateRange[1])) {            
+            return data.map((x, index) => {
+                const isFiltered = selectedCategory?.length > 0;
+                if (isFiltered) {
+                    return {
+                        month: x.month,
+                        year: x.year,
+                        data: userBudgets.filter((budget) => {
+                            return (selectedCategory.includes(budget?.budgetCategory))
+                        }).reduce((acc, budget) => acc + budget?.budgetAmount, 0)
+                    }
+                }
                 return {
                     month: x.month,
                     year: x.year,
-                    data: userBudgets.filter((budget) => {
-                        return (selectedCategory.includes(budget?.budgetCategory))
-                    }).reduce((acc, budget) => acc + budget?.budgetAmount, 0)
+                    data: userBudgets.reduce((acc, budget) => acc + budget?.budgetAmount, 0)
                 }
-            }
-            return {
-                month: x.month,
-                year: x.year,
-                data: userBudgets.reduce((acc, budget) => acc + budget?.budgetAmount, 0)
-            }
-        })
-        .map((x,index) => {
-            const isFiltered = selectedCategory?.length > 0;
-            if (isFiltered) {
+            })
+            .map((x,index) => {
+                const isFiltered = selectedCategory?.length > 0;
+                if (isFiltered) {
+                    return userTransactions.filter((transaction) => {
+                        return (
+                            // new Date(transaction?.formatedDate) >= new Date(selectedDateRange[0]) && 
+                            // new Date(transaction?.formatedDate) <= new Date(selectedDateRange[1]) && 
+                            (transaction?.month == x?.month) &&
+                            (transaction?.year == x?.year) &&
+                            selectedCategory.includes(transaction?.category)
+                        )
+                    }).reduce((acc, transaction) => acc + transaction?.amount, x?.data)
+                }
                 return userTransactions.filter((transaction) => {
                     return (
-                        // new Date(transaction?.formatedDate) >= new Date(selectedDateRange[0]) && 
-                        // new Date(transaction?.formatedDate) <= new Date(selectedDateRange[1]) && 
-                        (transaction?.month == x?.month) &&
-                        (transaction?.year == x?.year) &&
-                        selectedCategory.includes(transaction?.category)
-                    )
+                            // new Date(transaction?.formatedDate) >= new Date(selectedDateRange[0]) && 
+                            // new Date(transaction?.formatedDate) <= new Date(selectedDateRange[1]) 
+                            (transaction?.month == x?.month) &&
+                            (transaction?.year == x?.year)
+                        )
                 }).reduce((acc, transaction) => acc + transaction?.amount, x?.data)
-            }
-            return userTransactions.filter((transaction) => {
-                return (
-                        // new Date(transaction?.formatedDate) >= new Date(selectedDateRange[0]) && 
-                        // new Date(transaction?.formatedDate) <= new Date(selectedDateRange[1]) 
-                        (transaction?.month == x?.month) &&
-                        (transaction?.year == x?.year)
-                    )
-            }).reduce((acc, transaction) => acc + transaction?.amount, x?.data)
-        })
+            })
+        } else {
+            return data.map((x, index) => {
+                const isFiltered = selectedCategory?.length > 0;
+                if (isFiltered) {
+                    return {
+                        year: x.year,
+                        data: userBudgets.filter((budget) => {
+                            return (selectedCategory.includes(budget?.budgetCategory))
+                        }).reduce((acc, budget) => acc + budget?.budgetAmount, 0)
+                    }
+                }
+                return {
+                    year: x.year,
+                    data: userBudgets.reduce((acc, budget) => acc + budget?.budgetAmount, 0)
+                }
+            })
+            .map((x,index) => {
+                const isFiltered = selectedCategory?.length > 0;
+                if (isFiltered) {
+                    return userTransactions.filter((transaction) => {
+                        return (
+                            (transaction?.year == x?.year) &&
+                            selectedCategory.includes(transaction?.category)
+                        )
+                    }).reduce((acc, transaction) => acc + transaction?.amount, x?.data)
+                }
+                return userTransactions.filter((transaction) => {
+                    return (
+                            (transaction?.year == x?.year)
+                        )
+                }).reduce((acc, transaction) => acc + transaction?.amount, x?.data)
+            })
+        }
     };
 
     const generateLabels = () => { 
         const monthsDiff = Math.abs( 
             (new Date(selectedDateRange[1]).getFullYear() * 12 + new Date(selectedDateRange[1]).getMonth()) - 
             (new Date(selectedDateRange[0]).getFullYear() * 12 + new Date(selectedDateRange[0]).getMonth())) + 1;
+        const yearsDiff = Math.abs(new Date(selectedDateRange[1]).getFullYear() - new Date(selectedDateRange[0]).getFullYear()) + 1;
 
         let labels = [];    
         let year = selectedDateRange[0].getFullYear();
-
-        for (let i = 0; i < monthsDiff; i++) {
-            if (selectedDateRange[0].getMonth() + i > 11) {
-                year = selectedDateRange[0].getFullYear() + 1;
+        
+        if (withinAYear(selectedDateRange[0],selectedDateRange[1])) {
+            for (let i = 0; i < monthsDiff; i++) {
+                if (selectedDateRange[0].getMonth() + i > 11) {
+                    year = selectedDateRange[0].getFullYear() + 1;
+                }
+                    selectedDateRange[0].getMonth() + i > 11 ? 
+                        labels.push({month:selectedDateRange[0].getMonth() + i - 12, year: year}) :
+                    selectedDateRange[0].getMonth() + i < 0 ? 
+                        labels.push({month:selectedDateRange[0].getMonth() + i + 12, year: year}) :
+                        labels.push({month:selectedDateRange[0].getMonth() + i, year: year});
+                }
+        }else {
+            for (let i = 0; i < yearsDiff; i++) {
+                if (labels.filter((x) => x.year == year).length == 0) {
+                    labels.push({year: year});
+                    year += 1
+                }
             }
-            selectedDateRange[0].getMonth() + i > 11 ? 
-                labels.push({month:selectedDateRange[0].getMonth() + i - 12, year: year}) :
-            selectedDateRange[0].getMonth() + i < 0 ? 
-                labels.push({month:selectedDateRange[0].getMonth() + i + 12, year: year}) :
-                labels.push({month:selectedDateRange[0].getMonth() + i, year: year});
         }
         return labels;
+    }
+    const inOrder = (date1,date2) =>{ 
+        var diff = new Date(date2.getTime() - date1.getTime());
+        if (diff.getUTCFullYear() - 1970 < 0) {
+            setStartDateError("Start Date must be before End Date")
+            setEndDateError("End Date must be after Start Date")
+            return false;
+        }else {
+            setStartDateError("")
+            setEndDateError("")
+            return diff.getUTCFullYear() - 1970 >= 0
+        }
     }
     
     const renderItem = item => (
@@ -118,6 +175,7 @@ export default function ReportTab() {
         var diff = new Date(date2.getTime() - date1.getTime());
         // console.log(diff.getUTCFullYear() - 1970)
         // console.log(diff)
+        // return true;
         return diff.getUTCFullYear() - 1970 <= 1
     }
     const renderSelectedItem = (item, unSelect) => (
@@ -191,13 +249,14 @@ export default function ReportTab() {
                         value={selectedDateRange[0]}
                         onChange={(d) => {
                             const rest = selectedDateRange[1];
-                            if (withinAYear(d,rest)) {
+                            if (inOrder(d,rest)) {
                                 setSelectedDateRange([d,rest])
                             }
                         }}
                         onChangeText={(d) => {
                             const rest = selectedDateRange[1];
-                            if (typeof d === Date && withinAYear(d,rest)) {
+                            if (typeof d === Date && inOrder(d,rest)) {
+                            // if (typeof d === Date ) {
                                 setSelectedDateRange([d,rest])
                             }
                         }}
@@ -205,6 +264,7 @@ export default function ReportTab() {
                         label="Start Date"
                         display="calendar"
                     />
+                    {startDateError ? <Text style={{color:"red",fontSize:16}}>{startDateError}</Text> : <></>}
                 </View>
                 <View style={{width:"30%"}}>
                     <DatePickerInput 
@@ -222,13 +282,14 @@ export default function ReportTab() {
                         value={selectedDateRange[1]}
                         onChange={(d) => {
                             const rest = selectedDateRange[0];
-                            if (withinAYear(rest,d)) {
+                            if (inOrder(rest,d)) {
                                 setSelectedDateRange([rest,d]) 
                             }
                         }}
                         onChangeText={(d) => {
                             const rest = selectedDateRange[0];
-                            if (typeof d === Date && withinAYear(rest,d)) {
+                            if (typeof d === Date && inOrder(rest,d)) {
+                            // if (typeof d === Date ) {
                                 setSelectedDateRange([rest,d]) 
                             }
                         }}
@@ -236,6 +297,7 @@ export default function ReportTab() {
                         label="End Date"
                         display="calendar"
                     />
+                    {endDateError ? <Text style={{color:"red",fontSize:16}}>{endDateError}</Text> : <></>}
                 </View>
             </View>
             <View style={{width:"100%",marginTop:30,flexDirection:"row",justifyContent:"center"}}>
@@ -248,7 +310,10 @@ export default function ReportTab() {
                     fromZero={true}
                     
                     data={{
-                        labels: generateLabels().map((x) => {return monthNames[x.month] + " " + x.year}),
+                        labels: generateLabels().map((x) => {
+                            const month = monthNames[x?.month] || "";
+                            return month + " " + x.year
+                        }),
                         datasets: [
                             {
                                 data: generateDataByMonth()

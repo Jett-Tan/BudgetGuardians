@@ -78,9 +78,9 @@ export default function ExpenseInput() {
                 const remainingBudget = budgetAmt + totalExpense + totalIncome;
                 if (formatteddate.split('/')[1] == currentMonth) {
                     if (budgetAmt > 0 && remainingBudget < 0) {
-                        alert(`You have exceeded your budget for ${category}! by $${-remainingBudget}!`);
+                        alert(`You have exceeded your budget for ${category} by $${-remainingBudget}!`);
                     } else if (budgetAmt > 0 && remainingBudget < budgetAmt*0.3) {
-                        alert(`You are close to exceeding your budget for ${category}! You have $${remainingBudget} left!`);
+                        alert(`You are close to exceeding your budget for ${category} You have $${remainingBudget} left!`);
                     } else if (budgetAmt > 0 && remainingBudget === 0) {
                         alert(`You have fully utilized your budget for ${category}!`);
                     }
