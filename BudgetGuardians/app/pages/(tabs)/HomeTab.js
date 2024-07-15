@@ -82,7 +82,7 @@ export default function HomeTab() {
                     <Text style={{fontSize:20,paddingBottom:10,fontWeight:"bold", textDecorationLine: 'underline', color: "white"}}>Recent Transactions</Text>
                     {Array.isArray(lastestTransaction5) && lastestTransaction5.length <= 0 && <Text>No Transaction</Text>}
                     
-                    <ScrollView style={{height:"90%",width:"100%"}}>
+                    <ScrollView style={{height:"90%",width:"100%"}} showsVerticalScrollIndicator={false}>
                          <View style={{width:"100%",height:"100%",justifyContent:"space-around",flexWrap:"wrap",flexDirection:"row"}}>
                             {lastestTransaction5 && lastestTransaction5.map((transaction,index) => {
                                 return(
@@ -110,7 +110,7 @@ export default function HomeTab() {
                     {Array.isArray(budgetInfo?.budgets) && budgetInfo?.budgets.length <= 0  && (
                         <Text>No Budget</Text>
                     )}
-                    <ScrollView style={{height:"80%",width:"100%"}}>
+                    <ScrollView style={{height:"80%",width:"100%"}} showsVerticalScrollIndicator={false}>
                         <View style={{width:"100%",height:"100%",justifyContent:"space-around",flexWrap:"wrap",flexDirection:"row"}}>
                             <BudgetLoader background={false}/>
                                 {/* {budgetInfo && budgetInfo?.budgets.map((x,index) => {

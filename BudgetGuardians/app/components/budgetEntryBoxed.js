@@ -106,7 +106,9 @@ export default function BudgetEntryBoxed({
                 <Text style={{fontWeight:"bold",marginVertical:15,fontSize:20,textAlign:"center",color:"white"}}>{props.category}</Text>
                 <View style={{justifyContent:"center",marginBottom:15,alignItems:"center"}}>
                     <View style={{position:"absolute",zIndex:10,margin:"auto",fontWeight:"bold"}}>
-                        <Text style={{fontWeight:"bold",color:"white"}}>${displayNumber.toFixed(2)}</Text>
+                        {displayNumber > 0 ?
+                        <Text style={{fontWeight:"bold",color:"white"}}>${displayNumber.toFixed(2)}</Text>:
+                        <Text style={{fontWeight:"bold",color:"white"}}>-${Math.abs(displayNumber).toFixed(2)}</Text>}
                     </View>
                     <PieChart
                         style={{margin:"auto",shadowColor:styleSetting.color.blue,shadowRadius:15,borderRadius:100,shadowOpacity:0.5}}
