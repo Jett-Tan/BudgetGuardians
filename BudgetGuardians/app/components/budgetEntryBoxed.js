@@ -61,7 +61,8 @@ export default function BudgetEntryBoxed({
     ]
 
     const sliceColor = [
-        "#E94243",
+        // "#E94243",
+        "orange",
         "#EF6F71",
         "#6FEFED",
         "#B0EF6F"
