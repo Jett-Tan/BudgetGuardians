@@ -184,8 +184,12 @@ const Item = ({item, onPress}) => {
         Number.parseInt(item.total) < 0 ? styleSetting.color.neonRed : "white";
     const textColor = !item.current ? styleSetting.color.lightgrey : "white";
     const onClick = item.current ? onPress : () => {};
+    const borderWidth = !item.current ? 0 : 3;
+    const opacity = !item.current ? 0.7 : 1;
+    const disabled = !item.current ? true : false;
+    
     return (
-        <TouchableOpacity onPress={onClick} style={[{margin:"auto",marginVertical:5,height:50,width:50,shadowColor:shadowColor,shadowOpacity:0.5,shadowRadius:15,borderColor:borderColor,borderWidth:3,borderRadius:50,justifyContent:"center",alignItems:"center"}]}>
+        <TouchableOpacity onPress={onClick} disabled={disabled}style={[{opacity:opacity,margin:"auto",marginVertical:5,height:50,width:50,shadowColor:shadowColor,shadowOpacity:0.5,shadowRadius:15,borderColor:borderColor,borderWidth:borderWidth,borderRadius:50,justifyContent:"center",alignItems:"center"}]}>
             <Text style={[{color: textColor,fontSize:20,fontWeight:"bold"}]}>{item.day}</Text>
         </TouchableOpacity>
     )

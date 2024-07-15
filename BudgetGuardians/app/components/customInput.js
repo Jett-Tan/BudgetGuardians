@@ -127,7 +127,7 @@ export default function CustomInput({
                         }
                     </View>
                     <View style={styles.errorsBox}>
-                        <Text style={styles.errors}>{error2}asd</Text>
+                        <Text style={styles.errors}>{error2}</Text>
                     </View>
                 </View>
             }
