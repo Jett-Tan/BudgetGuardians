@@ -48,7 +48,47 @@ export default function ReportTab() {
 
     const generateDataByMonth = () => {
         let data = generateLabels();
-        if (withinAYear(selectedDateRange[0],selectedDateRange[1])) {            
+        if (withinAMonth(selectedDateRange[0],selectedDateRange[1])) {
+            return data.map((x, index) => {
+                const isFiltered = selectedCategory?.length > 0;
+                if (isFiltered) {
+                    return {
+                        day : x.day,
+                        month : x.month,
+                        year : x.year,
+                        data : userBudgets.filter((budget) => {
+                            return (selectedCategory.includes(budget?.budgetCategory))
+                        }).reduce((acc, budget) => acc + budget?.budgetAmount, 0)
+                    }
+                } 
+                return {
+                    day : x.day,
+                    month: x.month,
+                    year: x.year,
+                    data: userBudgets.reduce((acc, budget) => acc + budget?.budgetAmount, 0)
+                }
+            }).map((x,index) => {
+                const isFiltered = selectedCategory?.length > 0;
+                if (isFiltered) {
+                    return userTransactions.filter((transaction) => {
+                        return (
+                            (transaction?.day == x?.day) &&
+                            (transaction?.month == x?.month) &&
+                            (transaction?.year == x?.year) &&
+                            selectedCategory.includes(transaction?.category)
+                        )
+                    }).reduce((acc, transaction) => acc + transaction?.amount, x?.data)
+                }
+                return userTransactions.filter((transaction) => {
+                    return (
+                        (transaction?.day == x?.day) &&
+                        (transaction?.month == x?.month) &&
+                        (transaction?.year == x?.year)
+                    )
+                }).reduce((acc, transaction) => acc + transaction?.amount, x?.data)
+            })
+
+        } else if (withinAYear(selectedDateRange[0],selectedDateRange[1])) {            
             return data.map((x, index) => {
                 const isFiltered = selectedCategory?.length > 0;
                 if (isFiltered) {
@@ -131,8 +171,14 @@ export default function ReportTab() {
 
         let labels = [];    
         let year = selectedDateRange[0].getFullYear();
-        
-        if (withinAYear(selectedDateRange[0],selectedDateRange[1])) {
+        if (withinAMonth(selectedDateRange[0],selectedDateRange[1])) {
+            let startDay = new Date(selectedDateRange[0]);
+            let endDay = new Date(selectedDateRange[1]);
+            while (startDay <= endDay) {
+                labels.push({day:startDay.getDate(),month:startDay.getMonth(), year: startDay.getFullYear()});
+                startDay.setDate(startDay.getDate()+1);
+            }
+        } else if (withinAYear(selectedDateRange[0],selectedDateRange[1])) {
             for (let i = 0; i < monthsDiff; i++) {
                 if (selectedDateRange[0].getMonth() + i > 11) {
                     year = selectedDateRange[0].getFullYear() + 1;
@@ -177,6 +223,12 @@ export default function ReportTab() {
         // console.log(diff)
         // return true;
         return diff.getUTCFullYear() - 1970 <= 1
+    }
+
+    const withinAMonth = (date1,date2) => {
+        var diff = new Date(date2.getTime() - date1.getTime());
+        console.log(diff.getUTCMonth())
+        return diff.getUTCFullYear() - 1970 <= 1 && diff.getUTCMonth() < 1
     }
     const renderSelectedItem = (item, unSelect) => (
         <TouchableOpacity onPress={() => {unSelect && unSelect(item)}}>
@@ -311,8 +363,16 @@ export default function ReportTab() {
                     
                     data={{
                         labels: generateLabels().map((x) => {
-                            const month = monthNames[x?.month] || "";
-                            return month + " " + x.year
+                            const day = x?.day ? x?.day + " " : "";
+                            const month = monthNames[x?.month] + " " || "";
+                            const dayNum = x?.day < 10 ? "0" + x?.day : x?.day;
+                            const monthNum = x?.month + 1 < 10 ? "0" + (x?.month + 1) : x?.month + 1;
+                            if (withinAMonth(selectedDateRange[0],selectedDateRange[1])) {
+                                return dayNum +" / "+ monthNum
+                            } else if (withinAYear(selectedDateRange[0],selectedDateRange[1])) {
+                                return month + x.year
+                            }
+                            return  x.year
                         }),
                         datasets: [
                             {
