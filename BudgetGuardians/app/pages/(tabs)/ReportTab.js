@@ -169,7 +169,7 @@ export default function ReportTab() {
             (new Date(selectedDateRange[0]).getFullYear() * 12 + new Date(selectedDateRange[0]).getMonth())) + 1;
         const yearsDiff = Math.abs(new Date(selectedDateRange[1]).getFullYear() - new Date(selectedDateRange[0]).getFullYear()) + 1;
 
-        let labels = [];    
+        let labels = []; // [{day:1,month:1,year:2021}] || [{month:1,year:2021}] || [{year:2021}] 
         let year = selectedDateRange[0].getFullYear();
         if (withinAMonth(selectedDateRange[0],selectedDateRange[1])) {
             let startDay = new Date(selectedDateRange[0]);
@@ -199,6 +199,7 @@ export default function ReportTab() {
         }
         return labels;
     }
+
     const inOrder = (date1,date2) =>{ 
         var diff = new Date(date2.getTime() - date1.getTime());
         if (diff.getUTCFullYear() - 1970 < 0) {
@@ -360,10 +361,8 @@ export default function ReportTab() {
             <View style={{width:"100%",marginTop:30}}>
                 <LineChart
                     fromZero={true}
-                    
                     data={{
                         labels: generateLabels().map((x) => {
-                            const day = x?.day ? x?.day + " " : "";
                             const month = monthNames[x?.month] + " " || "";
                             const dayNum = x?.day < 10 ? "0" + x?.day : x?.day;
                             const monthNum = x?.month + 1 < 10 ? "0" + (x?.month + 1) : x?.month + 1;
@@ -381,7 +380,7 @@ export default function ReportTab() {
                         ],
                     }}
                     
-                    width={graphWidth} // from react-native
+                    width={graphWidth} 
                     height={graphHeight}
                     xLabelsOffset={-10}
                     yAxisLabel="$"
@@ -405,7 +404,6 @@ export default function ReportTab() {
                             borderColor:"white",
                         }
                     }}
-                    
                     onDataPointClick={({value, index}) => {alert(`You clicked on ${index} with value ${value}`)}}
                     transparent
                     bezier
@@ -415,7 +413,6 @@ export default function ReportTab() {
                         marginVertical: 8,
                         borderRadius: 16,
                     }}
-                    
                 />
             </View>
         </View>
