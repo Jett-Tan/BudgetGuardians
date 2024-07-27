@@ -58,14 +58,14 @@ export default function ReportTab() {
                         year : x.year,
                         data : userBudgets.filter((budget) => {
                             return (selectedCategory.includes(budget?.budgetCategory))
-                        }).reduce((acc, budget) => acc + budget?.budgetAmount, 0)
+                        }).reduce((acc, budget) => acc + budget?.budgetAmount, 0) / daysInThisMonth(x.year,x.month)
                     }
                 } 
                 return {
                     day : x.day,
                     month: x.month,
                     year: x.year,
-                    data: userBudgets.reduce((acc, budget) => acc + budget?.budgetAmount, 0)
+                    data: userBudgets.reduce((acc, budget) => acc + budget?.budgetAmount, 0) / daysInThisMonth(x.year,x.month)
                 }
             }).map((x,index) => {
                 const isFiltered = selectedCategory?.length > 0;
@@ -131,12 +131,12 @@ export default function ReportTab() {
                         year: x.year,
                         data: userBudgets.filter((budget) => {
                             return (selectedCategory.includes(budget?.budgetCategory))
-                        }).reduce((acc, budget) => acc + budget?.budgetAmount, 0)
+                        }).reduce((acc, budget) => acc + budget?.budgetAmount, 0) * 12
                     }
                 }
                 return {
                     year: x.year,
-                    data: userBudgets.reduce((acc, budget) => acc + budget?.budgetAmount, 0)
+                    data: userBudgets.reduce((acc, budget) => acc + budget?.budgetAmount, 0) * 12
                 }
             })
             .map((x,index) => {
@@ -223,9 +223,14 @@ export default function ReportTab() {
 
     const withinAMonth = (date1,date2) => {
         var diff = new Date(date2.getTime() - date1.getTime());
-        console.log("monthdiff",diff.getUTCMonth())
+        // console.log("monthdiff",diff.getUTCMonth())
         return diff.getUTCFullYear() - 1970 < 1 && diff.getUTCMonth() < 1
     }
+
+    function daysInThisMonth(currentYear,currentMonth) {
+        return new Date(currentYear, currentMonth+1, 0).getDate();
+    }
+
     const renderSelectedItem = (item, unSelect) => (
         <TouchableOpacity onPress={() => {unSelect && unSelect(item)}}>
             <View style={{width:"auto",marginHorizontal:10,borderRadius:10,padding:5,borderColor:"white",borderWidth:3,flexDirection:"row"}}>
@@ -242,7 +247,7 @@ export default function ReportTab() {
     }
     const graphWidth = Dimensions.get('window').width * 0.8;
     const graphHeight = Dimensions.get('window').height * 0.8;
-
+    const title = withinAMonth(selectedDateRange[0],selectedDateRange[1]) ? "Daily" : withinAYear(selectedDateRange[0],selectedDateRange[1]) ? "Monthly" : "Yearly";
     return (
         <View style={{margin:"2.5%",width:"95%",height:"95%"}}>
             <View style={{flexDirection:"row",width:"100%",justifyContent:"space-between"}}>
@@ -353,7 +358,8 @@ export default function ReportTab() {
                 selectedCategory.map((x) => {return renderSelectedItem(x, () => unSelect(x))}) : 
                 <Text style={{color:"white",fontSize:20,alignSelf:"center",fontWeight:"bold"}} >All Category Selected</Text>   }
             </View>
-            <View style={{width:"100%",marginTop:30}}>
+            <View style={{width:"100%",marginTop:10}}>
+                <Text style={{fontSize:20,color:"white",textAlign:"center"}}>{title} budget </Text>
                 <LineChart
                     fromZero={true}
                     data={{
@@ -378,6 +384,7 @@ export default function ReportTab() {
                     width={graphWidth} 
                     height={graphHeight}
                     xLabelsOffset={-10}
+                    paddingBottom={-60}
                     yAxisLabel="$"
                     yAxisSuffix=""
                     yAxisInterval={1} // optional, defaults to 1
