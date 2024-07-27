@@ -87,7 +87,6 @@ export default function ReportTab() {
                     )
                 }).reduce((acc, transaction) => acc + transaction?.amount, x?.data)
             })
-
         } else if (withinAYear(selectedDateRange[0],selectedDateRange[1])) {            
             return data.map((x, index) => {
                 const isFiltered = selectedCategory?.length > 0;
@@ -111,8 +110,6 @@ export default function ReportTab() {
                 if (isFiltered) {
                     return userTransactions.filter((transaction) => {
                         return (
-                            // new Date(transaction?.formatedDate) >= new Date(selectedDateRange[0]) && 
-                            // new Date(transaction?.formatedDate) <= new Date(selectedDateRange[1]) && 
                             (transaction?.month == x?.month) &&
                             (transaction?.year == x?.year) &&
                             selectedCategory.includes(transaction?.category)
@@ -121,8 +118,6 @@ export default function ReportTab() {
                 }
                 return userTransactions.filter((transaction) => {
                     return (
-                            // new Date(transaction?.formatedDate) >= new Date(selectedDateRange[0]) && 
-                            // new Date(transaction?.formatedDate) <= new Date(selectedDateRange[1]) 
                             (transaction?.month == x?.month) &&
                             (transaction?.year == x?.year)
                         )
@@ -228,8 +223,8 @@ export default function ReportTab() {
 
     const withinAMonth = (date1,date2) => {
         var diff = new Date(date2.getTime() - date1.getTime());
-        console.log(diff.getUTCMonth())
-        return diff.getUTCFullYear() - 1970 <= 1 && diff.getUTCMonth() < 1
+        console.log("monthdiff",diff.getUTCMonth())
+        return diff.getUTCFullYear() - 1970 < 1 && diff.getUTCMonth() < 1
     }
     const renderSelectedItem = (item, unSelect) => (
         <TouchableOpacity onPress={() => {unSelect && unSelect(item)}}>
