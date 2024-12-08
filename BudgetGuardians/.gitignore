@@ -1,0 +1,12 @@
+
+
+# Local Netlify folder
+.netlify
+.keys
+.vscode
+.expo
+node_modules/
+dist/
+app/auth/firebaseConfig.js
+node_modules
+node_modules

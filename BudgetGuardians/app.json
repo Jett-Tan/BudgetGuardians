@@ -1,0 +1,41 @@
+{
+  "expo": {
+    "name": "BudgetGuardians",
+    "slug": "BudgetGuardians",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./app/assets/icon.png",
+    "userInterfaceStyle": "light",
+    "scheme": "BudgetGuardians",
+    "splash": {
+      "image": "./app/assets/icon.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#111111"
+    },
+    "ios": {
+      "supportsTablet": true
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./app/assets/icon.png",
+        "backgroundColor": "#e0fdf8"
+      },
+      "package": "com.jettpy.BudgetGuardians"
+    },
+    "web": {
+      "favicon": "./app/assets/icon.png"
+    },
+    "plugins": [
+      "expo-router",
+      "expo-font"
+    ],
+    "extra": {
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "1319b990-11bd-409f-b838-d1d4e8fe40a7"
+      }
+    }
+  }
+}
