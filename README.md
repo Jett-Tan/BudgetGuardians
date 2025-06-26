@@ -1,9 +1,5 @@
 # NUS Orbital 2023 (Team Name: BudgetGuardian)
 
-![Node.js CI](https://img.shields.io/badge/Node.js%20CI-no%20status-lightgrey)
-![React Native](https://img.shields.io/badge/react--native-v0.64.5-blue)
-![Runs with Expo](https://img.shields.io/badge/Runs%20with-Expo-563d7c)
-
 ## Project Overview
 
 The **Budget Tracker Application** is a software solution designed to promote financial literacy by helping individuals and households effectively manage their finances. It enables users to record expenses, set budgets, and track financial goals with ease.
